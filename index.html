@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooked — Mon carnet</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f0f;
+  --bg1:#161616;
+  --bg2:#1e1e1e;
+  --bg3:#272727;
+  --border:#2e2e2e;
+  --text:#e8e8e8;
+  --text2:#9a9a9a;
+  --text3:#5e5e5e;
+  --accent:#f5a623;
+  --accent-bg:rgba(245,166,35,0.12);
+  --red:#e05252;
+  --red-bg:rgba(224,82,82,0.12);
+  --blue:#52a9e0;
+  --blue-bg:rgba(82,169,224,0.12);
+  --green:#52c47a;
+  --green-bg:rgba(82,196,122,0.12);
+  --radius:10px;
+  --radius-sm:7px;
+  --radius-lg:14px;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100dvh;font-size:15px}
+input,select,textarea,button{font:inherit;color:inherit;background:none}
+input,select,textarea{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;color:var(--text);outline:none;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+button{cursor:pointer;border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 14px;background:var(--bg2);color:var(--text);transition:background .1s,border-color .1s}
+button:hover{background:var(--bg3)}
+button:disabled{opacity:.4;cursor:default}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+#root{max-width:720px;margin:0 auto;padding-bottom:2rem}
+@media(max-width:600px){#root{padding-bottom:80px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script>
+const{useState,useEffect}=React;
+const h=React.createElement;
+const SK="recipebook-v3";
+
+const CS={"Pâtes":{bg:"rgba(245,166,35,0.13)",t:"#f5a623",ic:"ti-tools-kitchen-2"},"Viande":{bg:"rgba(224,82,82,0.13)",t:"#e05252",ic:"ti-flame"},"Poisson":{bg:"rgba(82,169,224,0.13)",t:"#52a9e0",ic:"ti-fish"},"Fruits de mer":{bg:"rgba(82,169,224,0.13)",t:"#52a9e0",ic:"ti-fish"},"Dessert":{bg:"rgba(188,112,230,0.13)",t:"#bc70e6",ic:"ti-heart"},"Petit-déj":{bg:"rgba(82,196,122,0.13)",t:"#52c47a",ic:"ti-coffee"},"Plat":{bg:"rgba(82,196,122,0.13)",t:"#52c47a",ic:"ti-chef-hat"},"Soupe":{bg:"rgba(82,169,224,0.13)",t:"#52a9e0",ic:"ti-tools-kitchen-2"},"Asiatique":{bg:"rgba(224,82,82,0.13)",t:"#e05252",ic:"ti-chef-hat"},"Japonais":{bg:"rgba(82,169,224,0.13)",t:"#52a9e0",ic:"ti-fish"},"Fast-food":{bg:"rgba(245,166,35,0.13)",t:"#f5a623",ic:"ti-flame"},"Fusion":{bg:"rgba(188,112,230,0.13)",t:"#bc70e6",ic:"ti-chef-hat"}};
+const TS={salé:{bg:"var(--bg3)",t:"var(--text2)",bd:"1px solid var(--border)"},sucré:{bg:"rgba(224,82,82,0.13)",t:"#e05252",bd:"none"}};
+const CATS=["Tout","Salé","Sucré","Pâtes","Viande","Plat","Poisson","Fruits de mer","Dessert","Petit-déj","Soupe","Japonais","Asiatique","Fast-food","Fusion"];
+const CAT_OPTS=["Pâtes","Viande","Plat","Poisson","Fruits de mer","Dessert","Petit-déj","Soupe","Japonais","Asiatique","Fast-food","Fusion"];
+const gc=c=>CS[c]||{bg:"var(--color-background-secondary)",t:"var(--color-text-secondary)",ic:"ti-chef-hat"};
+const gt=t=>TS[t]||TS.salé;
+const fmt=(a,b,c)=>{if(!a)return null;const v=(a/b)*c;return Number.isInteger(v)?String(v):String(Math.round(v*10)/10)};
+const load=async()=>{try{const r=localStorage.getItem(SK);return r?JSON.parse(r):null}catch{return null}};
+const persist=async d=>{try{localStorage.setItem(SK,JSON.stringify(d))}catch{}};
+
+const INIT=[
+  {id:"bolognaise",name:"Tagliatelle bolognaise",category:"Pâtes",taste:"salé",baseServings:4,photoUrl:"",
+    ingredients:[{name:"Tagliatelles",amount:400,unit:"g"},{name:"Bœuf haché Label Rouge",amount:500,unit:"g"},{name:"Tomates concassées bio",amount:400,unit:"g"},{name:"Oignon",amount:1,unit:""},{name:"Ail",amount:3,unit:"gousses"},{name:"Concentré de tomates",amount:2,unit:"c.à.s"},{name:"Vin rouge",amount:150,unit:"ml"},{name:"Huile d'olive extra vierge AOP",amount:2,unit:"c.à.s"},{name:"Parmesan Parmigiano Reggiano AOP",amount:60,unit:"g"},{name:"Sel & poivre",amount:0,unit:""}],
+    steps:[{action:"Faire revenir l'oignon émincé dans l'huile d'olive à feu moyen, 5 min.",why:"La chaleur douce caramélise les sucres de l'oignon et crée une base douce et profonde."},{action:"Ajouter l'ail haché, cuire 1 min.",why:"L'ail libère ses arômes sans brûler — au-delà, il devient amer."},{action:"Incorporer le bœuf haché, dorer en émiettant à feu vif.",why:"La réaction de Maillard à feu vif crée les composés aromatiques essentiels à la richesse de la sauce."},{action:"Déglacer au vin rouge, réduire 3 min.",why:"Le vin dissout les sucs caramélisés et apporte profondeur et acidité."},{action:"Ajouter les tomates et le concentré. Saler, poivrer.",why:"Le concentré intensifie l'umami ; assaisonner en cours de cuisson intègre mieux les saveurs."},{action:"Mijoter à feu doux 35 min à couvert.",why:"La cuisson lente fond le collagène et concentre les saveurs par évaporation contrôlée."},{action:"Cuire les tagliatelles al dente. Servir nappé de sauce et de parmesan.",why:"Al dente conserve une légère tenue ; le parmesan ajoute sel, umami et onctuosité en finition."}]},
+  {id:"crepes",name:"Crêpes",category:"Petit-déj",taste:"sucré",baseServings:4,photoUrl:"",
+    ingredients:[{name:"Farine T45",amount:250,unit:"g"},{name:"Lait entier",amount:500,unit:"ml"},{name:"Œufs de poules plein air",amount:3,unit:""},{name:"Beurre AOP fondu",amount:30,unit:"g"},{name:"Sucre",amount:15,unit:"g"},{name:"Extrait de vanille",amount:1,unit:"c.à.c"},{name:"Sel",amount:0,unit:""}],
+    steps:[{action:"Mélanger farine, sucre et sel. Creuser un puits.",why:"Préparer les secs séparément évite les grumeaux lors de l'ajout des liquides."},{action:"Ajouter les œufs et la moitié du lait. Fouetter jusqu'à pâte lisse.",why:"Incorporer le lait progressivement permet de contrôler la consistance et d'éliminer les grumeaux."},{action:"Incorporer le reste du lait, le beurre fondu et la vanille. Reposer 30 min.",why:"Le repos détend le gluten et donne des crêpes plus souples et régulières."},{action:"Cuire dans une poêle beurrée à feu moyen, 1–2 min par face.",why:"Feu moyen garantit une coloration uniforme sans brûler le beurre."}]},
+  {id:"pancakes",name:"Pancakes",category:"Petit-déj",taste:"sucré",baseServings:2,photoUrl:"",
+    ingredients:[{name:"Farine T45",amount:200,unit:"g"},{name:"Lait entier",amount:200,unit:"ml"},{name:"Œufs de poules plein air",amount:2,unit:""},{name:"Sucre",amount:30,unit:"g"},{name:"Levure chimique",amount:8,unit:"g"},{name:"Beurre AOP fondu",amount:30,unit:"g"},{name:"Sel",amount:0,unit:""}],
+    steps:[{action:"Mélanger farine, sucre, levure et sel.",why:"Mélanger les secs séparément assure une distribution homogène de la levure."},{action:"Battre œufs, lait et beurre. Incorporer aux secs sans trop mélanger.",why:"Trop travailler la pâte développe le gluten et rend les pancakes durs — quelques grumeaux sont normaux."},{action:"Cuire à la louche dans une poêle beurrée, 2 min par face.",why:"Les bulles en surface indiquent que le dessous est cuit — c'est le moment de retourner."}]},
+  {id:"pain-perdu",name:"Pain perdu",category:"Petit-déj",taste:"sucré",baseServings:2,photoUrl:"",
+    ingredients:[{name:"Pain de mie épais (brioché de préf.)",amount:4,unit:"tranches"},{name:"Lait entier",amount:150,unit:"ml"},{name:"Œufs de poules plein air",amount:2,unit:""},{name:"Sucre",amount:2,unit:"c.à.s"},{name:"Extrait de vanille",amount:1,unit:"c.à.c"},{name:"Cannelle",amount:0.5,unit:"c.à.c"},{name:"Beurre AOP",amount:20,unit:"g"}],
+    steps:[{action:"Fouetter œufs, lait, sucre, vanille et cannelle.",why:"Un appareil homogène s'imprègnera uniformément dans le pain."},{action:"Tremper les tranches 30 sec de chaque côté.",why:"30 secondes suffisent pour imbiber sans que le pain ne se délite."},{action:"Cuire dans le beurre à feu moyen-vif, 2–3 min par face.",why:"La réaction de Maillard dore et caramélise légèrement la surface."},{action:"Servir avec sucre glace ou sirop d'érable.",why:"La douceur de l'accompagnement équilibre le caractère œuf de l'appareil."}]},
+  {id:"creme-brulee",name:"Crème brûlée",category:"Dessert",taste:"sucré",baseServings:4,photoUrl:"",
+    ingredients:[{name:"Crème liquide entière fermière",amount:500,unit:"ml"},{name:"Jaunes d'œufs de poules plein air",amount:5,unit:""},{name:"Sucre",amount:80,unit:"g"},{name:"Gousse de vanille",amount:1,unit:""},{name:"Sucre roux pour brûlage",amount:60,unit:"g"}],
+    steps:[{action:"Préchauffer le four à 150°C. Chauffer la crème avec la vanille fendue.",why:"150°C est une chaleur basse qui évite une coagulation brutale et garantit une texture soyeuse."},{action:"Fouetter jaunes et sucre jusqu'à blanchiment.",why:"Le blanchiment dissout le sucre et apporte légèreté à la texture finale."},{action:"Verser la crème chaude en filet sur les jaunes en fouettant.",why:"Tempérer progressivement les jaunes évite de les brouiller instantanément."},{action:"Cuire au bain-marie dans des ramequins 40–45 min.",why:"Le bain-marie maintient une chaleur douce et uniforme — indispensable pour éviter les grumeaux."},{action:"Réfrigérer 2h. Saupoudrer de sucre roux et brûler au chalumeau.",why:"Le froid raffermit la crème ; le caramel chaud contraste avec la douceur froide."}]},
+  {id:"penne-poulet",name:"Penne au poulet",category:"Pâtes",taste:"salé",baseServings:2,photoUrl:"",
+    ingredients:[{name:"Penne rigate",amount:200,unit:"g"},{name:"Blanc de poulet Label Rouge",amount:300,unit:"g"},{name:"Crème fraîche épaisse",amount:200,unit:"ml"},{name:"Parmesan Parmigiano Reggiano AOP",amount:40,unit:"g"},{name:"Ail",amount:2,unit:"gousses"},{name:"Huile d'olive extra vierge",amount:1,unit:"c.à.s"},{name:"Herbes de Provence",amount:1,unit:"c.à.c"},{name:"Sel & poivre",amount:0,unit:""}],
+    steps:[{action:"Cuire les penne al dente.",why:"Les pâtes finissent leur cuisson dans la sauce et absorbent davantage de saveurs."},{action:"Dorer le poulet en dés à l'huile à feu vif. Ajouter l'ail, 1 min.",why:"Saisir à feu vif crée une croûte savoureuse par la réaction de Maillard."},{action:"Verser la crème fraîche, laisser épaissir 3 min.",why:"La réduction concentre les arômes et donne à la sauce sa consistance nappante."},{action:"Mélanger avec les pâtes et le parmesan.",why:"Le parmesan fond et agit comme liant onctueux naturel."}]},
+  {id:"fusilli-pesto",name:"Fusilli Pesto",category:"Pâtes",taste:"salé",baseServings:2,photoUrl:"",
+    ingredients:[{name:"Fusilli",amount:200,unit:"g"},{name:"Pesto basilic artisanal (sans huile de palme)",amount:4,unit:"c.à.s"},{name:"Parmesan Parmigiano Reggiano AOP",amount:40,unit:"g"},{name:"Pignons de pin",amount:30,unit:"g"},{name:"Tomates cerises",amount:100,unit:"g"}],
+    steps:[{action:"Cuire les fusilli al dente. Réserver une louche d'eau de cuisson.",why:"L'amidon de l'eau de cuisson émulsionne le pesto et le fait adhérer aux pâtes."},{action:"Torréfier les pignons à sec 2–3 min.",why:"La torréfaction développe les huiles et intensifie la saveur de noisette."},{action:"Mélanger les pâtes avec pesto et eau de cuisson hors du feu.",why:"Hors du feu, la chaleur résiduelle suffit et préserve la couleur verte du basilic."},{action:"Ajouter tomates cerises coupées, pignons et parmesan.",why:"L'acidité des tomates fraîches équilibre le gras du pesto."}]},
+  {id:"pipe-rigate",name:"Pipe Rigate Crème & Jambon",category:"Pâtes",taste:"salé",baseServings:2,photoUrl:"",
+    ingredients:[{name:"Pipe Rigate",amount:200,unit:"g"},{name:"Jambon blanc Label Rouge sans nitrites",amount:150,unit:"g"},{name:"Crème fraîche liquide entière",amount:200,unit:"ml"},{name:"Emmental français râpé",amount:60,unit:"g"},{name:"Échalote",amount:1,unit:""},{name:"Beurre AOP",amount:15,unit:"g"},{name:"Sel, poivre, noix de muscade",amount:0,unit:""}],
+    steps:[{action:"Cuire les pipe rigate al dente.",why:"Leurs stries et forme creuse retiennent particulièrement bien la sauce."},{action:"Faire revenir l'échalote dans le beurre. Ajouter le jambon en dés.",why:"L'échalote au beurre est plus douce que l'oignon et s'accorde mieux avec le jambon."},{action:"Verser la crème, assaisonner avec sel, poivre et muscade. Épaissir 3 min.",why:"La muscade fraîche exalte les saveurs lactées — incontournable dans ce type de sauce."},{action:"Mélanger avec les pâtes. Servir avec l'emmental.",why:"Mélanger hors du feu évite que la crème ne tranche à la surchauffe."}]},
+  {id:"quiche-poireaux",name:"Quiche aux poireaux",category:"Plat",taste:"salé",baseServings:6,photoUrl:"",
+    ingredients:[{name:"Pâte brisée pur beurre",amount:1,unit:"rouleau"},{name:"Poireaux",amount:3,unit:""},{name:"Œufs de poules plein air",amount:3,unit:""},{name:"Crème fraîche liquide entière",amount:200,unit:"ml"},{name:"Lait entier",amount:100,unit:"ml"},{name:"Emmental français râpé",amount:100,unit:"g"},{name:"Beurre AOP",amount:20,unit:"g"},{name:"Sel, poivre, noix de muscade",amount:0,unit:""}],
+    steps:[{action:"Préchauffer le four à 180°C. Foncer le moule, piquer le fond.",why:"Piquer le fond évite que la pâte ne gonfle sous l'effet de la vapeur."},{action:"Émincer les poireaux, les fondre dans le beurre à feu doux 10–12 min.",why:"Cuisson douce et lente fond les fibres et développe la douceur naturelle des poireaux."},{action:"Battre œufs, crème et lait. Saler, poivrer, ajouter muscade râpée.",why:"La muscade exalte les saveurs des plats à la crème — incontournable avec les poireaux."},{action:"Étaler les poireaux. Verser l'appareil, parsemer d'emmental.",why:"Disposer les légumes d'abord assure une répartition homogène."},{action:"Cuire 35–40 min jusqu'à belle dorure.",why:"La dorure indique que l'appareil est entièrement coagulé et la pâte cuite à cœur."}]},
+  {id:"ratatouille",name:"Ratatouille façon le film",category:"Plat",taste:"salé",baseServings:4,photoUrl:"",
+    ingredients:[{name:"Courgettes",amount:2,unit:""},{name:"Aubergines",amount:1,unit:""},{name:"Tomates",amount:4,unit:""},{name:"Poivron rouge",amount:1,unit:""},{name:"Oignon",amount:1,unit:""},{name:"Ail",amount:3,unit:"gousses"},{name:"Concentré de tomates bio",amount:2,unit:"c.à.s"},{name:"Huile d'olive extra vierge AOP",amount:5,unit:"c.à.s"},{name:"Thym frais",amount:2,unit:"brins"},{name:"Sel & poivre",amount:0,unit:""}],
+    steps:[{action:"Préparer la piperade : revenir oignon et ail, ajouter poivron épluché et concentré. Cuire 15 min puis mixer.",why:"La piperade mixée crée un lit de sauce qui parfume les légumes tout au long de la cuisson."},{action:"Étaler la piperade au fond d'un plat à gratin.",why:"Ce lit protège les légumes du dessèchement et leur transfère ses arômes."},{action:"Couper les légumes en fines rondelles (2–3 mm). Disposer en rosace en alternant courgette, aubergine et tomate.",why:"La finesse des tranches assure une cuisson homogène et le visuel soigné du film."},{action:"Arroser d'huile, parsemer de thym, sel et poivre. Couvrir de papier sulfurisé.",why:"Le papier piège la vapeur et cuit les légumes à l'étouffée sans les dessécher."},{action:"Cuire à 135°C pendant 2h. Retirer le papier les 10 dernières min.",why:"135°C est une chaleur très douce ; finir sans papier pour caraméliser légèrement."}]},
+  {id:"magret",name:"Magret de canard au miel & vinaigre balsamique",category:"Viande",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"ramen-maison",name:"Nouilles ramen maison",category:"Soupe",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"charlotte-fraises",name:"Charlotte aux fraises",category:"Dessert",taste:"sucré",baseServings:6,photoUrl:"",ingredients:null,steps:null},
+  {id:"sushi",name:"Sushi maison",category:"Japonais",taste:"salé",baseServings:4,photoUrl:"",ingredients:null,steps:null},
+  {id:"tortiglioni",name:"Tortiglioni Bacon cheddar Crispy oignons",category:"Pâtes",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"gnocchis-core",name:"Gnocchis à la coréenne",category:"Fusion",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"gnocchis-chedd",name:"Gnocchis cheddar chorizo",category:"Pâtes",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"flanc-mangue",name:"Flanc mangue vanille",category:"Dessert",taste:"sucré",baseServings:4,photoUrl:"",ingredients:null,steps:null},
+  {id:"wrap-tenders",name:"Wrap tenders frites",category:"Fast-food",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"cordon-bleu",name:"Cordon bleu maison",category:"Viande",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"gnocchis-chevre",name:"Gnocchis chèvre miel lardons",category:"Pâtes",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"pates-cara",name:"Pâtes caramélisées",category:"Pâtes",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"faux-filet",name:"Faux filet",category:"Viande",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"gratin-crozets",name:"Gratin Crozets poireaux",category:"Plat",taste:"salé",baseServings:4,photoUrl:"",ingredients:null,steps:null},
+  {id:"smash-burger",name:"Double smash burger",category:"Fast-food",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"saumon-patates",name:"Saumon au four & patates douces rôties",category:"Poisson",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"crevettes-ail",name:"Crevettes grillées à l'ail",category:"Fruits de mer",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"riz-saute",name:"Riz sauté poulet & crevettes",category:"Asiatique",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"oeufs-saumon",name:"Œufs brouillés au saumon et toast",category:"Petit-déj",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+  {id:"ramen",name:"Ramen",category:"Soupe",taste:"salé",baseServings:2,photoUrl:"",ingredients:null,steps:null},
+];
+
+function PhotoThumb({photoUrl,category,height=72}){
+  const c=gc(category);
+  const[err,setErr]=useState(false);
+  const rad=height>100?"var(--radius-lg) var(--radius-lg) 0 0":"var(--radius) var(--radius) 0 0";
+  if(photoUrl&&!err)return h("img",{src:photoUrl,onError:()=>setErr(true),style:{width:"100%",height:height+"px",objectFit:"cover",display:"block",borderRadius:rad}});
+  return h("div",{style:{height:height+"px",background:c.bg,display:"flex",alignItems:"center",justifyContent:"center",borderRadius:rad}},h("i",{className:"ti "+c.ic,"aria-hidden":"true",style:{fontSize:height/3+"px",color:c.t,opacity:0.4}}));
+}
+
+function Tag({bg,color,border,children}){
+  return h("span",{style:{fontSize:"10px",fontWeight:600,padding:"2px 8px",borderRadius:"20px",background:bg,color,border:border||"none",letterSpacing:"0.03em",whiteSpace:"nowrap"}},children);
+}
+
+function BackBtn({onClick,label="Retour"}){
+  return h("button",{onClick,style:{display:"flex",alignItems:"center",gap:"6px",fontSize:"14px",color:"var(--text2)",background:"none",border:"none",cursor:"pointer",padding:0}},h("i",{className:"ti ti-arrow-left","aria-hidden":"true"}),label);
+}
+
+function Card({r,onOpen}){
+  const[hov,setHov]=useState(false);
+  const c=gc(r.category),t=gt(r.taste);
+  return h("button",{onClick:()=>onOpen(r.id),onMouseEnter:()=>setHov(true),onMouseLeave:()=>setHov(false),
+    style:{background:"var(--bg1)",border:`1px solid ${hov?"#3a3a3a":"var(--border)"}`,borderRadius:"var(--radius-lg)",padding:0,textAlign:"left",cursor:"pointer",width:"100%",display:"flex",flexDirection:"column",overflow:"hidden",transition:"all 0.15s",transform:hov?"translateY(-2px)":"none",boxShadow:hov?"0 4px 20px rgba(0,0,0,0.4)":"none"}},
+    h(PhotoThumb,{photoUrl:r.photoUrl,category:r.category,height:90}),
+    h("div",{style:{padding:"0.7rem 0.75rem",display:"flex",flexDirection:"column",gap:"7px"}},
+      h("div",{style:{display:"flex",gap:"4px",flexWrap:"wrap"}},
+        h(Tag,{bg:c.bg,color:c.t},r.category),
+        h(Tag,{bg:t.bg,color:t.t,border:t.bd},r.taste)
+      ),
+      h("span",{style:{fontSize:"13px",fontWeight:500,color:"var(--text)",lineHeight:1.4}},r.name),
+      !r.ingredients&&h("span",{style:{fontSize:"11px",color:"var(--text3)",display:"flex",alignItems:"center",gap:"3px"}},h("i",{className:"ti ti-sparkles","aria-hidden":"true"}),"à générer")
+    )
+  );
+}
+
+function XBtn({onClick}){
+  return h("button",{onClick,style:{width:"30px",height:"30px",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",borderRadius:"var(--radius-sm)",border:"1px solid var(--border)",background:"none",cursor:"pointer"}},
+    h("i",{className:"ti ti-x","aria-hidden":"true",style:{fontSize:"13px",color:"var(--text2)"}}));
+}
+
+function SectionTitle({icon,children}){
+  return h("h2",{style:{fontSize:"15px",fontWeight:600,marginBottom:"0.9rem",display:"flex",alignItems:"center",gap:"8px",color:"var(--text)"}},
+    h("i",{className:"ti "+icon,"aria-hidden":"true",style:{color:"var(--text2)"}}),children);
+}
+
+function RecipeForm({recipe,onSave,onCancel}){
+  const norm=r=>{
+    if(!r)return{name:"",category:"Plat",taste:"salé",baseServings:4,photoUrl:"",ingredients:[{name:"",amount:"",unit:""}],steps:[{action:"",why:""}]};
+    return{...r,
+      ingredients:(r.ingredients||[{name:"",amount:"",unit:""}]).map(i=>({...i,amount:String(i.amount)})),
+      steps:(r.steps||[{action:"",why:""}]).map(s=>typeof s==="string"?{action:s,why:""}:{...s})};
+  };
+  const[form,setForm]=useState(()=>norm(recipe));
+  const[genning,setGenning]=useState(false);
+  const set=(k,v)=>setForm(f=>({...f,[k]:v}));
+  const updI=(i,k,v)=>setForm(f=>({...f,ingredients:f.ingredients.map((x,j)=>j===i?{...x,[k]:v}:x)}));
+  const addI=()=>setForm(f=>({...f,ingredients:[...f.ingredients,{name:"",amount:"",unit:""}]}));
+  const remI=i=>setForm(f=>({...f,ingredients:f.ingredients.filter((_,j)=>j!==i)}));
+  const updS=(i,k,v)=>setForm(f=>({...f,steps:f.steps.map((x,j)=>j===i?{...x,[k]:v}:x)}));
+  const addS=()=>setForm(f=>({...f,steps:[...f.steps,{action:"",why:""}]}));
+  const remS=i=>setForm(f=>({...f,steps:f.steps.filter((_,j)=>j!==i)}));
+  const generate=async()=>{
+    if(!form.name.trim()||genning)return;
+    setGenning(true);
+    try{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1500,messages:[{role:"user",content:`Crée une recette maison pour "${form.name}" (${form.baseServings} personnes).\nRéponds UNIQUEMENT en JSON valide sans backticks :\n{"category":"Plat","taste":"salé","ingredients":[{"name":"Nom avec label éthique si produit animal","amount":200,"unit":"g"}],"steps":[{"action":"Faire…","why":"Car la chaleur…"}]}\nRègles: unit="" sans unité (œufs, oignons…), amount=0 pour sel/poivre, inclus Label Rouge / Bio / AOP / sans nitrites dans les noms d'ingrédients animaux.`}]})});
+      const data=await res.json();
+      const text=(data.content||[]).find(b=>b.type==="text")?.text||"{}";
+      const p=JSON.parse(text.replace(/```json?|```/g,"").trim());
+      setForm(f=>({...f,category:p.category||f.category,taste:p.taste||f.taste,
+        ingredients:p.ingredients?.length?p.ingredients.map(i=>({...i,amount:String(i.amount)})):f.ingredients,
+        steps:p.steps?.length?p.steps.map(s=>({action:s.action||s,why:s.why||""})):f.steps}));
+    }catch(e){console.error(e);}
+    setGenning(false);
+  };
+  const handleSave=()=>{
+    if(!form.name.trim())return;
+    onSave({...form,id:recipe?.id||Date.now().toString(),
+      ingredients:form.ingredients.filter(i=>i.name.trim()).map(i=>({...i,amount:Number(i.amount)||0})),
+      steps:form.steps.filter(s=>s.action.trim())});
+  };
+  const lbl=text=>h("label",{style:{fontSize:"12px",color:"var(--text2)",display:"block",marginBottom:"5px",fontWeight:500}},text);
+  return h("div",{style:{padding:"1.25rem 1.5rem",maxWidth:"680px"}},
+    h("div",{style:{marginBottom:"1.5rem"}},h(BackBtn,{onClick:onCancel})),
+    h("h1",{style:{fontSize:"20px",fontWeight:600,marginBottom:"1.5rem"}},recipe?"Modifier la recette":"Nouvelle recette"),
+    h("div",{style:{marginBottom:"1rem"}},lbl("Photo (URL)"),
+      h("input",{type:"url",value:form.photoUrl,onChange:e=>set("photoUrl",e.target.value),placeholder:"https://…"}),
+      form.photoUrl&&h("img",{src:form.photoUrl,style:{width:"100%",height:"140px",objectFit:"cover",borderRadius:"var(--radius)",marginTop:"8px"},onError:e=>e.target.style.display="none"})
+    ),
+    h("div",{style:{marginBottom:"1rem"}},lbl("Nom de la recette"),
+      h("input",{type:"text",value:form.name,onChange:e=>set("name",e.target.value),placeholder:"Ex : Bœuf bourguignon"})
+    ),
+    h("button",{onClick:generate,disabled:!form.name.trim()||genning,
+      style:{marginBottom:"1.5rem",display:"flex",alignItems:"center",gap:"8px",background:"var(--accent-bg)",border:"1px solid rgba(245,166,35,0.25)",color:"var(--accent)",borderRadius:"var(--radius-sm)",padding:"9px 16px",fontWeight:500}},
+      h("i",{className:`ti ${genning?"ti-loader-2":"ti-sparkles"}`,"aria-hidden":"true",style:genning?{animation:"spin 1s linear infinite"}:{}}),
+      genning?"Génération en cours…":"Générer avec l'IA"
+    ),
+    h("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginBottom:"1rem"}},
+      h("div",null,lbl("Catégorie"),h("select",{value:form.category,onChange:e=>set("category",e.target.value)},CAT_OPTS.map(c=>h("option",{key:c,value:c},c)))),
+      h("div",null,lbl("Saveur"),h("select",{value:form.taste,onChange:e=>set("taste",e.target.value)},h("option",{value:"salé"},"Salé"),h("option",{value:"sucré"},"Sucré")))
+    ),
+    h("div",{style:{marginBottom:"1.5rem"}},lbl("Portions de base"),
+      h("input",{type:"number",value:form.baseServings,onChange:e=>set("baseServings",Math.max(1,Number(e.target.value))),min:1,max:20,style:{width:"80px"}})
+    ),
+    h(SectionTitle,{icon:"ti-list"},"Ingrédients"),
+    h("div",{style:{display:"flex",flexDirection:"column",gap:"8px",marginBottom:"0.75rem"}},
+      form.ingredients.map((ing,i)=>h("div",{key:i,style:{display:"grid",gridTemplateColumns:"1fr 65px 75px 30px",gap:"6px",alignItems:"center"}},
+        h("input",{type:"text",value:ing.name,onChange:e=>updI(i,"name",e.target.value),placeholder:"Ingrédient"}),
+        h("input",{type:"text",value:ing.amount,onChange:e=>updI(i,"amount",e.target.value),placeholder:"Qté"}),
+        h("input",{type:"text",value:ing.unit,onChange:e=>updI(i,"unit",e.target.value),placeholder:"Unité"}),
+        h(XBtn,{onClick:()=>remI(i)})
+      ))
+    ),
+    h("button",{onClick:addI,style:{display:"flex",alignItems:"center",gap:"6px",fontSize:"13px",marginBottom:"1.5rem",color:"var(--text2)",border:"1px dashed var(--border)"}},h("i",{className:"ti ti-plus","aria-hidden":"true"}),"Ajouter un ingrédient"),
+    h(SectionTitle,{icon:"ti-chef-hat"},"Étapes"),
+    h("div",{style:{display:"flex",flexDirection:"column",gap:"10px",marginBottom:"0.75rem"}},
+      form.steps.map((s,i)=>h("div",{key:i,style:{background:"var(--bg1)",border:"1px solid var(--border)",borderRadius:"var(--radius)",padding:"0.875rem"}},
+        h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"8px"}},
+          h("span",{style:{fontSize:"12px",fontWeight:600,color:"var(--text2)"}},"Étape "+(i+1)),
+          h(XBtn,{onClick:()=>remS(i)})
+        ),
+        h("input",{type:"text",value:s.action,onChange:e=>updS(i,"action",e.target.value),placeholder:"Action : Faire revenir…",style:{marginBottom:"6px"}}),
+        h("input",{type:"text",value:s.why,onChange:e=>updS(i,"why",e.target.value),placeholder:"Pourquoi : La chaleur développe…"})
+      ))
+    ),
+    h("button",{onClick:addS,style:{display:"flex",alignItems:"center",gap:"6px",fontSize:"13px",marginBottom:"2rem",color:"var(--text2)",border:"1px dashed var(--border)"}},h("i",{className:"ti ti-plus","aria-hidden":"true"}),"Ajouter une étape"),
+    h("div",{style:{display:"flex",gap:"10px"}},
+      h("button",{onClick:handleSave,disabled:!form.name.trim(),
+        style:{flex:1,fontWeight:600,padding:"12px 0",fontSize:"14px",background:"var(--accent)",color:"#000",border:"none",borderRadius:"var(--radius-sm)"}},
+        recipe?"Enregistrer":"Créer la recette"),
+      h("button",{onClick:onCancel,style:{padding:"12px 16px",fontSize:"14px"}},"Annuler")
+    )
+  );
+}
+
+function DetailView({recipe,note,generating,onBack,onEdit,onDelete,onSaveNote,onGenerate}){
+  const[servings,setServings]=useState(recipe.baseServings);
+  const[noteVal,setNoteVal]=useState(note||"");
+  const[delConf,setDelConf]=useState(false);
+  const c=gc(recipe.category),t=gt(recipe.taste);
+  return h("div",{style:{padding:"1.25rem 1.5rem",maxWidth:"680px"}},
+    h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"1.25rem",flexWrap:"wrap",gap:"8px"}},
+      h(BackBtn,{onClick:onBack,label:"Toutes les recettes"}),
+      h("div",{style:{display:"flex",gap:"8px"}},
+        h("button",{onClick:onEdit,style:{display:"flex",alignItems:"center",gap:"6px",fontSize:"13px"}},h("i",{className:"ti ti-edit","aria-hidden":"true"}),"Modifier"),
+        !delConf
+          ?h("button",{onClick:()=>setDelConf(true),style:{display:"flex",alignItems:"center",gap:"6px",fontSize:"13px",color:"var(--red)",border:"1px solid rgba(224,82,82,0.3)"}},h("i",{className:"ti ti-trash","aria-hidden":"true"}),"Supprimer")
+          :h("div",{style:{display:"flex",alignItems:"center",gap:"8px"}},
+              h("span",{style:{fontSize:"13px",color:"var(--text2)"}},"Confirmer ?"),
+              h("button",{onClick:onDelete,style:{fontSize:"13px",color:"var(--red)",border:"1px solid rgba(224,82,82,0.3)"}},"Oui"),
+              h("button",{onClick:()=>setDelConf(false),style:{fontSize:"13px"}},"Non")
+            )
+      )
+    ),
+    h(PhotoThumb,{photoUrl:recipe.photoUrl,category:recipe.category,height:200}),
+    h("div",{style:{display:"flex",gap:"6px",margin:"1rem 0 0.5rem"}},
+      h(Tag,{bg:c.bg,color:c.t},recipe.category),
+      h(Tag,{bg:t.bg,color:t.t,border:t.bd},recipe.taste)
+    ),
+    h("h1",{style:{fontSize:"22px",fontWeight:600,lineHeight:1.3,marginBottom:"1.5rem"}},recipe.name),
+    h("div",{style:{display:"flex",alignItems:"center",gap:"12px",padding:"0.75rem 1rem",background:"var(--bg1)",border:"1px solid var(--border)",borderRadius:"var(--radius)",marginBottom:"2rem"}},
+      h("i",{className:"ti ti-users","aria-hidden":"true",style:{color:"var(--text2)"}}),
+      h("span",{style:{fontSize:"14px",color:"var(--text2)",flex:1}},"Portions"),
+      h("button",{onClick:()=>setServings(s=>Math.max(1,s-1)),
+        style:{width:"32px",height:"32px",borderRadius:"50%",border:"1px solid var(--border)",background:"var(--bg2)",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"18px",lineHeight:1,fontWeight:300}},"−"),
+      h("span",{style:{fontSize:"18px",fontWeight:600,minWidth:"32px",textAlign:"center"}},servings),
+      h("button",{onClick:()=>setServings(s=>Math.min(20,s+1)),
+        style:{width:"32px",height:"32px",borderRadius:"50%",border:"1px solid var(--border)",background:"var(--bg2)",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"18px",lineHeight:1,fontWeight:300}},"+")
+    ),
+    generating
+      ?h("div",{style:{textAlign:"center",padding:"3rem 0",color:"var(--text2)"}},
+          h("i",{className:"ti ti-loader-2","aria-hidden":"true",style:{fontSize:"28px",display:"block",marginBottom:"10px",animation:"spin 1s linear infinite"}}),
+          h("span",{style:{fontSize:"14px"}},"Génération en cours…"))
+      :!recipe.ingredients
+        ?h("div",{style:{textAlign:"center",padding:"3rem 0",color:"var(--text2)"}},
+            h("i",{className:"ti ti-sparkles","aria-hidden":"true",style:{fontSize:"32px",display:"block",marginBottom:"12px",color:"var(--accent)"}}),
+            h("p",{style:{fontSize:"14px",marginBottom:"1rem"}},"Recette non encore générée"),
+            h("button",{onClick:onGenerate,style:{background:"var(--accent-bg)",border:"1px solid rgba(245,166,35,0.25)",color:"var(--accent)",borderRadius:"var(--radius-sm)",padding:"9px 20px",fontWeight:500}},"Générer avec l'IA")
+          )
+        :h(React.Fragment,null,
+            h(SectionTitle,{icon:"ti-list"},"Ingrédients"),
+            h("div",{style:{background:"var(--bg1)",border:"1px solid var(--border)",borderRadius:"var(--radius-lg)",overflow:"hidden",marginBottom:"2rem"}},
+              recipe.ingredients.map((ing,i)=>{
+                const sc=fmt(ing.amount,recipe.baseServings,servings);
+                return h("div",{key:i,style:{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"0.7rem 1rem",borderBottom:i<recipe.ingredients.length-1?"1px solid var(--border)":"none"}},
+                  h("span",{style:{fontSize:"14px",color:"var(--text)"}},ing.name),
+                  sc&&h("span",{style:{fontSize:"14px",fontWeight:600,color:"var(--accent)"}},sc+(ing.unit?" "+ing.unit:""))
+                );
+              })
+            ),
+            h(SectionTitle,{icon:"ti-chef-hat"},"Préparation"),
+            h("div",{style:{display:"flex",flexDirection:"column",gap:"10px",marginBottom:"2rem"}},
+              recipe.steps.map((step,i)=>{
+                const s=typeof step==="string"?{action:step,why:""}:step;
+                return h("div",{key:i,style:{background:"var(--bg1)",border:"1px solid var(--border)",borderRadius:"var(--radius)",padding:"0.875rem 1rem"}},
+                  h("div",{style:{display:"flex",gap:"12px"}},
+                    h("span",{style:{flexShrink:0,width:"24px",height:"24px",background:"var(--accent-bg)",border:"1px solid rgba(245,166,35,0.2)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"11px",fontWeight:700,color:"var(--accent)"}},i+1),
+                    h("div",{style:{flex:1}},
+                      h("p",{style:{fontSize:"14px",fontWeight:500,lineHeight:1.5,margin:s.why?"0 0 6px":"0",color:"var(--text)"}},s.action),
+                      s.why&&h("p",{style:{fontSize:"13px",color:"var(--text2)",lineHeight:1.5,margin:0,fontStyle:"italic",paddingLeft:"0",borderLeft:"2px solid var(--border)",paddingLeft:"8px"}},"→ "+s.why)
+                    )
+                  )
+                );
+              })
+            ),
+            h("div",{style:{marginBottom:"2rem"}},
+              h(SectionTitle,{icon:"ti-pencil"},"Note personnelle"),
+              h("textarea",{value:noteVal,onChange:e=>setNoteVal(e.target.value),onBlur:()=>onSaveNote(noteVal),placeholder:"Astuces, variantes, notes de dégustation…",rows:4,style:{resize:"vertical"}})
+            )
+          )
+  );
+}
+
+function ListView({recipes,onOpen,onAdd}){
+  const[filter,setFilter]=useState("Tout");
+  const[search,setSearch]=useState("");
+  const visible=recipes.filter(r=>{
+    const fc=filter==="Tout"||r.category===filter||(filter==="Salé"&&r.taste==="salé")||(filter==="Sucré"&&r.taste==="sucré");
+    const fs=!search||r.name.toLowerCase().includes(search.toLowerCase());
+    return fc&&fs;
+  });
+  return h("div",{style:{padding:"1.25rem 1.5rem"}},
+    h("div",{style:{display:"flex",alignItems:"center",gap:"10px",marginBottom:"1.25rem"}},
+      h("i",{className:"ti ti-book-2","aria-hidden":"true",style:{fontSize:"22px",color:"var(--accent)"}}),
+      h("h1",{style:{fontSize:"20px",fontWeight:700,margin:0,flex:1,letterSpacing:"-0.02em"}},"Mon carnet"),
+      h("button",{onClick:onAdd,style:{display:"flex",alignItems:"center",gap:"6px",fontSize:"13px",fontWeight:600,background:"var(--accent)",color:"#000",border:"none",borderRadius:"var(--radius-sm)",padding:"8px 14px"}},h("i",{className:"ti ti-plus","aria-hidden":"true"}),"Recette")
+    ),
+    h("div",{style:{position:"relative",marginBottom:"1rem"}},
+      h("i",{className:"ti ti-search","aria-hidden":"true",style:{position:"absolute",left:"12px",top:"50%",transform:"translateY(-50%)",color:"var(--text3)",fontSize:"16px",pointerEvents:"none"}}),
+      h("input",{type:"text",placeholder:"Rechercher une recette…",value:search,onChange:e=>setSearch(e.target.value),style:{paddingLeft:"38px"}})
+    ),
+    h("div",{style:{display:"flex",gap:"6px",overflowX:"auto",marginBottom:"1.25rem",paddingBottom:"4px",scrollbarWidth:"none"}},
+      CATS.flatMap((cat,i)=>[
+        ...(i===3?[h("div",{key:"sep",style:{flexShrink:0,width:"1px",margin:"0 2px",background:"var(--border)"}})]:[]),
+        h("button",{key:cat,onClick:()=>setFilter(cat),
+          style:{flexShrink:0,padding:"5px 13px",borderRadius:"20px",fontSize:"12px",cursor:"pointer",fontWeight:filter===cat?600:400,
+            background:filter===cat?"var(--accent)":"var(--bg2)",
+            color:filter===cat?"#000":"var(--text2)",
+            border:`1px solid ${filter===cat?"var(--accent)":"var(--border)"}`,
+            whiteSpace:"nowrap"}},cat)
+      ])
+    ),
+    h("p",{style:{fontSize:"12px",color:"var(--text3)",marginBottom:"1rem"}},visible.length+" recette"+(visible.length>1?"s":"")),
+    h("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(155px,1fr))",gap:"10px"}},
+      visible.map(r=>h(Card,{key:r.id,r,onOpen}))
+    )
+  );
+}
+
+function App(){
+  const[recipes,setRecipes]=useState([]);
+  const[notes,setNotes]=useState({});
+  const[loaded,setLoaded]=useState(false);
+  const[view,setView]=useState("list");
+  const[formMode,setFormMode]=useState("add");
+  const[selId,setSelId]=useState(null);
+  const[generating,setGenerating]=useState(false);
+  useEffect(()=>{load().then(data=>{setRecipes(data?.recipes||INIT);setNotes(data?.notes||{});setLoaded(true);});},[] );
+  useEffect(()=>{if(loaded)persist({recipes,notes});},[recipes,notes,loaded]);
+  const selR=recipes.find(r=>r.id===selId);
+  const doGenerate=async id=>{
+    const r=recipes.find(x=>x.id===id);
+    if(!r||r.ingredients)return;
+    setGenerating(true);
+    try{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1500,messages:[{role:"user",content:`Crée une recette maison pour "${r.name}" (${r.baseServings} personnes).\nRéponds UNIQUEMENT en JSON valide sans backticks :\n{"ingredients":[{"name":"Nom avec label éthique si produit animal","amount":200,"unit":"g"}],"steps":[{"action":"Faire…","why":"Car la chaleur…"}]}\nRègles: unit="" sans unité, amount=0 pour sel/poivre, inclus Label Rouge/Bio/AOP/sans nitrites dans les noms d'ingrédients animaux.`}]})});
+      const data=await res.json();
+      const text=(data.content||[]).find(b=>b.type==="text")?.text||"{}";
+      const p=JSON.parse(text.replace(/```json?|```/g,"").trim());
+      setRecipes(prev=>prev.map(x=>x.id===id?{...x,...p}:x));
+    }catch(e){console.error(e);}
+    setGenerating(false);
+  };
+  const openRecipe=id=>{setSelId(id);setView("detail");doGenerate(id);};
+  const saveRecipe=recipe=>{
+    if(formMode==="add")setRecipes(prev=>[...prev,recipe]);
+    else setRecipes(prev=>prev.map(r=>r.id===recipe.id?recipe:r));
+    setSelId(recipe.id);setView("detail");
+  };
+  const deleteRecipe=()=>{setRecipes(prev=>prev.filter(r=>r.id!==selId));setNotes(prev=>{const n={...prev};delete n[selId];return n;});setSelId(null);setView("list");};
+  const saveNote=(id,text)=>setNotes(prev=>({...prev,[id]:text}));
+  if(!loaded)return h("div",{style:{textAlign:"center",padding:"3rem",color:"var(--color-text-secondary)"}},h("i",{className:"ti ti-loader","aria-hidden":"true",style:{fontSize:"24px",display:"block",marginBottom:"8px",animation:"spin 1s linear infinite"}}),h("span",{style:{fontSize:"14px"}},"Chargement…"));
+  if(view==="form")return h(RecipeForm,{recipe:formMode==="edit"?selR:null,onSave:saveRecipe,onCancel:()=>setView(selId&&formMode==="edit"?"detail":"list")});
+  if(view==="detail"&&selR)return h(DetailView,{recipe:recipes.find(r=>r.id===selId)||selR,note:notes[selId]||"",generating,onBack:()=>setView("list"),onEdit:()=>{setFormMode("edit");setView("form");},onDelete:deleteRecipe,onSaveNote:text=>saveNote(selId,text),onGenerate:()=>doGenerate(selId)});
+  return h(ListView,{recipes,onOpen:openRecipe,onAdd:()=>{setSelId(null);setFormMode("add");setView("form");}});
+}
+
+ReactDOM.render(h(App),document.getElementById("root"));
+</script>
