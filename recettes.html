@@ -205,7 +205,7 @@ function cardHtml(r) {
   const img   = IMGS[r.id];
   const thumb = img
     ? `<img class="card__img" src="assets/img/${img}.avif" alt="${r.name}" style="${premium?'filter:blur(3px)':''}" loading="lazy">`
-    : `<div class="card__img--placeholder" style="${premium?'filter:blur(2px):''}">${emoji}</div>`;
+    : `<div class="card__img--placeholder" style="${premium?'filter:blur(2px)':''}">${emoji}</div>`;
   return `
     <article class="card${premium?' card--locked':''}">
       <div style="position:relative">
