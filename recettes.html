@@ -197,9 +197,9 @@ let activeCat = 'Tout';
 let searchVal  = '';
 let accessVal  = 'Tout';
 let sortVal    = 'default';
-let userLoggedIn = false;
+let userHasPremium = false;
 
-function isPremium(id) { return !userLoggedIn && PREMIUM_IDS.includes(id); }
+function isPremium(id) { return !userHasPremium && PREMIUM_IDS.includes(id); }
 
 function cardHtml(r) {
   const premium = isPremium(r.id);
@@ -267,7 +267,7 @@ document.getElementById('sortFilter').addEventListener('change', e => { sortVal 
 (async () => {
   if (window._sb) {
     const { data: { session } } = await window._sb.auth.getSession();
-    userLoggedIn = !!session;
+    userHasPremium = !!session?.user?.app_metadata?.premium;
   }
   render();
 })();

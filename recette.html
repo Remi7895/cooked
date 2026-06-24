@@ -373,15 +373,11 @@ const id = new URLSearchParams(location.search).get('id');
 const recipe = RECIPES.find(r => r.id === id);
 const container = document.getElementById('recipe-content');
 
-let userLoggedIn = false;
+let userHasPremium = false;
 if (window._sb) {
   const { data: { session } } = await window._sb.auth.getSession();
-  userLoggedIn = !!session;
-}
-
-if (!userLoggedIn) {
-  location.href = 'compte.html';
-  return;
+  if (!session) { location.href = 'compte.html'; return; }
+  userHasPremium = !!session.user?.app_metadata?.premium;
 }
 
 if (!recipe) {
@@ -394,7 +390,7 @@ if (!recipe) {
     </div>`;
 } else {
   document.title = `${recipe.name} — Cooked`;
-  const isPremium = !userLoggedIn && PREMIUM_IDS.includes(recipe.id);
+  const isPremium = !userHasPremium && PREMIUM_IDS.includes(recipe.id);
   const img = IMGS[recipe.id];
   const time = TIMES[recipe.id] || '';
   const emoji = EMOJIS[recipe.category] || '🍽️';

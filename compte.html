@@ -310,9 +310,10 @@ async function handleRegister(e) {
 
 /* ── Dashboard ── */
 function showDashboard(user) {
-  const email     = user.email;
-  const meta      = user.user_metadata || {};
-  const name      = meta.full_name || email.split('@')[0];
+  const email      = user.email;
+  const meta       = user.user_metadata || {};
+  const name       = meta.full_name || email.split('@')[0];
+  const isPremium  = !!user.app_metadata?.premium;
   const avatarUrl = meta.avatar_url || '';
   const initiale  = name[0].toUpperCase();
 
@@ -355,8 +356,10 @@ function showDashboard(user) {
             <div class="account-panel active" id="panel-recettes">
               <h1 class="panel-title">Toutes les recettes</h1>
               <p style="color:var(--wg-60);margin-bottom:var(--gap-lg)">
-                <span class="badge--premium-full"><i class="ti ti-check"></i> Accès complet</span>
-                &nbsp;Toutes les recettes sont débloquées pour votre compte.
+                ${isPremium
+                  ? `<span class="badge--premium-full"><i class="ti ti-check"></i> Accès complet</span>&nbsp;Toutes les recettes sont débloquées.`
+                  : `<span style="display:inline-flex;align-items:center;gap:6px;background:var(--wg-20);padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600"><i class="ti ti-lock"></i> Accès gratuit</span>&nbsp;Seules les recettes gratuites sont accessibles.`
+                }
               </p>
               <a href="recettes.html" class="btn btn--primary btn--md">Voir les recettes</a>
             </div>
