@@ -444,7 +444,7 @@ function showDashboard(user) {
               <div style="padding:var(--gap-lg);border:1px solid #fde8e8;border-radius:var(--r-md);background:#fff9f9">
                 <div style="font-weight:600;color:var(--error);margin-bottom:var(--gap-sm)">Zone de danger</div>
                 <p style="font-size:14px;color:var(--wg-60);margin-bottom:var(--gap-md)">La suppression de votre compte est irréversible.</p>
-                <button class="btn btn--sm" style="border:1px solid var(--error);color:var(--error)" onclick="showToast('Contactez-nous pour supprimer votre compte.')">Supprimer mon compte</button>
+                <button class="btn btn--sm" style="border:1px solid var(--error);color:var(--error)" onclick="handleDeleteAccount()">Supprimer mon compte</button>
               </div>
             </div>
           </div>
@@ -500,6 +500,15 @@ async function handleSaveProfile() {
   if (error) { showToast('Erreur : ' + error.message); return; }
   document.getElementById('sidebar-name').textContent = name;
   showToast('Profil mis à jour !');
+}
+
+async function handleDeleteAccount() {
+  const ok = confirm('Supprimer définitivement votre compte ? Cette action est irréversible.');
+  if (!ok) return;
+  const { error } = await window._sb.rpc('delete_user');
+  if (error) { showToast('Erreur : ' + error.message); return; }
+  await window._sb.auth.signOut();
+  location.href = 'index.html';
 }
 
 async function handleLogout() {
