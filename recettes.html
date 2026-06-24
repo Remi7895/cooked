@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recettes — Cooked</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+  <style>
+    .page-header { background: var(--wg-10); padding: var(--gap-xl) 0; border-bottom: 1px solid var(--wg-20); }
+    .page-header h1 { margin-bottom: var(--gap-sm); }
+    .page-header p { color: var(--wg-60); font-size: 17px; }
+
+    .toolbar {
+      display: flex;
+      gap: var(--gap-md);
+      align-items: center;
+      flex-wrap: wrap;
+      padding: var(--gap-lg) 0;
+      border-bottom: 1px solid var(--wg-20);
+      margin-bottom: var(--gap-xl);
+    }
+    .toolbar__search {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+    .toolbar__search i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--wg-50);
+      font-size: 16px;
+      pointer-events: none;
+    }
+    .toolbar__search input { padding-left: 38px; }
+    .toolbar__select { min-width: 160px; }
+    .toolbar__count { font-size: 14px; color: var(--wg-60); margin-left: auto; white-space: nowrap; }
+
+    .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--gap-lg); }
+    .recipe-card { display: flex; flex-direction: column; height: 100%; }
+    .recipe-card a { text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%; }
+
+    .card--locked { position: relative; }
+    .card--locked .card__img--placeholder { filter: blur(3px); }
+    .lock-overlay {
+      position: absolute;
+      top: var(--gap-md);
+      right: var(--gap-md);
+    }
+
+    .empty-state { text-align: center; padding: var(--gap-3xl) 0; color: var(--wg-50); }
+    .empty-state i { font-size: 48px; display: block; margin-bottom: var(--gap-md); }
+    .empty-state p { font-size: 16px; }
+
+    @media (max-width: 600px) {
+      .recipe-grid { grid-template-columns: 1fr 1fr; gap: var(--gap-md); }
+      .toolbar { flex-direction: column; align-items: stretch; }
+      .toolbar__count { margin-left: 0; }
+    }
+    @media (max-width: 380px) {
+      .recipe-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<header class="page-header">
+  <div class="container">
+    <h1>Les recettes</h1>
+    <p>Des recettes détaillées avec le pourquoi de chaque geste.</p>
+  </div>
+</header>
+
+<main class="section--sm">
+  <div class="container">
+
+    <!-- Filtres catégories -->
+    <div class="filters" id="catFilters" role="group" aria-label="Filtrer par catégorie">
+      <button class="filter-btn active" data-cat="Tout">Tout</button>
+      <button class="filter-btn" data-cat="Salé">Salé</button>
+      <button class="filter-btn" data-cat="Sucré">Sucré</button>
+      <span style="width:1px;background:var(--wg-20);margin:0 4px;flex-shrink:0"></span>
+      <button class="filter-btn" data-cat="Pâtes">Pâtes</button>
+      <button class="filter-btn" data-cat="Viande">Viande</button>
+      <button class="filter-btn" data-cat="Plat">Plat</button>
+      <button class="filter-btn" data-cat="Poisson">Poisson</button>
+      <button class="filter-btn" data-cat="Fruits de mer">Fruits de mer</button>
+      <button class="filter-btn" data-cat="Dessert">Dessert</button>
+      <button class="filter-btn" data-cat="Petit-déj">Petit-déj</button>
+      <button class="filter-btn" data-cat="Soupe">Soupe</button>
+      <button class="filter-btn" data-cat="Japonais">Japonais</button>
+      <button class="filter-btn" data-cat="Asiatique">Asiatique</button>
+      <button class="filter-btn" data-cat="Fast-food">Fast-food</button>
+      <button class="filter-btn" data-cat="Fusion">Fusion</button>
+    </div>
+
+    <!-- Barre outils -->
+    <div class="toolbar">
+      <div class="toolbar__search">
+        <i class="ti ti-search" aria-hidden="true"></i>
+        <input type="text" class="form-input" id="searchInput" placeholder="Rechercher une recette…" aria-label="Rechercher">
+      </div>
+      <select class="form-input toolbar__select" id="accessFilter" aria-label="Accès">
+        <option value="Tout">Tout accès</option>
+        <option value="Gratuit">Gratuit</option>
+        <option value="Premium">Premium</option>
+      </select>
+      <select class="form-input toolbar__select" id="sortFilter" aria-label="Trier">
+        <option value="default">Par défaut</option>
+        <option value="alpha">A → Z</option>
+      </select>
+      <span class="toolbar__count" id="countLabel"></span>
+    </div>
+
+    <!-- Grille -->
+    <div class="recipe-grid" id="recipeGrid"></div>
+    <div class="empty-state" id="emptyState" style="display:none">
+      <i class="ti ti-search-off" aria-hidden="true"></i>
+      <p>Aucune recette ne correspond à votre recherche.</p>
+    </div>
+  </div>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script>
+const EMOJIS = {
+  "Pâtes":"🍝","Viande":"🥩","Poisson":"🐟","Fruits de mer":"🦐",
+  "Dessert":"🍮","Petit-déj":"☕","Plat":"🍽️","Soupe":"🍜",
+  "Asiatique":"🥢","Japonais":"🍱","Fast-food":"🍔","Fusion":"✨"
+};
+const TIMES = {
+  "bolognaise":"55 min","crepes":"30 min","pancakes":"20 min","pain-perdu":"15 min",
+  "creme-brulee":"1h","penne-poulet":"25 min","fusilli-pesto":"15 min","pipe-rigate":"20 min",
+  "quiche-poireaux":"55 min","ratatouille":"2h30"
+};
+const PREMIUM_IDS = [
+  "magret","ramen-maison","charlotte-fraises","sushi","tortiglioni",
+  "gnocchis-core","gnocchis-chedd","flanc-mangue","wrap-tenders","cordon-bleu",
+  "gnocchis-chevre","pates-cara","faux-filet","gratin-crozets","smash-burger",
+  "saumon-patates","crevettes-ail","riz-saute","oeufs-saumon","ramen"
+];
+
+const RECIPES = [
+  {id:"bolognaise",name:"Tagliatelle bolognaise",category:"Pâtes",taste:"salé",baseServings:4},
+  {id:"crepes",name:"Crêpes",category:"Petit-déj",taste:"sucré",baseServings:4},
+  {id:"pancakes",name:"Pancakes",category:"Petit-déj",taste:"sucré",baseServings:2},
+  {id:"pain-perdu",name:"Pain perdu",category:"Petit-déj",taste:"sucré",baseServings:2},
+  {id:"creme-brulee",name:"Crème brûlée",category:"Dessert",taste:"sucré",baseServings:4},
+  {id:"penne-poulet",name:"Penne au poulet",category:"Pâtes",taste:"salé",baseServings:2},
+  {id:"fusilli-pesto",name:"Fusilli Pesto",category:"Pâtes",taste:"salé",baseServings:2},
+  {id:"pipe-rigate",name:"Pipe Rigate Crème & Jambon",category:"Pâtes",taste:"salé",baseServings:2},
+  {id:"quiche-poireaux",name:"Quiche aux poireaux",category:"Plat",taste:"salé",baseServings:6},
+  {id:"ratatouille",name:"Ratatouille façon le film",category:"Plat",taste:"salé",baseServings:4},
+  {id:"magret",name:"Magret de canard au miel & vinaigre balsamique",category:"Viande",taste:"salé",baseServings:2},
+  {id:"ramen-maison",name:"Nouilles ramen maison",category:"Soupe",taste:"salé",baseServings:2},
+  {id:"charlotte-fraises",name:"Charlotte aux fraises",category:"Dessert",taste:"sucré",baseServings:6},
+  {id:"sushi",name:"Sushi maison",category:"Japonais",taste:"salé",baseServings:4},
+  {id:"tortiglioni",name:"Tortiglioni Bacon cheddar Crispy oignons",category:"Pâtes",taste:"salé",baseServings:2},
+  {id:"gnocchis-core",name:"Gnocchis à la coréenne",category:"Fusion",taste:"salé",baseServings:2},
+  {id:"gnocchis-chedd",name:"Gnocchis cheddar chorizo",category:"Pâtes",taste:"salé",baseServings:2},
+  {id:"flanc-mangue",name:"Flanc mangue vanille",category:"Dessert",taste:"sucré",baseServings:4},
+  {id:"wrap-tenders",name:"Wrap tenders frites",category:"Fast-food",taste:"salé",baseServings:2},
+  {id:"cordon-bleu",name:"Cordon bleu maison",category:"Viande",taste:"salé",baseServings:2},
+  {id:"gnocchis-chevre",name:"Gnocchis chèvre miel lardons",category:"Pâtes",taste:"salé",baseServings:2},
+  {id:"pates-cara",name:"Pâtes caramélisées",category:"Pâtes",taste:"salé",baseServings:2},
+  {id:"faux-filet",name:"Faux filet",category:"Viande",taste:"salé",baseServings:2},
+  {id:"gratin-crozets",name:"Gratin Crozets poireaux",category:"Plat",taste:"salé",baseServings:4},
+  {id:"smash-burger",name:"Double smash burger",category:"Fast-food",taste:"salé",baseServings:2},
+  {id:"saumon-patates",name:"Saumon au four & patates douces rôties",category:"Poisson",taste:"salé",baseServings:2},
+  {id:"crevettes-ail",name:"Crevettes grillées à l'ail",category:"Fruits de mer",taste:"salé",baseServings:2},
+  {id:"riz-saute",name:"Riz sauté poulet & crevettes",category:"Asiatique",taste:"salé",baseServings:2},
+  {id:"oeufs-saumon",name:"Œufs brouillés au saumon et toast",category:"Petit-déj",taste:"salé",baseServings:2},
+  {id:"ramen",name:"Ramen",category:"Soupe",taste:"salé",baseServings:2},
+];
+
+let activeCat = 'Tout';
+let searchVal  = '';
+let accessVal  = 'Tout';
+let sortVal    = 'default';
+
+function isPremium(id) { return PREMIUM_IDS.includes(id); }
+
+function cardHtml(r) {
+  const premium = isPremium(r.id);
+  const emoji = EMOJIS[r.category] || '🍽️';
+  const time  = TIMES[r.id] || '';
+  return `
+    <article class="card${premium?' card--locked':''}">
+      <div style="position:relative">
+        <div class="card__img--placeholder" style="${premium?'filter:blur(2px)':''}">
+          ${emoji}
+        </div>
+        ${premium ? `<div class="lock-overlay"><span class="badge badge--premium"><i class="ti ti-lock" aria-hidden="true"></i>Premium</span></div>` : ''}
+      </div>
+      <div class="card__body" style="flex:1">
+        <div class="card__tags">
+          <span class="badge badge--cat">${r.category}</span>
+          <span class="badge badge--${r.taste==='sucré'?'new':'free'}">${r.taste}</span>
+          ${premium ? '' : '<span class="badge badge--free">Gratuit</span>'}
+        </div>
+        <div class="card__title">${r.name}</div>
+        <div class="card__meta">
+          ${time ? `<span><i class="ti ti-clock" aria-hidden="true"></i> ${time}</span>` : ''}
+          <span><i class="ti ti-users" aria-hidden="true"></i> ${r.baseServings} pers.</span>
+        </div>
+        ${premium
+          ? `<a href="boutique.html" class="btn btn--accent btn--sm" style="margin-top:auto">Débloquer</a>`
+          : `<a href="recette.html?id=${r.id}" class="btn btn--ghost btn--sm" style="margin-top:auto">Voir la recette</a>`
+        }
+      </div>
+    </article>`;
+}
+
+function render() {
+  let list = RECIPES.filter(r => {
+    const catOk = activeCat === 'Tout'
+      || r.category === activeCat
+      || (activeCat === 'Salé' && r.taste === 'salé')
+      || (activeCat === 'Sucré' && r.taste === 'sucré');
+    const searchOk = !searchVal || r.name.toLowerCase().includes(searchVal);
+    const accessOk = accessVal === 'Tout'
+      || (accessVal === 'Premium' && isPremium(r.id))
+      || (accessVal === 'Gratuit' && !isPremium(r.id));
+    return catOk && searchOk && accessOk;
+  });
+  if (sortVal === 'alpha') list.sort((a,b) => a.name.localeCompare(b.name));
+  document.getElementById('recipeGrid').innerHTML = list.map(cardHtml).join('');
+  document.getElementById('emptyState').style.display = list.length ? 'none' : 'block';
+  document.getElementById('countLabel').textContent = `${list.length} recette${list.length > 1 ? 's' : ''}`;
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCat = btn.dataset.cat;
+    render();
+  });
+});
+document.getElementById('searchInput').addEventListener('input', e => { searchVal = e.target.value.toLowerCase().trim(); render(); });
+document.getElementById('accessFilter').addEventListener('change', e => { accessVal = e.target.value; render(); });
+document.getElementById('sortFilter').addEventListener('change', e => { sortVal = e.target.value; render(); });
+
+render();
+</script>
+</body>
+</html>

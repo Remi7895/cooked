@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professionnels — Cooked</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+  <style>
+    .page-header { background: var(--wg-10); padding: var(--gap-xl) 0; border-bottom: 1px solid var(--wg-20); }
+
+    .pro-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--wg-20); margin-bottom: var(--gap-xl); }
+    .pro-tab {
+      padding: 14px var(--gap-xl);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--wg-60);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: color .15s, border-color .15s;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+    .pro-tab:hover { color: var(--brown-90); }
+    .pro-tab.active { color: var(--brown-90); border-bottom-color: var(--brown-90); font-weight: 600; }
+
+    .pros-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap-xl); }
+
+    .pro-full {
+      background: #fff;
+      border: 1px solid var(--wg-20);
+      border-radius: var(--r-xl);
+      overflow: hidden;
+      display: flex;
+      gap: 0;
+      transition: box-shadow .2s;
+    }
+    .pro-full:hover { box-shadow: 0 8px 40px rgba(45,42,38,.1); }
+    .pro-full__avatar {
+      width: 160px;
+      flex-shrink: 0;
+      background: var(--wg-10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      color: var(--wg-40);
+    }
+    .pro-full__body { padding: var(--gap-lg); flex: 1; display: flex; flex-direction: column; gap: var(--gap-sm); }
+    .pro-full__type { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brown-60); }
+    .pro-full__name { font-family: var(--font-serif); font-size: 20px; font-weight: 700; }
+    .pro-full__desc { font-size: 14px; color: var(--wg-60); line-height: 1.6; flex: 1; }
+    .pro-full__tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .pro-full__price { font-size: 14px; font-weight: 600; color: var(--brown-90); }
+    .pro-full__actions { display: flex; gap: var(--gap-sm); margin-top: auto; }
+
+    .become-pro { background: var(--brown-90); color: var(--cream); }
+    .become-pro h2 { color: var(--cream); }
+    .become-pro p { color: var(--wg-40); max-width: 540px; font-size: 17px; line-height: 1.7; margin-bottom: var(--gap-xl); }
+    .become-pro-inner { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-3xl); align-items: center; }
+    .become-pro-features { display: flex; flex-direction: column; gap: var(--gap-md); }
+    .become-pro-feature { display: flex; align-items: flex-start; gap: var(--gap-md); }
+    .become-pro-feature i { font-size: 20px; color: var(--brown-30); flex-shrink: 0; margin-top: 2px; }
+    .become-pro-feature-title { font-weight: 600; margin-bottom: 2px; }
+    .become-pro-feature-desc { font-size: 14px; color: var(--wg-40); line-height: 1.5; }
+
+    @media (max-width: 900px) {
+      .pros-grid { grid-template-columns: 1fr; }
+      .pro-full { flex-direction: column; }
+      .pro-full__avatar { width: 100%; height: 160px; }
+      .become-pro-inner { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .pro-tab { padding: 12px var(--gap-md); font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<header class="page-header">
+  <div class="container">
+    <h1>Professionnels</h1>
+    <p>Des chefs et nutritionnistes sélectionnés pour vous accompagner.</p>
+  </div>
+</header>
+
+<main>
+  <section class="section">
+    <div class="container">
+
+      <!-- Tabs -->
+      <div class="pro-tabs" role="tablist">
+        <button class="pro-tab active" data-tab="tous" role="tab" aria-selected="true">Tous</button>
+        <button class="pro-tab" data-tab="cours" role="tab" aria-selected="false">Cours de cuisine</button>
+        <button class="pro-tab" data-tab="nutrition" role="tab" aria-selected="false">Nutritionnistes</button>
+      </div>
+
+      <!-- Grille -->
+      <div class="pros-grid" id="prosGrid">
+
+        <article class="pro-full" data-type="cours">
+          <div class="pro-full__avatar"><i class="ti ti-chef-hat" aria-hidden="true"></i></div>
+          <div class="pro-full__body">
+            <div class="pro-full__type">Chef cuisinier · Cours de cuisine</div>
+            <div class="pro-full__name">Marc Lefebvre</div>
+            <div class="pro-full__tags">
+              <span class="badge badge--cat">Italienne</span>
+              <span class="badge badge--cat">Française</span>
+              <span class="badge badge--cat">Paris</span>
+              <span class="badge badge--cat">En ligne</span>
+            </div>
+            <p class="pro-full__desc">15 ans d'expérience en restaurant gastronomique. Cours individuels ou en petits groupes, en présentiel à Paris ou en visioconférence. Spécialité : pâtes fraîches et sauces italiennes.</p>
+            <div class="pro-full__price">À partir de 80 €/h</div>
+            <div class="pro-full__actions">
+              <a href="contact.html" class="btn btn--primary btn--sm">Contacter</a>
+              <a href="profil-pro.html" class="btn btn--ghost btn--sm">Voir le profil</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="pro-full" data-type="nutrition">
+          <div class="pro-full__avatar"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i></div>
+          <div class="pro-full__body">
+            <div class="pro-full__type">Nutritionniste diététicienne</div>
+            <div class="pro-full__name">Sophie Arnaud</div>
+            <div class="pro-full__tags">
+              <span class="badge badge--cat">Nutrition sportive</span>
+              <span class="badge badge--cat">Perte de poids</span>
+              <span class="badge badge--cat">Visio</span>
+            </div>
+            <p class="pro-full__desc">Diététicienne diplômée, spécialisée en nutrition sportive et équilibre alimentaire. Consultations en visioconférence, suivi personnalisé et plans alimentaires adaptés à vos recettes.</p>
+            <div class="pro-full__price">60 € / consultation</div>
+            <div class="pro-full__actions">
+              <a href="contact.html" class="btn btn--primary btn--sm">Contacter</a>
+              <a href="profil-pro.html" class="btn btn--ghost btn--sm">Voir le profil</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="pro-full" data-type="cours">
+          <div class="pro-full__avatar"><i class="ti ti-tools-kitchen-2" aria-hidden="true"></i></div>
+          <div class="pro-full__body">
+            <div class="pro-full__type">Chef pâtissière · Ateliers</div>
+            <div class="pro-full__name">Julie Moreau</div>
+            <div class="pro-full__tags">
+              <span class="badge badge--cat">Pâtisserie</span>
+              <span class="badge badge--cat">Desserts</span>
+              <span class="badge badge--cat">En ligne</span>
+            </div>
+            <p class="pro-full__desc">Ancienne cheffe pâtissière en hôtel 5 étoiles. Ateliers en ligne accessibles à tous niveaux. Spécialités : entremets, crèmes et tartes modernes. Passion pour transmettre les bases.</p>
+            <div class="pro-full__price">À partir de 45 €/atelier</div>
+            <div class="pro-full__actions">
+              <a href="contact.html" class="btn btn--primary btn--sm">Contacter</a>
+              <a href="profil-pro.html" class="btn btn--ghost btn--sm">Voir le profil</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="pro-full" data-type="nutrition">
+          <div class="pro-full__avatar"><i class="ti ti-leaf" aria-hidden="true"></i></div>
+          <div class="pro-full__body">
+            <div class="pro-full__type">Nutritionniste · Naturopathe</div>
+            <div class="pro-full__name">Thomas Reyes</div>
+            <div class="pro-full__tags">
+              <span class="badge badge--cat">Végétal</span>
+              <span class="badge badge--cat">Bien-être</span>
+              <span class="badge badge--cat">Lyon</span>
+            </div>
+            <p class="pro-full__desc">Approche holistique de l'alimentation. Spécialisé dans les régimes végétaux et la cuisine santé sans sacrifier le goût. Consultations à Lyon et en ligne.</p>
+            <div class="pro-full__price">55 € / consultation</div>
+            <div class="pro-full__actions">
+              <a href="contact.html" class="btn btn--primary btn--sm">Contacter</a>
+              <a href="profil-pro.html" class="btn btn--ghost btn--sm">Voir le profil</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DEVENIR PRO -->
+  <section class="section become-pro">
+    <div class="container">
+      <div class="become-pro-inner">
+        <div>
+          <span style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--brown-30);display:block;margin-bottom:var(--gap-sm)">Professionnels</span>
+          <h2 style="color:var(--cream);margin-bottom:var(--gap-md)">Rejoindre Cooked</h2>
+          <p>Vous êtes chef, nutritionniste ou formateur culinaire ? Proposez vos cours et consultations à notre communauté d'amateurs passionnés.</p>
+          <a href="contact.html?sujet=pro" class="btn btn--accent btn--lg">Postuler comme professionnel</a>
+        </div>
+        <div class="become-pro-features">
+          <div class="become-pro-feature">
+            <i class="ti ti-users" aria-hidden="true"></i>
+            <div>
+              <div class="become-pro-feature-title">Une communauté engagée</div>
+              <div class="become-pro-feature-desc">Des amateurs sérieux qui veulent progresser, pas juste suivre une recette.</div>
+            </div>
+          </div>
+          <div class="become-pro-feature">
+            <i class="ti ti-calendar" aria-hidden="true"></i>
+            <div>
+              <div class="become-pro-feature-title">Visibilité et réservations</div>
+              <div class="become-pro-feature-desc">Votre profil mis en avant, avec prise de contact directe intégrée.</div>
+            </div>
+          </div>
+          <div class="become-pro-feature">
+            <i class="ti ti-settings" aria-hidden="true"></i>
+            <div>
+              <div class="become-pro-feature-title">Vous gardez le contrôle</div>
+              <div class="become-pro-feature-desc">Tarifs, disponibilités, formats : vous définissez votre offre.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script>
+document.querySelectorAll('.pro-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.pro-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+    this.classList.add('active');
+    this.setAttribute('aria-selected', 'true');
+    const filter = this.dataset.tab;
+    document.querySelectorAll('.pro-full').forEach(card => {
+      const show = filter === 'tous' || card.dataset.type === filter;
+      card.style.display = show ? '' : 'none';
+    });
+  });
+});
+</script>
+</body>
+</html>

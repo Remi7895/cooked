@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Cooked</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+  <style>
+    .contact-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--gap-3xl); align-items: start; }
+    .contact-info h1 { margin-bottom: var(--gap-lg); }
+    .contact-info p { font-size: 17px; color: var(--wg-60); line-height: 1.7; margin-bottom: var(--gap-xl); }
+    .contact-channels { display: flex; flex-direction: column; gap: var(--gap-lg); }
+    .contact-channel { display: flex; align-items: flex-start; gap: var(--gap-md); }
+    .contact-channel__icon {
+      width: 44px; height: 44px;
+      background: var(--wg-10);
+      border: 1px solid var(--wg-20);
+      border-radius: var(--r-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; color: var(--brown-60);
+      flex-shrink: 0;
+    }
+    .contact-channel__title { font-weight: 600; font-size: 15px; margin-bottom: 3px; }
+    .contact-channel__desc { font-size: 14px; color: var(--wg-60); line-height: 1.5; }
+
+    .contact-form {
+      background: #fff;
+      border: 1px solid var(--wg-20);
+      border-radius: var(--r-xl);
+      padding: var(--gap-xl);
+    }
+    .contact-form h2 { font-size: 22px; margin-bottom: var(--gap-xl); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-md); }
+    .contact-form .form-group { margin-bottom: var(--gap-md); }
+    .contact-form .form-group:last-of-type { margin-bottom: var(--gap-xl); }
+
+    @media (max-width: 768px) {
+      .contact-layout { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<main class="section">
+  <div class="container">
+    <div class="contact-layout">
+
+      <div class="contact-info">
+        <h1>Parlons-nous.</h1>
+        <p>Une question sur une recette, un problème avec votre compte, un projet de partenariat ou simplement l'envie d'échanger — écrivez-nous.</p>
+        <div class="contact-channels">
+          <div class="contact-channel">
+            <div class="contact-channel__icon"><i class="ti ti-mail" aria-hidden="true"></i></div>
+            <div>
+              <div class="contact-channel__title">E-mail</div>
+              <div class="contact-channel__desc">Réponse sous 48h ouvrées.<br>contact@cooked.fr</div>
+            </div>
+          </div>
+          <div class="contact-channel">
+            <div class="contact-channel__icon"><i class="ti ti-clock" aria-hidden="true"></i></div>
+            <div>
+              <div class="contact-channel__title">Délai de réponse</div>
+              <div class="contact-channel__desc">Du lundi au vendredi,<br>nous répondons sous 2 jours ouvrés.</div>
+            </div>
+          </div>
+          <div class="contact-channel">
+            <div class="contact-channel__icon"><i class="ti ti-chef-hat" aria-hidden="true"></i></div>
+            <div>
+              <div class="contact-channel__title">Professionnels</div>
+              <div class="contact-channel__desc">Vous êtes chef ou nutritionniste ?<br>Choisissez le sujet "Devenir professionnel" ci-contre.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact-form" id="contactForm" onsubmit="return submitForm(event)">
+        <h2>Envoyer un message</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="c-prenom">Prénom *</label>
+            <input type="text" id="c-prenom" class="form-input" placeholder="Votre prénom" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-nom">Nom *</label>
+            <input type="text" id="c-nom" class="form-input" placeholder="Votre nom" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="c-email">E-mail *</label>
+          <input type="email" id="c-email" class="form-input" placeholder="votre@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="c-sujet">Sujet *</label>
+          <select id="c-sujet" class="form-input" required>
+            <option value="">Choisissez un sujet…</option>
+            <option value="recette">Question sur une recette</option>
+            <option value="compte">Problème de compte</option>
+            <option value="achat">Question sur un achat</option>
+            <option value="pro">Devenir professionnel</option>
+            <option value="partenariat">Partenariat</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="c-msg">Message *</label>
+          <textarea id="c-msg" class="form-input" rows="6" placeholder="Décrivez votre demande…" required></textarea>
+        </div>
+        <button type="submit" class="btn btn--primary btn--md" style="width:100%;justify-content:center">
+          <i class="ti ti-send" aria-hidden="true"></i>Envoyer le message
+        </button>
+      </form>
+
+    </div>
+  </div>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script>
+// Pre-fill sujet from URL param ?sujet=pro
+const params = new URLSearchParams(location.search);
+if (params.get('sujet')) {
+  const sel = document.getElementById('c-sujet');
+  if (sel.querySelector(`option[value="${params.get('sujet')}"]`)) {
+    sel.value = params.get('sujet');
+  }
+}
+
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('contactForm').innerHTML = `
+    <div style="text-align:center;padding:var(--gap-3xl) 0">
+      <i class="ti ti-circle-check" aria-hidden="true" style="font-size:56px;color:var(--success);display:block;margin-bottom:var(--gap-lg)"></i>
+      <h2 style="margin-bottom:var(--gap-md)">Message envoyé !</h2>
+      <p style="color:var(--wg-60);font-size:16px">Nous vous répondrons sous 48h ouvrées.</p>
+    </div>`;
+  return false;
+}
+</script>
+</body>
+</html>

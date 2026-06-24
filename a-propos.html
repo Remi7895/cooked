@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>À propos — Cooked</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+  <style>
+    .about-hero { background: var(--wg-10); padding: var(--gap-3xl) 0; }
+    .about-hero h1 { margin-bottom: var(--gap-lg); }
+    .about-hero p { font-size: 20px; color: var(--wg-60); line-height: 1.7; max-width: 640px; }
+
+    .about-story { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-3xl); align-items: center; }
+    .about-story__visual {
+      aspect-ratio: 1;
+      border-radius: var(--r-xl);
+      background: var(--wg-10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 120px;
+    }
+    .about-story__content h2 { margin-bottom: var(--gap-lg); }
+    .about-story__content p { font-size: 16px; color: var(--wg-60); line-height: 1.8; margin-bottom: var(--gap-md); }
+
+    .values { background: var(--wg-10); }
+    .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-xl); }
+    .value-item { }
+    .value-item__num { font-family: var(--font-serif); font-size: 48px; font-weight: 700; color: var(--wg-20); margin-bottom: var(--gap-sm); }
+    .value-item__title { font-family: var(--font-serif); font-size: 20px; font-weight: 700; margin-bottom: var(--gap-sm); }
+    .value-item__desc { font-size: 15px; color: var(--wg-60); line-height: 1.7; }
+
+    .manifesto { background: var(--brown-90); color: var(--cream); text-align: center; }
+    .manifesto blockquote { font-family: var(--font-serif); font-size: clamp(22px, 4vw, 38px); font-style: italic; font-weight: 400; line-height: 1.4; max-width: 780px; margin: 0 auto var(--gap-xl); color: var(--cream); }
+    .manifesto cite { font-size: 14px; color: var(--brown-30); letter-spacing: 0.08em; text-transform: uppercase; font-style: normal; }
+
+    @media (max-width: 768px) {
+      .about-story { grid-template-columns: 1fr; }
+      .about-story__visual { display: none; }
+      .values-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<header class="about-hero">
+  <div class="container">
+    <h1>À propos<br>de Cooked.</h1>
+    <p>Un projet né d'une conviction simple : cuisiner, c'est mieux quand on comprend ce qu'on fait.</p>
+  </div>
+</header>
+
+<main>
+  <!-- L'histoire -->
+  <section class="section">
+    <div class="container">
+      <div class="about-story">
+        <div class="about-story__visual">🍳</div>
+        <div class="about-story__content">
+          <h2>Pourquoi Cooked existe</h2>
+          <p>Tout a commencé avec un carnet de recettes personnel. Pas les recettes en elles-mêmes, mais les notes griffonnées à côté : pourquoi déglacer au vin rouge, pourquoi mijoter à feu doux, ce qui se passe réellement dans la poêle.</p>
+          <p>Ces notes ont changé la façon de cuisiner. Pas juste suivre une liste d'étapes, mais comprendre. Et quand on comprend, on improvise, on adapte, on progresse.</p>
+          <p>Cooked, c'est ce carnet de notes rendu accessible. Des recettes qui expliquent le pourquoi de chaque geste, pour des cuisiniers amateurs qui veulent vraiment apprendre.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Citation -->
+  <section class="manifesto section--sm">
+    <div class="container">
+      <blockquote>
+        « Une recette sans explication, c'est une partition sans notes. On peut la jouer, mais on ne la comprend pas. »
+      </blockquote>
+      <cite>— La philosophie Cooked</cite>
+    </div>
+  </section>
+
+  <!-- Valeurs -->
+  <section class="section values">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="section-head__eyebrow">Nos valeurs</span>
+        <h2 class="section-head__title">Ce qui guide chaque recette</h2>
+      </div>
+      <div class="values-grid">
+        <div class="value-item">
+          <div class="value-item__num">01</div>
+          <div class="value-item__title">La compréhension avant tout</div>
+          <p class="value-item__desc">Chaque étape explique le mécanisme culinaire ou scientifique derrière le geste. Parce que comprendre, c'est ne plus rater.</p>
+        </div>
+        <div class="value-item">
+          <div class="value-item__num">02</div>
+          <div class="value-item__title">La qualité des ingrédients</div>
+          <p class="value-item__desc">Les recettes précisent les labels (Label Rouge, AOP, Bio) quand ça change le résultat. Pas par snobisme, mais parce que la matière première compte.</p>
+        </div>
+        <div class="value-item">
+          <div class="value-item__num">03</div>
+          <div class="value-item__title">Accessible à tous niveaux</div>
+          <p class="value-item__desc">Qu'on cuisine depuis 20 ans ou qu'on vienne de rater ses premiers œufs brouillés, Cooked s'adresse à ceux qui veulent progresser — sans condescendance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="container" style="text-align:center">
+      <span class="section-head__eyebrow">Vous avez des questions ?</span>
+      <h2 style="margin:var(--gap-sm) 0 var(--gap-md)">Parlons-en.</h2>
+      <p style="color:var(--wg-60);font-size:17px;margin-bottom:var(--gap-xl);max-width:480px;margin-left:auto;margin-right:auto">Que ce soit pour une question, un partenariat ou simplement dire bonjour — la page contact est faite pour ça.</p>
+      <a href="contact.html" class="btn btn--primary btn--lg">Nous contacter</a>
+    </div>
+  </section>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+</body>
+</html>

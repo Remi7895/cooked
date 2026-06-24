@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique — Cooked</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+  <style>
+    .page-header { background: var(--wg-10); padding: var(--gap-xl) 0; border-bottom: 1px solid var(--wg-20); }
+    .page-header h1 { margin-bottom: var(--gap-sm); }
+    .page-header p { color: var(--wg-60); font-size: 17px; }
+
+    .packs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); margin-bottom: var(--gap-3xl); }
+
+    .pack {
+      border: 1.5px solid var(--wg-20);
+      border-radius: var(--r-xl);
+      background: #fff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .pack:hover { transform: translateY(-4px); box-shadow: 0 12px 48px rgba(45,42,38,.1); }
+    .pack--featured { border-color: var(--brown-90); box-shadow: 0 0 0 1px var(--brown-90); }
+
+    .pack__header {
+      padding: var(--gap-xl) var(--gap-xl) var(--gap-lg);
+      background: var(--wg-10);
+      text-align: center;
+    }
+    .pack--featured .pack__header { background: var(--brown-90); }
+
+    .pack__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--brown-30);
+      color: var(--brown-90);
+      margin-bottom: var(--gap-md);
+    }
+    .pack__icon { font-size: 52px; margin-bottom: var(--gap-md); }
+    .pack__name { font-family: var(--font-serif); font-size: 26px; font-weight: 700; margin-bottom: var(--gap-sm); }
+    .pack--featured .pack__name { color: var(--cream); }
+    .pack__tagline { font-size: 14px; color: var(--wg-60); line-height: 1.5; }
+    .pack--featured .pack__tagline { color: var(--wg-40); }
+
+    .pack__body { padding: var(--gap-xl); flex: 1; display: flex; flex-direction: column; }
+    .pack__price { display: flex; align-items: baseline; gap: 6px; margin-bottom: var(--gap-xl); }
+    .pack__price-main { font-family: var(--font-serif); font-size: 38px; font-weight: 700; color: var(--brown-90); }
+    .pack__price-note { font-size: 14px; color: var(--wg-50); }
+
+    .pack__includes { margin-bottom: var(--gap-xl); flex: 1; }
+    .pack__includes-title { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--wg-60); margin-bottom: var(--gap-md); }
+    .pack__list { display: flex; flex-direction: column; gap: 10px; }
+    .pack__list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.5; color: var(--brown-90); }
+    .pack__list i { color: var(--brown-60); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    .pack__recipes { margin-bottom: var(--gap-xl); }
+    .pack__recipes-title { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--wg-60); margin-bottom: var(--gap-md); }
+    .pack__recipe-list { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .pack__cta { margin-top: auto; }
+
+    .why-strip { background: var(--wg-10); }
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-xl); }
+    .why-item { text-align: center; }
+    .why-item__icon { font-size: 40px; margin-bottom: var(--gap-md); }
+    .why-item__title { font-family: var(--font-serif); font-size: 20px; font-weight: 700; margin-bottom: var(--gap-sm); }
+    .why-item__desc { font-size: 14px; color: var(--wg-60); line-height: 1.6; }
+
+    .faq { max-width: 680px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--wg-20); }
+    .faq-item summary {
+      padding: var(--gap-lg) 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      list-style: none;
+      gap: var(--gap-md);
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--brown-60); flex-shrink: 0; }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding-bottom: var(--gap-lg); font-size: 15px; color: var(--wg-60); line-height: 1.7; }
+
+    @media (max-width: 960px) { .packs-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; } }
+    @media (max-width: 768px) { .why-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<header class="page-header">
+  <div class="container">
+    <h1>La boutique</h1>
+    <p>Des packs de recettes thématiques pour aller plus loin.</p>
+  </div>
+</header>
+
+<main>
+  <!-- PACKS -->
+  <section class="section">
+    <div class="container">
+      <div class="packs-grid">
+
+        <!-- Pack Pasta -->
+        <article class="pack">
+          <div class="pack__header">
+            <div class="pack__icon">🍝</div>
+            <div class="pack__name">Pack Pasta</div>
+            <p class="pack__tagline">L'Italie dans votre assiette, recette par recette.</p>
+          </div>
+          <div class="pack__body">
+            <div class="pack__price">
+              <span class="pack__price-main">9,90 €</span>
+              <span class="pack__price-note">paiement unique</span>
+            </div>
+            <div class="pack__includes">
+              <div class="pack__includes-title">Ce qui est inclus</div>
+              <ul class="pack__list">
+                <li><i class="ti ti-check" aria-hidden="true"></i>10 recettes de pâtes détaillées</li>
+                <li><i class="ti ti-check" aria-hidden="true"></i>Techniques expliquées (al dente, sauces…)</li>
+                <li><i class="ti ti-check" aria-hidden="true"></i>Variantes et substitutions</li>
+                <li><i class="ti ti-check" aria-hidden="true"></i>Accès à vie</li>
+              </ul>
+            </div>
+            <div class="pack__recipes">
+              <div class="pack__recipes-title">Recettes incluses</div>
+              <div class="pack__recipe-list">
+                <span class="badge badge--cat">Tagliatelle bolognaise</span>
+                <span class="badge badge--cat">Penne au poulet</span>
+                <span class="badge badge--cat">Fusilli Pesto</span>
+                <span class="badge badge--cat">Pipe Rigate Crème</span>
+                <span class="badge badge--cat">Tortiglioni Bacon</span>
+                <span class="badge badge--cat">+ 5 autres</span>
+              </div>
+            </div>
+            <div class="pack__cta">
+              <button class="btn btn--secondary btn--md" style="width:100%;justify-content:center" onclick="addToCart('Pack Pasta', 9.90)">
+                <i class="ti ti-shopping-cart" aria-hidden="true"></i>Obtenir ce pack
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Pack Complet (featured) -->
+        <article class="pack pack--featured">
+          <div class="pack__header">
+            <div class="pack__badge"><i class="ti ti-star" aria-hidden="true"></i>Le plus populaire</div>
+            <div class="pack__icon">⭐</div>
+            <div class="pack__name">Pack Complet</div>
+            <p class="pack__tagline">Toute la bibliothèque Cooked, mise à jour incluse.</p>
+          </div>
+          <div class="pack__body">
+            <div class="pack__price">
+              <span class="pack__price-main">24,90 €</span>
+              <span class="pack__price-note">paiement unique</span>
+            </div>
+            <div class="pack__includes">
+              <div class="pack__includes-title">Ce qui est inclus</div>
+              <ul class="pack__list">
+                <li><i class="ti ti-check" aria-hidden="true"></i>30+ recettes toutes catégories</li>
+                <li><i class="ti ti-check" aria-hidden="true"></i>Nouvelles recettes automatiquement</li>
+                <li><i class="ti ti-check" aria-hidden="true"></i>Toutes les techniques expliquées</li>
+                <li><i class="ti ti-check" aria-hidden="true"></i>Notes personnelles & favoris</li>
+                <li><i class="ti ti-check" aria-hidden="true"></i>Accès à vie</li>
+              </ul>
+            </div>
+            <div class="pack__recipes">
+              <div class="pack__recipes-title">Toutes les catégories</div>
+              <div class="pack__recipe-list">
+                <span class="badge badge--cat">Pâtes</span>
+                <span class="badge badge--cat">Viande</span>
+                <span class="badge badge--cat">Poisson</span>
+                <span class="badge badge--cat">Dessert</span>
+                <span class="badge badge--cat">Asiatique</span>
+                <span class="badge badge--cat">Fast-food</span>
+                <span class="badge badge--cat">Fusion</span>
+                <span class="badge badge--cat">+ plus</span>
+              </div>
+            </div>
+            <div class="pack__cta">
+              <button class="btn btn--accent btn--md" style="width:100%;justify-content:center" onclick="addToCart('Pack Complet', 24.90)">
+                <i class="ti ti-shopping-cart" aria-hidden="true"></i>Obtenir le pack complet
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Pack Asie -->
+        <article class="pack">
+          <div class="pack__header">
+            <div class="pack__icon">🌏</div>
+            <div class="pack__name">Pack Asie</div>
+            <p class="pack__tagline">Techniques et saveurs d'Asie, accessibles à tous.</p>
+          </div>
+          <div class="pack__body">
+            <div class="pack__price">
+              <span class="pack__price-main">9,90 €</span>
+              <span class="pack__price-note">paiement unique</span>
+            </div>
+            <div class="pack__includes">
+              <div class="pack__includes-title">Ce qui est inclus</div>
+              <ul class="pack__list">
+                <li><i class="ti ti-check" aria-hidden="true"></i>8 recettes asiatiques</li>
+                <li><i class="ti ti-check" aria-hidden="true"></i>Guide des ingrédients clés</li>
+                <li><i class="ti ti-check" aria-hidden="true"></i>Japonais, coréen, fusion</li>
+                <li><i class="ti ti-check" aria-hidden="true"></i>Accès à vie</li>
+              </ul>
+            </div>
+            <div class="pack__recipes">
+              <div class="pack__recipes-title">Recettes incluses</div>
+              <div class="pack__recipe-list">
+                <span class="badge badge--cat">Ramen maison</span>
+                <span class="badge badge--cat">Sushi maison</span>
+                <span class="badge badge--cat">Riz sauté</span>
+                <span class="badge badge--cat">Gnocchis coréens</span>
+                <span class="badge badge--cat">+ 4 autres</span>
+              </div>
+            </div>
+            <div class="pack__cta">
+              <button class="btn btn--secondary btn--md" style="width:100%;justify-content:center" onclick="addToCart('Pack Asie', 9.90)">
+                <i class="ti ti-shopping-cart" aria-hidden="true"></i>Obtenir ce pack
+              </button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- POURQUOI COOKED -->
+  <section class="section why-strip">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="section-head__eyebrow">Pourquoi Cooked ?</span>
+        <h2 class="section-head__title">Pas juste une liste d'ingrédients.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="why-item__icon">🧠</div>
+          <div class="why-item__title">Le pourquoi expliqué</div>
+          <p class="why-item__desc">Chaque étape est accompagnée d'une explication scientifique ou culinaire. Comprendre pour ne plus rater.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-item__icon">⚖️</div>
+          <div class="why-item__title">Portions ajustables</div>
+          <p class="why-item__desc">Toutes les quantités s'adaptent en temps réel selon le nombre de personnes. Cuisinez pour 1 ou pour 12.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-item__icon">🔒</div>
+          <div class="why-item__title">Accès à vie</div>
+          <p class="why-item__desc">Un seul paiement, pas d'abonnement. Les recettes vous appartiennent et les mises à jour sont incluses.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="section-head__eyebrow">Questions fréquentes</span>
+        <h2 class="section-head__title">Vous avez des questions ?</h2>
+      </div>
+      <div class="faq">
+        <details class="faq-item">
+          <summary>Comment accéder aux recettes après l'achat ?</summary>
+          <p>Dès la confirmation de votre paiement, les recettes sont débloquées dans votre compte. Connectez-vous sur n'importe quel appareil pour y accéder.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Est-ce que les mises à jour sont incluses ?</summary>
+          <p>Pour le Pack Complet, oui — toutes les nouvelles recettes ajoutées sont automatiquement disponibles dans votre espace. Pour les packs thématiques, les mises à jour dans la thématique concernée sont incluses.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Puis-je acheter plusieurs packs ?</summary>
+          <p>Oui. Si vous achetez un pack thématique puis le Pack Complet, le prix du pack thématique sera déduit. Contactez-nous via la page Contact pour en bénéficier.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Y a-t-il un remboursement possible ?</summary>
+          <p>Oui, sous 14 jours suivant l'achat, conformément aux CGV. Contactez-nous et nous traiterons votre demande sous 48h.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script>
+function addToCart(name, price) {
+  showToast(`✓ "${name}" ajouté — paiement à venir.`);
+}
+</script>
+</body>
+</html>

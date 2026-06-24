@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentions légales — Cooked</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+  <style>
+    .legal-layout { display: grid; grid-template-columns: 220px 1fr; gap: var(--gap-xl); align-items: start; }
+    .legal-nav {
+      position: sticky;
+      top: calc(var(--nav-h) + var(--gap-lg));
+      background: #fff;
+      border: 1px solid var(--wg-20);
+      border-radius: var(--r-lg);
+      padding: var(--gap-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-xs);
+    }
+    .legal-nav a {
+      padding: 8px 10px;
+      border-radius: var(--r-md);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--wg-60);
+      transition: background .1s, color .1s;
+      text-decoration: none;
+    }
+    .legal-nav a:hover { background: var(--wg-10); color: var(--brown-90); }
+    .legal-nav .legal-nav__title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--wg-40); padding: 8px 10px 4px; }
+
+    .legal-content { }
+    .legal-section { margin-bottom: var(--gap-3xl); scroll-margin-top: calc(var(--nav-h) + var(--gap-lg)); }
+    .legal-section h2 { font-size: 28px; margin-bottom: var(--gap-xl); padding-bottom: var(--gap-md); border-bottom: 1px solid var(--wg-20); }
+    .legal-section h3 { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin: var(--gap-lg) 0 var(--gap-sm); color: var(--brown-90); }
+    .legal-section p { font-size: 15px; color: var(--wg-70); line-height: 1.8; margin-bottom: var(--gap-md); }
+    .legal-section ul { margin: 0 0 var(--gap-md) var(--gap-lg); }
+    .legal-section ul li { font-size: 15px; color: var(--wg-70); line-height: 1.8; list-style: disc; }
+    .legal-section a { color: var(--brown-60); text-decoration: underline; }
+    .legal-update { font-size: 13px; color: var(--wg-50); margin-bottom: var(--gap-xl); }
+
+    @media (max-width: 768px) {
+      .legal-layout { grid-template-columns: 1fr; }
+      .legal-nav { position: static; flex-direction: row; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<main class="section">
+  <div class="container">
+    <div class="legal-layout">
+
+      <!-- Nav -->
+      <nav class="legal-nav" aria-label="Sections légales">
+        <span class="legal-nav__title">Sections</span>
+        <a href="#mentions">Mentions légales</a>
+        <a href="#confidentialite">Confidentialité</a>
+        <a href="#cgu">CGU</a>
+        <a href="#cgv">CGV</a>
+      </nav>
+
+      <!-- Contenu -->
+      <div class="legal-content">
+
+        <!-- Mentions légales -->
+        <section class="legal-section" id="mentions">
+          <h2>Mentions légales</h2>
+          <p class="legal-update">Dernière mise à jour : juin 2026</p>
+
+          <h3>Éditeur du site</h3>
+          <p>Le site Cooked (cooked.fr) est édité par :<br>
+          <strong>Cooked</strong> — projet en cours de création<br>
+          Contact : <a href="mailto:contact@cooked.fr">contact@cooked.fr</a></p>
+
+          <h3>Hébergement</h3>
+          <p>Le site est hébergé par un prestataire tiers. Les informations de contact de l'hébergeur seront mises à jour lors de la mise en ligne officielle.</p>
+
+          <h3>Propriété intellectuelle</h3>
+          <p>L'ensemble du contenu de ce site (textes, recettes, images, structure) est protégé par le droit d'auteur. Toute reproduction, même partielle, sans autorisation écrite préalable est interdite.</p>
+
+          <h3>Responsabilité</h3>
+          <p>Les recettes publiées sont données à titre indicatif. Cooked ne saurait être tenu responsable de tout accident ou dommage survenu lors de la préparation des recettes.</p>
+        </section>
+
+        <!-- Confidentialité -->
+        <section class="legal-section" id="confidentialite">
+          <h2>Politique de confidentialité</h2>
+
+          <h3>Données collectées</h3>
+          <p>Lors de votre utilisation du site, les données suivantes peuvent être collectées :</p>
+          <ul>
+            <li>Adresse e-mail (inscription newsletter, création de compte)</li>
+            <li>Nom et prénom (lors d'un achat ou contact)</li>
+            <li>Données de navigation (cookies techniques uniquement)</li>
+          </ul>
+
+          <h3>Utilisation des données</h3>
+          <p>Vos données personnelles sont utilisées exclusivement pour :</p>
+          <ul>
+            <li>Gérer votre compte et vos achats</li>
+            <li>Vous envoyer la newsletter (avec votre consentement)</li>
+            <li>Répondre à vos demandes de contact</li>
+          </ul>
+          <p>Vos données ne sont jamais vendues ni transmises à des tiers à des fins commerciales.</p>
+
+          <h3>Vos droits (RGPD)</h3>
+          <p>Conformément au Règlement Général sur la Protection des Données, vous disposez d'un droit d'accès, de rectification, de suppression et de portabilité de vos données. Pour exercer ces droits, contactez-nous à <a href="mailto:contact@cooked.fr">contact@cooked.fr</a>.</p>
+
+          <h3>Cookies</h3>
+          <p>Ce site utilise uniquement des cookies techniques nécessaires au fonctionnement (stockage de vos préférences, session). Aucun cookie publicitaire ou de traçage tiers n'est utilisé.</p>
+        </section>
+
+        <!-- CGU -->
+        <section class="legal-section" id="cgu">
+          <h2>Conditions Générales d'Utilisation</h2>
+
+          <h3>Accès au service</h3>
+          <p>L'accès au site Cooked est gratuit. Certaines fonctionnalités (recettes premium, notes personnelles) nécessitent la création d'un compte ou un achat.</p>
+
+          <h3>Compte utilisateur</h3>
+          <p>Vous êtes responsable de la confidentialité de vos identifiants. Toute utilisation frauduleuse de votre compte doit être signalée immédiatement.</p>
+
+          <h3>Contenu utilisateur</h3>
+          <p>Les notes personnelles que vous ajoutez aux recettes restent votre propriété. Cooked ne les utilise pas à d'autres fins.</p>
+
+          <h3>Comportement interdit</h3>
+          <ul>
+            <li>Partager les recettes premium sans autorisation</li>
+            <li>Utiliser le contenu à des fins commerciales sans accord</li>
+            <li>Tenter d'accéder aux données d'autres utilisateurs</li>
+          </ul>
+
+          <h3>Modification des CGU</h3>
+          <p>Cooked se réserve le droit de modifier ces CGU. Les utilisateurs seront informés par e-mail en cas de modification substantielle.</p>
+        </section>
+
+        <!-- CGV -->
+        <section class="legal-section" id="cgv">
+          <h2>Conditions Générales de Vente</h2>
+
+          <h3>Produits vendus</h3>
+          <p>Cooked commercialise des packs de recettes numériques (contenus dématérialisés), accessibles immédiatement après paiement.</p>
+
+          <h3>Prix</h3>
+          <p>Les prix sont indiqués en euros TTC. Cooked se réserve le droit de modifier ses tarifs à tout moment, sans rétroactivité sur les achats effectués.</p>
+
+          <h3>Paiement</h3>
+          <p>Le paiement est effectué en ligne, de façon sécurisée. Les données bancaires ne sont pas stockées par Cooked.</p>
+
+          <h3>Livraison</h3>
+          <p>Les contenus numériques sont disponibles immédiatement après confirmation du paiement, dans votre espace "Mes achats".</p>
+
+          <h3>Droit de rétractation</h3>
+          <p>Conformément à l'article L.221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux contenus numériques dont l'exécution a commencé avec votre accord.</p>
+          <p>Toutefois, par courtoisie commerciale, Cooked accepte les demandes de remboursement dans les <strong>14 jours</strong> suivant l'achat, sur simple demande à <a href="mailto:contact@cooked.fr">contact@cooked.fr</a>.</p>
+
+          <h3>Service après-vente</h3>
+          <p>Pour toute question relative à un achat, contactez-nous via la <a href="contact.html">page Contact</a>. Nous répondons sous 48h ouvrées.</p>
+
+          <h3>Litiges</h3>
+          <p>En cas de litige, une solution amiable sera recherchée en priorité. À défaut, les tribunaux français seront compétents.</p>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+</body>
+</html>
