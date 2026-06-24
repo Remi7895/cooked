@@ -110,7 +110,8 @@
   const { data: { session } } = await window._sb.auth.getSession();
   if (!session) return;
   const meta = session.user.user_metadata || {};
-  const pseudo = meta.full_name || session.user.email.split('@')[0];
+  const pseudo = (meta.full_name || session.user.email.split('@')[0])
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const btn = document.getElementById('nav-account-btn');
   if (btn) btn.innerHTML = `<i class="ti ti-user-check" aria-hidden="true"></i>${pseudo}`;
 })();

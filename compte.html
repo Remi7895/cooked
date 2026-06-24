@@ -156,6 +156,10 @@
 <script>
 const main = document.getElementById('main-content');
 
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 const IMGS = {
   "bolognaise":"tagliatelle-bolognaise","crepes":"crepes","pancakes":"pancakes",
   "pain-perdu":"pain-perdu","creme-brulee":"creme-brulee"
@@ -318,8 +322,8 @@ function showDashboard(user) {
   const initiale  = name[0].toUpperCase();
 
   const avatarHtml = avatarUrl
-    ? `<img src="${avatarUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="Avatar">`
-    : initiale;
+    ? `<img src="${esc(avatarUrl)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="Avatar">`
+    : esc(initiale);
 
   main.innerHTML = `
     <section class="section--sm">
@@ -329,8 +333,8 @@ function showDashboard(user) {
             <div class="account-sidebar__header">
               <div class="account-avatar" id="sidebar-avatar">${avatarHtml}</div>
               <div>
-                <div class="account-sidebar__name" id="sidebar-name">${name}</div>
-                <div class="account-sidebar__email">${email}</div>
+                <div class="account-sidebar__name" id="sidebar-name">${esc(name)}</div>
+                <div class="account-sidebar__email">${esc(email)}</div>
               </div>
             </div>
             <nav class="account-nav">
@@ -402,7 +406,7 @@ function showDashboard(user) {
                   <!-- Avatar -->
                   <div style="display:flex;align-items:center;gap:var(--gap-lg);margin-bottom:var(--gap-md)">
                     <div id="avatar-preview" style="width:72px;height:72px;border-radius:50%;background:var(--brown-90);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:var(--cream);overflow:hidden;flex-shrink:0">
-                      ${avatarUrl ? `<img src="${avatarUrl}" style="width:100%;height:100%;object-fit:cover" alt="Avatar">` : initiale}
+                      ${avatarUrl ? `<img src="${esc(avatarUrl)}" style="width:100%;height:100%;object-fit:cover" alt="Avatar">` : esc(initiale)}
                     </div>
                     <div>
                       <label class="btn btn--ghost btn--sm" style="cursor:pointer">
@@ -420,7 +424,7 @@ function showDashboard(user) {
                   </div>
                   <div class="form-group">
                     <label class="form-label">Adresse e-mail</label>
-                    <input type="email" class="form-input" value="${email}" disabled>
+                    <input type="email" class="form-input" value="${esc(email)}" disabled>
                   </div>
                   <button class="btn btn--primary btn--sm" onclick="handleSaveProfile()">Enregistrer</button>
                 </div>
