@@ -205,7 +205,11 @@ function showAuthForm() {
           </div>
           <div class="form-group">
             <label class="form-label" for="reg-pwd">Mot de passe</label>
-            <input type="password" id="reg-pwd" class="form-input" placeholder="8 caractères minimum" required minlength="8">
+            <input type="password" id="reg-pwd" class="form-input" placeholder="8 caractères minimum" required minlength="8" oninput="updateStrength(this.value)">
+            <div id="pwd-strength-bar" style="margin-top:6px;height:4px;border-radius:2px;background:var(--wg-20);overflow:hidden">
+              <div id="pwd-strength-fill" style="height:100%;width:0;border-radius:2px;transition:width .3s,background .3s"></div>
+            </div>
+            <div id="pwd-strength-label" style="font-size:12px;color:var(--wg-50);margin-top:4px"></div>
           </div>
           <div class="form-group">
             <label class="form-label" for="reg-pwd2">Confirmer le mot de passe</label>
@@ -213,6 +217,13 @@ function showAuthForm() {
           </div>
           <button type="submit" class="btn btn--primary btn--md" id="btn-register">Créer mon compte</button>
         </form>
+
+        <!-- Succès inscription -->
+        <div id="register-success" style="display:none;text-align:center;padding:var(--gap-lg) 0">
+          <div style="font-size:48px;margin-bottom:var(--gap-md)">📬</div>
+          <div style="font-weight:600;font-size:16px;color:var(--brown-90);margin-bottom:var(--gap-sm)">Vérifiez votre boîte mail</div>
+          <p style="font-size:14px;color:var(--wg-60)">Un lien de confirmation a été envoyé à <strong id="confirm-email-display"></strong>. Cliquez sur le lien pour activer votre compte.</p>
+        </div>
       </div>
     </div>`;
 }
@@ -247,22 +258,53 @@ async function handleLogin(e) {
   }
 }
 
+function pwdScore(pwd) {
+  let score = 0;
+  if (pwd.length >= 8)  score++;
+  if (pwd.length >= 12) score++;
+  if (/[A-Z]/.test(pwd)) score++;
+  if (/[0-9]/.test(pwd)) score++;
+  if (/[^A-Za-z0-9]/.test(pwd)) score++;
+  return score;
+}
+
+function updateStrength(pwd) {
+  const score = pwdScore(pwd);
+  const fill  = document.getElementById('pwd-strength-fill');
+  const label = document.getElementById('pwd-strength-label');
+  if (!fill) return;
+  const levels = [
+    { w:'20%', color:'#e05252', text:'Très faible' },
+    { w:'40%', color:'#e08852', text:'Faible' },
+    { w:'60%', color:'#e0c052', text:'Moyen' },
+    { w:'80%', color:'#7ec052', text:'Fort' },
+    { w:'100%',color:'#27AE60', text:'Très fort' },
+  ];
+  const lvl = levels[Math.min(score, 4)];
+  fill.style.width    = pwd.length ? lvl.w : '0';
+  fill.style.background = lvl.color;
+  label.textContent   = pwd.length ? lvl.text : '';
+  label.style.color   = lvl.color;
+}
+
 async function handleRegister(e) {
   e.preventDefault();
-  const pwd = document.getElementById('reg-pwd').value;
-  const pwd2 = document.getElementById('reg-pwd2').value;
+  const email = document.getElementById('reg-email').value;
+  const pwd   = document.getElementById('reg-pwd').value;
+  const pwd2  = document.getElementById('reg-pwd2').value;
   if (pwd !== pwd2) { showError('Les mots de passe ne correspondent pas.'); return; }
+  if (pwdScore(pwd) < 2) { showError('Mot de passe trop faible. Ajoute des majuscules, chiffres ou symboles.'); return; }
   const btn = document.getElementById('btn-register');
   btn.disabled = true; btn.textContent = 'Création…';
-  const { error } = await window._sb.auth.signUp({
-    email: document.getElementById('reg-email').value,
-    password: pwd,
-  });
+  const { error } = await window._sb.auth.signUp({ email, password: pwd });
   if (error) {
     showError(error.message);
     btn.disabled = false; btn.textContent = 'Créer mon compte';
   } else {
-    location.reload();
+    document.getElementById('form-register').style.display = 'none';
+    document.getElementById('confirm-email-display').textContent = email;
+    document.getElementById('register-success').style.display = 'block';
+    document.getElementById('auth-error').classList.remove('show');
   }
 }
 
