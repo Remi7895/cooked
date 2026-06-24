@@ -310,9 +310,15 @@ async function handleRegister(e) {
 
 /* ── Dashboard ── */
 function showDashboard(user) {
-  const email = user.email;
-  const pseudo = email.split('@')[0];
-  const initiale = pseudo[0].toUpperCase();
+  const email     = user.email;
+  const meta      = user.user_metadata || {};
+  const name      = meta.full_name || email.split('@')[0];
+  const avatarUrl = meta.avatar_url || '';
+  const initiale  = name[0].toUpperCase();
+
+  const avatarHtml = avatarUrl
+    ? `<img src="${avatarUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="Avatar">`
+    : initiale;
 
   main.innerHTML = `
     <section class="section--sm">
@@ -320,9 +326,9 @@ function showDashboard(user) {
         <div class="account-layout">
           <aside class="account-sidebar">
             <div class="account-sidebar__header">
-              <div class="account-avatar">${initiale}</div>
+              <div class="account-avatar" id="sidebar-avatar">${avatarHtml}</div>
               <div>
-                <div class="account-sidebar__name">${pseudo}</div>
+                <div class="account-sidebar__name" id="sidebar-name">${name}</div>
                 <div class="account-sidebar__email">${email}</div>
               </div>
             </div>
@@ -338,7 +344,7 @@ function showDashboard(user) {
                 <i class="ti ti-settings"></i>Paramètres
               </button>
               <div class="account-nav-sep"></div>
-              <button class="account-nav-link" id="btn-logout" onclick="handleLogout()">
+              <button class="account-nav-link" onclick="handleLogout()">
                 <i class="ti ti-logout"></i>Se déconnecter
               </button>
             </nav>
@@ -363,27 +369,21 @@ function showDashboard(user) {
                   <div class="fav-card__thumb"><img src="assets/img/tagliatelle-bolognaise.avif" alt="Bolognaise"></div>
                   <div class="fav-card__body">
                     <div class="fav-card__name">Tagliatelle bolognaise</div>
-                    <div class="fav-card__actions">
-                      <a href="recette.html?id=bolognaise" class="btn btn--ghost btn--sm">Voir</a>
-                    </div>
+                    <div class="fav-card__actions"><a href="recette.html?id=bolognaise" class="btn btn--ghost btn--sm">Voir</a></div>
                   </div>
                 </div>
                 <div class="fav-card">
                   <div class="fav-card__thumb"><img src="assets/img/creme-brulee.avif" alt="Crème brûlée"></div>
                   <div class="fav-card__body">
                     <div class="fav-card__name">Crème brûlée</div>
-                    <div class="fav-card__actions">
-                      <a href="recette.html?id=creme-brulee" class="btn btn--ghost btn--sm">Voir</a>
-                    </div>
+                    <div class="fav-card__actions"><a href="recette.html?id=creme-brulee" class="btn btn--ghost btn--sm">Voir</a></div>
                   </div>
                 </div>
                 <div class="fav-card">
                   <div class="fav-card__thumb"><img src="assets/img/pancakes.avif" alt="Pancakes"></div>
                   <div class="fav-card__body">
                     <div class="fav-card__name">Pancakes</div>
-                    <div class="fav-card__actions">
-                      <a href="recette.html?id=pancakes" class="btn btn--ghost btn--sm">Voir</a>
-                    </div>
+                    <div class="fav-card__actions"><a href="recette.html?id=pancakes" class="btn btn--ghost btn--sm">Voir</a></div>
                   </div>
                 </div>
               </div>
@@ -394,13 +394,32 @@ function showDashboard(user) {
               <h1 class="panel-title">Paramètres</h1>
 
               <div class="settings-section">
-                <div class="settings-section__header">Adresse e-mail</div>
+                <div class="settings-section__header">Profil</div>
                 <div class="settings-section__body">
+                  <!-- Avatar -->
+                  <div style="display:flex;align-items:center;gap:var(--gap-lg);margin-bottom:var(--gap-md)">
+                    <div id="avatar-preview" style="width:72px;height:72px;border-radius:50%;background:var(--brown-90);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:var(--cream);overflow:hidden;flex-shrink:0">
+                      ${avatarUrl ? `<img src="${avatarUrl}" style="width:100%;height:100%;object-fit:cover" alt="Avatar">` : initiale}
+                    </div>
+                    <div>
+                      <label class="btn btn--ghost btn--sm" style="cursor:pointer">
+                        <i class="ti ti-upload"></i> Changer la photo
+                        <input type="file" id="avatar-file" accept="image/*" style="display:none" onchange="handleAvatarUpload(this)">
+                      </label>
+                      <div style="font-size:12px;color:var(--wg-50);margin-top:6px">JPG, PNG ou WEBP · max 2 Mo</div>
+                      <div id="avatar-status" style="font-size:12px;margin-top:4px"></div>
+                    </div>
+                  </div>
+                  <!-- Nom -->
                   <div class="form-group">
-                    <label class="form-label">E-mail actuel</label>
+                    <label class="form-label" for="profile-name">Nom affiché</label>
+                    <input type="text" id="profile-name" class="form-input" value="${name}" placeholder="Votre prénom ou pseudo">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Adresse e-mail</label>
                     <input type="email" class="form-input" value="${email}" disabled>
                   </div>
-                  <p style="font-size:13px;color:var(--wg-60)">Pour changer d'adresse e-mail, contactez le support.</p>
+                  <button class="btn btn--primary btn--sm" onclick="handleSaveProfile()">Enregistrer</button>
                 </div>
               </div>
 
@@ -430,7 +449,6 @@ function showDashboard(user) {
       </div>
     </section>`;
 
-  // Tab navigation
   document.querySelectorAll('.account-nav-link[data-panel]').forEach(btn => {
     btn.addEventListener('click', function () {
       document.querySelectorAll('.account-nav-link').forEach(b => b.classList.remove('active'));
@@ -445,6 +463,40 @@ function showDashboard(user) {
   if (hash && document.getElementById('panel-' + hash)) {
     document.querySelector(`[data-panel="${hash}"]`)?.click();
   }
+}
+
+async function handleAvatarUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { showToast('Image trop lourde (max 2 Mo).'); return; }
+  const status = document.getElementById('avatar-status');
+  status.textContent = 'Upload en cours…';
+  status.style.color = 'var(--wg-60)';
+  const ext  = file.name.split('.').pop();
+  const { data: { session } } = await window._sb.auth.getSession();
+  const path = `${session.user.id}/avatar.${ext}`;
+  const { error: upErr } = await window._sb.storage.from('avatars').upload(path, file, { upsert: true });
+  if (upErr) { status.textContent = 'Erreur upload.'; status.style.color = 'var(--error)'; return; }
+  const { data } = window._sb.storage.from('avatars').getPublicUrl(path);
+  const url = data.publicUrl + '?t=' + Date.now();
+  const { error: updErr } = await window._sb.auth.updateUser({ data: { avatar_url: url } });
+  if (updErr) { status.textContent = 'Erreur sauvegarde.'; status.style.color = 'var(--error)'; return; }
+  // Mettre à jour l'affichage
+  ['avatar-preview', 'sidebar-avatar'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="Avatar">`;
+  });
+  status.textContent = 'Photo mise à jour !';
+  status.style.color = 'var(--success)';
+}
+
+async function handleSaveProfile() {
+  const name = document.getElementById('profile-name').value.trim();
+  if (!name) { showToast('Le nom ne peut pas être vide.'); return; }
+  const { error } = await window._sb.auth.updateUser({ data: { full_name: name } });
+  if (error) { showToast('Erreur : ' + error.message); return; }
+  document.getElementById('sidebar-name').textContent = name;
+  showToast('Profil mis à jour !');
 }
 
 async function handleLogout() {
