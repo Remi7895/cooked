@@ -167,23 +167,25 @@ const EMOJIS = {
 const TIMES = {
   "bolognaise":"55 min","crepes":"30 min","pancakes":"20 min","pain-perdu":"15 min",
   "creme-brulee":"1h","penne-poulet":"25 min","fusilli-pesto":"15 min","pipe-rigate":"20 min",
-  "quiche-poireaux":"55 min","ratatouille":"2h30"
+  "quiche-poireaux":"55 min","ratatouille":"2h30","conchiglies-crevettes":"35 min","onion-rings":"35 min"
 };
 const IMGS = {
-  "bolognaise":"tagliatelle-bolognaise","crepes":"crepes","pancakes":"pancakes",
-  "pain-perdu":"pain-perdu","creme-brulee":"creme-brulee","penne-poulet":"penne-au-poulet",
-  "fusilli-pesto":"fusilli-pesto","pipe-rigate":"pipe-rigate","quiche-poireaux":"quiche-aux-poireaux",
-  "ratatouille":"ratatouille","magret":"magret-de-canard","ramen-maison":"nouilles-ramen",
-  "charlotte-fraises":"charlotte-aux-fraises","sushi":"sushi","tortiglioni":"totiglioni",
-  "gnocchis-core":"gnocchis-a-la-coreenne","gnocchis-chedd":"gnocchis-cheddar",
-  "flanc-mangue":"flanc-mangue-vanille","wrap-tenders":"wrap-tenders","cordon-bleu":"cordon-bleu",
-  "gnocchis-chevre":"gnocchis-chevre-miel","pates-cara":"pates-caramelisees",
-  "faux-filet":"faux-filet","gratin-crozets":"gratin-crozets","smash-burger":"double-smash-burger",
-  "saumon-patates":"saumon-au-four","crevettes-ail":"crevettes-grillees",
-  "riz-saute":"riz-saute-poulet","oeufs-saumon":"oeufs-brouilles",
-  "wrap-oeuf-bacon":"wrap-oeufs","wrap-avocat-thon":"wrap-avocat","wrap-jambon-ffrais":"wrap-jambon",
-  "wrap-oeuf-chorizo":"wrap-chorizo","wrap-saumon-fume":"wrap-saumon",
-  "wrap-poulet-moutarde":"wrap-poulet","wrap-oeuf-champignons":"wrap-champignons"
+  "bolognaise":"tagliatelle-bolognaise.avif","crepes":"crepes.avif","pancakes":"pancakes.avif",
+  "pain-perdu":"pain-perdu.avif","creme-brulee":"creme-brulee.avif","penne-poulet":"penne-au-poulet.avif",
+  "fusilli-pesto":"fusilli-pesto.avif","pipe-rigate":"pipe-rigate.avif","quiche-poireaux":"quiche-aux-poireaux.avif",
+  "ratatouille":"ratatouille.avif","magret":"magret-de-canard.avif","ramen-maison":"nouilles-ramen.avif",
+  "charlotte-fraises":"charlotte-aux-fraises.avif","sushi":"sushi.avif","tortiglioni":"totiglioni.avif",
+  "gnocchis-core":"gnocchis-a-la-coreenne.avif","gnocchis-chedd":"gnocchis-cheddar.avif",
+  "flanc-mangue":"flanc-mangue-vanille.avif","wrap-tenders":"wrap-tenders.avif","cordon-bleu":"cordon-bleu.avif",
+  "gnocchis-chevre":"gnocchis-chevre-miel.avif","pates-cara":"pates-caramelisees.avif",
+  "faux-filet":"faux-filet.avif","gratin-crozets":"gratin-crozets.avif","smash-burger":"double-smash-burger.avif",
+  "saumon-patates":"saumon-au-four.avif","crevettes-ail":"crevettes-grillees.avif",
+  "riz-saute":"riz-saute-poulet.avif","oeufs-saumon":"oeufs-brouilles.avif",
+  "wrap-oeuf-bacon":"wrap-oeufs.avif","wrap-avocat-thon":"wrap-avocat.avif","wrap-jambon-ffrais":"wrap-jambon.avif",
+  "wrap-oeuf-chorizo":"wrap-chorizo.avif","wrap-saumon-fume":"wrap-saumon.avif",
+  "wrap-poulet-moutarde":"wrap-poulet.avif","wrap-oeuf-champignons":"wrap-champignons.avif",
+  "conchiglies-crevettes":"conchiglies-crevettes.jpg",
+  "onion-rings":"oignons-rings.jpeg"
 };
 const RECIPES = [
   {id:"bolognaise",name:"Tagliatelle bolognaise",category:"Pâtes",taste:"salé",baseServings:4,
@@ -804,13 +806,66 @@ const RECIPES = [
       "Garnir la tortilla et rouler aussitôt."
     ]
   },
+  {id:"onion-rings",name:"Onion Rings Croustillants",category:"Fast-food",taste:"salé",baseServings:4,
+    description:"Une panure en double trempage pour des rings ultra-croustillants à l'extérieur, fondants à l'intérieur.",
+    ingredients:[
+      {name:"Oignons jaunes doux (gros)",qty:3,unit:""},
+      {name:"Farine T55",qty:180,unit:"g"},
+      {name:"Fécule de maïs (Maïzena)",qty:60,unit:"g"},
+      {name:"Bière blonde froide (ou eau gazeuse)",qty:300,unit:"ml"},
+      {name:"Œufs",qty:2,unit:""},
+      {name:"Chapelure panko",qty:150,unit:"g"},
+      {name:"Paprika fumé",qty:1,unit:"c. à c."},
+      {name:"Ail en poudre",qty:0.5,unit:"c. à c."},
+      {name:"Sel fin et poivre noir",qty:null,unit:""},
+      {name:"Huile de tournesol (friture)",qty:1,unit:"litre"}
+    ],
+    steps:[
+      "Épluchez les oignons et tranchez-les en rondelles d'1,5 cm d'épaisseur. Séparez délicatement les anneaux. Réservez uniquement les anneaux de taille moyenne à grande — les petits brûlent trop vite.",
+      "Dans un bol, mélangez la farine et la fécule de maïs avec le paprika fumé, l'ail en poudre, le sel et le poivre. Ajoutez la bière froide progressivement en fouettant jusqu'à obtenir une pâte lisse, légèrement épaisse (consistance crêpe épaisse). Placez au frigo 15 minutes.",
+      "Battez les œufs dans un bol. Versez le panko dans un autre. Organisez dans l'ordre : pâte à frire → œufs battus → panko. Ce double enrobage garantit le croustillant qui tient.",
+      "Versez l'huile dans une casserole haute ou friteuse. Chauffez à 175°C. Vérifiez avec un thermomètre ou un petit bout de pâte : il doit remonter en grésillant immédiatement.",
+      "Trempez chaque anneau dans la pâte à frire, laissez l'excédent s'égoutter, passez dans l'œuf battu, puis enrobez généreusement de panko en pressant légèrement. Posez sur une grille.",
+      "Plongez 4 à 5 rings à la fois pour ne pas faire chuter la température. Cuisez 2 à 3 minutes en retournant à mi-cuisson, jusqu'à coloration dorée uniforme. Égouttez sur papier absorbant, salez immédiatement à la sortie.",
+      "Servez sans attendre — posez les rings debout, empilés en tour ou disposés en éventail. Saupoudrez d'une touche de paprika fumé supplémentaire. Accompagnez d'une sauce ranch maison ou d'un aïoli au citron."
+    ]
+  },
+  {id:"conchiglies-crevettes",name:"Conchiglies aux crevettes à la méditerranéenne",category:"Fruits de mer",taste:"salé",baseServings:4,
+    description:"Une pasta généreuse, parfumée au safran et aux tomates confites, où les crevettes sauvages se glissent naturellement dans les coquillages.",
+    ingredients:[
+      {name:"Conchiglies (bronze filée)",qty:400,unit:"g"},
+      {name:"Crevettes sauvages décortiquées",qty:500,unit:"g"},
+      {name:"Tomates cerises",qty:300,unit:"g"},
+      {name:"Ail",qty:4,unit:"gousses"},
+      {name:"Échalotes",qty:2,unit:""},
+      {name:"Vin blanc sec",qty:120,unit:"ml"},
+      {name:"Huile d'olive extra vierge AOP",qty:6,unit:"c. à s."},
+      {name:"Pistils de safran",qty:0.5,unit:"c. à c."},
+      {name:"Jus de citron jaune bio",qty:2,unit:"c. à s."},
+      {name:"Persil plat frais ciselé",qty:3,unit:"c. à s."},
+      {name:"Basilic frais",qty:2,unit:"c. à s."},
+      {name:"Flocons de piment de Calabre",qty:1,unit:"c. à c."},
+      {name:"Fleur de sel et poivre noir",qty:null,unit:""},
+      {name:"Eau de cuisson des pâtes réservée",qty:100,unit:"ml"}
+    ],
+    steps:[
+      "Déposez les pistils de safran dans le vin blanc légèrement tiédi. Laissez infuser pendant toute la préparation — le safran libère sa couleur et ses arômes progressivement.",
+      "Dans une grande poêle, chauffez l'huile d'olive à feu moyen. Ajoutez les tomates cerises coupées en deux, salez légèrement. Laissez-les caraméliser sans trop remuer jusqu'à ce qu'elles soient fondantes et légèrement dorées.",
+      "Ajoutez les échalotes finement ciselées et l'ail émincé dans la poêle. Faites suer 2 minutes à feu doux jusqu'à transparence. Ajoutez les flocons de piment de Calabre.",
+      "Versez le vin blanc infusé au safran. Laissez réduire de moitié à feu moyen — la sauce prend une belle teinte dorée.",
+      "Portez une grande casserole d'eau salée à ébullition. Cuisez les conchiglies 2 minutes de moins que le temps indiqué sur le paquet. Réservez 100 ml d'eau de cuisson avant d'égoutter.",
+      "Ajoutez les crevettes dans la sauce chaude. Cuisez 2 à 3 minutes à feu vif en remuant : elles doivent être roses et nacrées, pas caoutchouteuses. Assaisonnez avec le jus de citron, la fleur de sel et le poivre.",
+      "Versez les conchiglies égouttées directement dans la poêle. Ajoutez l'eau de cuisson réservée pour créer une émulsion crémeuse. Mélangez 1 à 2 minutes à feu moyen jusqu'à ce que la sauce enrobe parfaitement les pâtes.",
+      "Hors du feu, incorporez le persil et le basilic. Dressez dans des assiettes creuses chaudes, disposez quelques crevettes en surface et terminez par un filet d'huile d'olive."
+    ]
+  },
 ];
 
 const PREMIUM_IDS = [
   "magret","ramen-maison","charlotte-fraises","sushi","tortiglioni",
   "gnocchis-core","gnocchis-chedd","flanc-mangue","wrap-tenders","cordon-bleu",
   "gnocchis-chevre","pates-cara","faux-filet","gratin-crozets","smash-burger",
-  "saumon-patates","crevettes-ail","riz-saute","oeufs-saumon","ramen"
+  "saumon-patates","crevettes-ail","riz-saute","oeufs-saumon","ramen","conchiglies-crevettes","onion-rings"
 ];
 
 (async () => {
@@ -875,7 +930,7 @@ if (!recipe) {
     container.innerHTML = `
       <div class="recipe-hero">
         ${img
-          ? `<img src="assets/img/${img}.avif" alt="${recipe.name}">`
+          ? `<img src="assets/img/${img}" alt="${recipe.name}">`
           : `<div class="recipe-hero__placeholder">${emoji}</div>`}
       </div>
       <div class="container">

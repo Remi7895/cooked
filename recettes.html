@@ -136,25 +136,27 @@ const EMOJIS = {
   "Asiatique":"🥢","Japonais":"🍱","Fast-food":"🍔","Fusion":"✨"
 };
 const IMGS = {
-  "bolognaise":"tagliatelle-bolognaise","crepes":"crepes","pancakes":"pancakes",
-  "pain-perdu":"pain-perdu","creme-brulee":"creme-brulee","penne-poulet":"penne-au-poulet",
-  "fusilli-pesto":"fusilli-pesto","pipe-rigate":"pipe-rigate","quiche-poireaux":"quiche-aux-poireaux",
-  "ratatouille":"ratatouille","magret":"magret-de-canard","ramen-maison":"nouilles-ramen",
-  "charlotte-fraises":"charlotte-aux-fraises","sushi":"sushi","tortiglioni":"totiglioni",
-  "gnocchis-core":"gnocchis-a-la-coreenne","gnocchis-chedd":"gnocchis-cheddar",
-  "flanc-mangue":"flanc-mangue-vanille","wrap-tenders":"wrap-tenders","cordon-bleu":"cordon-bleu",
-  "gnocchis-chevre":"gnocchis-chevre-miel","pates-cara":"pates-caramelisees",
-  "faux-filet":"faux-filet","gratin-crozets":"gratin-crozets","smash-burger":"double-smash-burger",
-  "saumon-patates":"saumon-au-four","crevettes-ail":"crevettes-grillees",
-  "riz-saute":"riz-saute-poulet","oeufs-saumon":"oeufs-brouilles",
-  "wrap-oeuf-bacon":"wrap-oeufs","wrap-avocat-thon":"wrap-avocat","wrap-jambon-ffrais":"wrap-jambon",
-  "wrap-oeuf-chorizo":"wrap-chorizo","wrap-saumon-fume":"wrap-saumon",
-  "wrap-poulet-moutarde":"wrap-poulet","wrap-oeuf-champignons":"wrap-champignons"
+  "bolognaise":"tagliatelle-bolognaise.avif","crepes":"crepes.avif","pancakes":"pancakes.avif",
+  "pain-perdu":"pain-perdu.avif","creme-brulee":"creme-brulee.avif","penne-poulet":"penne-au-poulet.avif",
+  "fusilli-pesto":"fusilli-pesto.avif","pipe-rigate":"pipe-rigate.avif","quiche-poireaux":"quiche-aux-poireaux.avif",
+  "ratatouille":"ratatouille.avif","magret":"magret-de-canard.avif","ramen-maison":"nouilles-ramen.avif",
+  "charlotte-fraises":"charlotte-aux-fraises.avif","sushi":"sushi.avif","tortiglioni":"totiglioni.avif",
+  "gnocchis-core":"gnocchis-a-la-coreenne.avif","gnocchis-chedd":"gnocchis-cheddar.avif",
+  "flanc-mangue":"flanc-mangue-vanille.avif","wrap-tenders":"wrap-tenders.avif","cordon-bleu":"cordon-bleu.avif",
+  "gnocchis-chevre":"gnocchis-chevre-miel.avif","pates-cara":"pates-caramelisees.avif",
+  "faux-filet":"faux-filet.avif","gratin-crozets":"gratin-crozets.avif","smash-burger":"double-smash-burger.avif",
+  "saumon-patates":"saumon-au-four.avif","crevettes-ail":"crevettes-grillees.avif",
+  "riz-saute":"riz-saute-poulet.avif","oeufs-saumon":"oeufs-brouilles.avif",
+  "wrap-oeuf-bacon":"wrap-oeufs.avif","wrap-avocat-thon":"wrap-avocat.avif","wrap-jambon-ffrais":"wrap-jambon.avif",
+  "wrap-oeuf-chorizo":"wrap-chorizo.avif","wrap-saumon-fume":"wrap-saumon.avif",
+  "wrap-poulet-moutarde":"wrap-poulet.avif","wrap-oeuf-champignons":"wrap-champignons.avif",
+  "conchiglies-crevettes":"conchiglies-crevettes.jpg",
+  "onion-rings":"oignons-rings.jpeg"
 };
 const TIMES = {
   "bolognaise":"55 min","crepes":"30 min","pancakes":"20 min","pain-perdu":"15 min",
   "creme-brulee":"1h","penne-poulet":"25 min","fusilli-pesto":"15 min","pipe-rigate":"20 min",
-  "quiche-poireaux":"55 min","ratatouille":"2h30",
+  "quiche-poireaux":"55 min","ratatouille":"2h30","conchiglies-crevettes":"35 min","onion-rings":"35 min",
   "wrap-oeuf-bacon":"15 min","wrap-avocat-thon":"10 min","wrap-jambon-ffrais":"5 min",
   "wrap-oeuf-chorizo":"20 min","wrap-saumon-fume":"10 min","wrap-poulet-moutarde":"15 min",
   "wrap-oeuf-champignons":"20 min"
@@ -163,7 +165,7 @@ const PREMIUM_IDS = [
   "magret","ramen-maison","charlotte-fraises","sushi","tortiglioni",
   "gnocchis-core","gnocchis-chedd","flanc-mangue","wrap-tenders","cordon-bleu",
   "gnocchis-chevre","pates-cara","faux-filet","gratin-crozets","smash-burger",
-  "saumon-patates","crevettes-ail","riz-saute","oeufs-saumon"
+  "saumon-patates","crevettes-ail","riz-saute","oeufs-saumon","conchiglies-crevettes","onion-rings"
 ];
 
 const RECIPES = [
@@ -203,6 +205,8 @@ const RECIPES = [
   {id:"wrap-saumon-fume",name:"Wrap saumon fumé cream cheese concombre",category:"Petit-déj",taste:"salé",baseServings:1},
   {id:"wrap-poulet-moutarde",name:"Wrap poulet moutarde épinards",category:"Petit-déj",taste:"salé",baseServings:1},
   {id:"wrap-oeuf-champignons",name:"Wrap œuf champignons gruyère",category:"Petit-déj",taste:"salé",baseServings:1},
+  {id:"conchiglies-crevettes",name:"Conchiglies aux crevettes à la méditerranéenne",category:"Fruits de mer",taste:"salé",baseServings:4},
+  {id:"onion-rings",name:"Onion Rings Croustillants",category:"Fast-food",taste:"salé",baseServings:4},
 ];
 
 let activeCat = 'Tout';
@@ -219,7 +223,7 @@ function cardHtml(r) {
   const time  = TIMES[r.id] || '';
   const img   = IMGS[r.id];
   const thumb = img
-    ? `<img class="card__img" src="assets/img/${img}.avif" alt="${r.name}" style="${premium?'filter:blur(3px)':''}" loading="lazy">`
+    ? `<img class="card__img" src="assets/img/${img}" alt="${r.name}" style="${premium?'filter:blur(3px)':''}" loading="lazy">`
     : `<div class="card__img--placeholder" style="${premium?'filter:blur(2px)':''}">${emoji}</div>`;
   return `
     <article class="card${premium?' card--locked':''}">
