@@ -379,6 +379,11 @@ if (window._sb) {
   userLoggedIn = !!session;
 }
 
+if (!userLoggedIn) {
+  location.href = 'compte.html';
+  return;
+}
+
 if (!recipe) {
   container.innerHTML = `
     <div class="container">
