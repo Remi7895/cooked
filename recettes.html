@@ -133,6 +133,19 @@ const EMOJIS = {
   "Dessert":"🍮","Petit-déj":"☕","Plat":"🍽️","Soupe":"🍜",
   "Asiatique":"🥢","Japonais":"🍱","Fast-food":"🍔","Fusion":"✨"
 };
+const IMGS = {
+  "bolognaise":"tagliatelle-bolognaise","crepes":"crepes","pancakes":"pancakes",
+  "pain-perdu":"pain-perdu","creme-brulee":"creme-brulee","penne-poulet":"penne-au-poulet",
+  "fusilli-pesto":"fusilli-pesto","pipe-rigate":"pipe-rigate","quiche-poireaux":"quiche-aux-poireaux",
+  "ratatouille":"ratatouille","magret":"magret-de-canard","ramen-maison":"nouilles-ramen",
+  "charlotte-fraises":"charlotte-aux-fraises","sushi":"sushi","tortiglioni":"totiglioni",
+  "gnocchis-core":"gnocchis-a-la-coreenne","gnocchis-chedd":"gnocchis-cheddar",
+  "flanc-mangue":"flanc-mangue-vanille","wrap-tenders":"wrap-tenders","cordon-bleu":"cordon-bleu",
+  "gnocchis-chevre":"gnocchis-chevre-miel","pates-cara":"pates-caramelisees",
+  "faux-filet":"faux-filet","gratin-crozets":"gratin-crozets","smash-burger":"double-smash-burger",
+  "saumon-patates":"saumon-au-four","crevettes-ail":"crevettes-grillees",
+  "riz-saute":"riz-saute-poulet","oeufs-saumon":"oeufs-brouilles","ramen":"nouilles-ramen"
+};
 const TIMES = {
   "bolognaise":"55 min","crepes":"30 min","pancakes":"20 min","pain-perdu":"15 min",
   "creme-brulee":"1h","penne-poulet":"25 min","fusilli-pesto":"15 min","pipe-rigate":"20 min",
@@ -189,12 +202,14 @@ function cardHtml(r) {
   const premium = isPremium(r.id);
   const emoji = EMOJIS[r.category] || '🍽️';
   const time  = TIMES[r.id] || '';
+  const img   = IMGS[r.id];
+  const thumb = img
+    ? `<img class="card__img" src="assets/img/${img}.avif" alt="${r.name}" style="${premium?'filter:blur(3px)':''}" loading="lazy">`
+    : `<div class="card__img--placeholder" style="${premium?'filter:blur(2px):''}">${emoji}</div>`;
   return `
     <article class="card${premium?' card--locked':''}">
       <div style="position:relative">
-        <div class="card__img--placeholder" style="${premium?'filter:blur(2px)':''}">
-          ${emoji}
-        </div>
+        ${thumb}
         ${premium ? `<div class="lock-overlay"><span class="badge badge--premium"><i class="ti ti-lock" aria-hidden="true"></i>Premium</span></div>` : ''}
       </div>
       <div class="card__body" style="flex:1">
@@ -210,7 +225,7 @@ function cardHtml(r) {
         </div>
         ${premium
           ? `<a href="boutique.html" class="btn btn--accent btn--sm" style="margin-top:auto">Débloquer</a>`
-          : `<a href="recettes.html?id=${r.id}" class="btn btn--ghost btn--sm" style="margin-top:auto">Voir la recette</a>`
+          : `<a href="recette.html?id=${r.id}" class="btn btn--ghost btn--sm" style="margin-top:auto">Voir la recette</a>`
         }
       </div>
     </article>`;

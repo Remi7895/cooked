@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recette — Cooked</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+  <style>
+    .recipe-hero {
+      position: relative;
+      width: 100%;
+      max-height: 480px;
+      overflow: hidden;
+      background: var(--wg-20);
+    }
+    .recipe-hero img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      display: block;
+    }
+    .recipe-hero__placeholder {
+      width: 100%;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 96px;
+      background: var(--wg-10);
+    }
+
+    .recipe-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: var(--gap-2xl);
+      padding: var(--gap-2xl) 0 var(--gap-3xl);
+    }
+
+    .recipe-header { margin-bottom: var(--gap-xl); }
+    .recipe-header__tags { display: flex; gap: var(--gap-sm); flex-wrap: wrap; margin-bottom: var(--gap-md); }
+    .recipe-header h1 { font-family: var(--font-serif); font-size: 2.2rem; margin-bottom: var(--gap-md); color: var(--brown-90); }
+    .recipe-meta {
+      display: flex;
+      gap: var(--gap-lg);
+      flex-wrap: wrap;
+      color: var(--wg-60);
+      font-size: 15px;
+    }
+    .recipe-meta span { display: flex; align-items: center; gap: 6px; }
+
+    .recipe-steps { margin-top: var(--gap-xl); }
+    .recipe-steps h2 { font-family: var(--font-serif); font-size: 1.4rem; margin-bottom: var(--gap-lg); color: var(--brown-90); }
+    .step {
+      display: flex;
+      gap: var(--gap-md);
+      margin-bottom: var(--gap-lg);
+    }
+    .step__num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--brown-90);
+      color: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .step__text { line-height: 1.6; color: var(--wg-80); }
+
+    /* Sidebar */
+    .recipe-sidebar { position: sticky; top: calc(var(--nav-h) + var(--gap-lg)); align-self: start; }
+    .sidebar-card {
+      background: var(--wg-10);
+      border: 1px solid var(--wg-20);
+      border-radius: var(--r-lg);
+      padding: var(--gap-lg);
+      margin-bottom: var(--gap-lg);
+    }
+    .sidebar-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      margin-bottom: var(--gap-md);
+      color: var(--brown-90);
+    }
+
+    .servings-ctrl {
+      display: flex;
+      align-items: center;
+      gap: var(--gap-md);
+      margin-bottom: var(--gap-lg);
+    }
+    .servings-ctrl button {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--wg-30);
+      background: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--brown-90);
+      transition: background .15s;
+    }
+    .servings-ctrl button:hover { background: var(--wg-20); }
+    .servings-ctrl span { font-size: 16px; font-weight: 600; min-width: 60px; text-align: center; color: var(--brown-90); }
+
+    .ingredient-list { list-style: none; }
+    .ingredient-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--wg-20);
+      font-size: 15px;
+      color: var(--wg-80);
+    }
+    .ingredient-list li:last-child { border-bottom: none; }
+    .ingredient-list .qty { font-weight: 600; color: var(--brown-90); }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--wg-60);
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: var(--gap-lg);
+      transition: color .15s;
+    }
+    .back-link:hover { color: var(--brown-90); }
+
+    .not-found {
+      text-align: center;
+      padding: var(--gap-3xl) 0;
+      color: var(--wg-50);
+    }
+    .not-found i { font-size: 48px; display: block; margin-bottom: var(--gap-md); }
+
+    @media (max-width: 768px) {
+      .recipe-layout { grid-template-columns: 1fr; }
+      .recipe-sidebar { position: static; }
+      .recipe-header h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<main>
+  <div id="recipe-content"></div>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script>
+const EMOJIS = {
+  "Pâtes":"🍝","Viande":"🥩","Poisson":"🐟","Fruits de mer":"🦐",
+  "Dessert":"🍮","Petit-déj":"☕","Plat":"🍽️","Soupe":"🍜",
+  "Asiatique":"🥢","Japonais":"🍱","Fast-food":"🍔","Fusion":"✨"
+};
+const TIMES = {
+  "bolognaise":"55 min","crepes":"30 min","pancakes":"20 min","pain-perdu":"15 min",
+  "creme-brulee":"1h","penne-poulet":"25 min","fusilli-pesto":"15 min","pipe-rigate":"20 min",
+  "quiche-poireaux":"55 min","ratatouille":"2h30"
+};
+const IMGS = {
+  "bolognaise":"tagliatelle-bolognaise","crepes":"crepes","pancakes":"pancakes",
+  "pain-perdu":"pain-perdu","creme-brulee":"creme-brulee","penne-poulet":"penne-au-poulet",
+  "fusilli-pesto":"fusilli-pesto","pipe-rigate":"pipe-rigate","quiche-poireaux":"quiche-aux-poireaux",
+  "ratatouille":"ratatouille","magret":"magret-de-canard","ramen-maison":"nouilles-ramen",
+  "charlotte-fraises":"charlotte-aux-fraises","sushi":"sushi","tortiglioni":"totiglioni",
+  "gnocchis-core":"gnocchis-a-la-coreenne","gnocchis-chedd":"gnocchis-cheddar",
+  "flanc-mangue":"flanc-mangue-vanille","wrap-tenders":"wrap-tenders","cordon-bleu":"cordon-bleu",
+  "gnocchis-chevre":"gnocchis-chevre-miel","pates-cara":"pates-caramelisees",
+  "faux-filet":"faux-filet","gratin-crozets":"gratin-crozets","smash-burger":"double-smash-burger",
+  "saumon-patates":"saumon-au-four","crevettes-ail":"crevettes-grillees",
+  "riz-saute":"riz-saute-poulet","oeufs-saumon":"oeufs-brouilles","ramen":"nouilles-ramen"
+};
+const RECIPES = [
+  {id:"bolognaise",name:"Tagliatelle bolognaise",category:"Pâtes",taste:"salé",baseServings:4,
+    ingredients:[
+      {name:"Tagliatelles",qty:400,unit:"g"},
+      {name:"Bœuf haché",qty:500,unit:"g"},
+      {name:"Tomates concassées",qty:400,unit:"g"},
+      {name:"Oignon",qty:1,unit:""},
+      {name:"Ail",qty:3,unit:"gousses"},
+      {name:"Concentré de tomate",qty:2,unit:"c. à s."},
+      {name:"Vin rouge",qty:10,unit:"cl"},
+      {name:"Huile d'olive",qty:2,unit:"c. à s."},
+      {name:"Sel, poivre",qty:null,unit:""}
+    ],
+    steps:[
+      "Faire revenir l'oignon émincé et l'ail écrasé dans l'huile d'olive à feu moyen pendant 5 min.",
+      "Ajouter le bœuf haché et faire dorer en émiettant bien la viande. Saler, poivrer.",
+      "Déglacer avec le vin rouge et laisser réduire 2 min.",
+      "Ajouter les tomates concassées et le concentré. Mélanger, couvrir et laisser mijoter 35 min à feu doux.",
+      "Cuire les tagliatelles al dente selon le paquet. Égoutter en réservant un peu d'eau de cuisson.",
+      "Mélanger les pâtes à la sauce, ajouter un peu d'eau de cuisson si nécessaire. Servir aussitôt."
+    ]
+  },
+  {id:"crepes",name:"Crêpes",category:"Petit-déj",taste:"sucré",baseServings:4,
+    ingredients:[
+      {name:"Farine",qty:250,unit:"g"},
+      {name:"Œufs",qty:3,unit:""},
+      {name:"Lait",qty:500,unit:"ml"},
+      {name:"Beurre fondu",qty:30,unit:"g"},
+      {name:"Sucre",qty:1,unit:"c. à s."},
+      {name:"Sel",qty:1,unit:"pincée"}
+    ],
+    steps:[
+      "Mélanger la farine, le sucre et le sel dans un saladier. Faire un puits au centre.",
+      "Ajouter les œufs dans le puits et fouetter en incorporant peu à peu le lait.",
+      "Ajouter le beurre fondu, mélanger jusqu'à obtenir une pâte lisse. Laisser reposer 30 min.",
+      "Faire chauffer une poêle légèrement beurrée. Verser une louche de pâte et incliner pour répartir.",
+      "Cuire 1 min par face jusqu'à légère dorure. Répéter avec le reste de pâte."
+    ]
+  },
+  {id:"pancakes",name:"Pancakes",category:"Petit-déj",taste:"sucré",baseServings:2,
+    ingredients:[
+      {name:"Farine",qty:150,unit:"g"},
+      {name:"Lait",qty:200,unit:"ml"},
+      {name:"Œuf",qty:1,unit:""},
+      {name:"Levure chimique",qty:1,unit:"c. à c."},
+      {name:"Sucre",qty:2,unit:"c. à s."},
+      {name:"Beurre",qty:20,unit:"g"},
+      {name:"Sel",qty:1,unit:"pincée"}
+    ],
+    steps:[
+      "Mélanger farine, levure, sucre et sel. Dans un autre bol, fouetter l'œuf avec le lait.",
+      "Incorporer le mélange liquide aux ingrédients secs sans trop travailler la pâte (quelques grumeaux c'est normal).",
+      "Faire fondre le beurre dans une poêle à feu moyen. Verser des petits cercles de pâte.",
+      "Cuire jusqu'à l'apparition de bulles en surface, puis retourner et cuire 1 min de plus.",
+      "Servir avec sirop d'érable, fruits frais ou beurre."
+    ]
+  },
+  {id:"pain-perdu",name:"Pain perdu",category:"Petit-déj",taste:"sucré",baseServings:2,
+    ingredients:[
+      {name:"Pain de mie (tranches épaisses)",qty:4,unit:"tranches"},
+      {name:"Œufs",qty:2,unit:""},
+      {name:"Lait",qty:100,unit:"ml"},
+      {name:"Sucre",qty:2,unit:"c. à s."},
+      {name:"Beurre",qty:20,unit:"g"},
+      {name:"Cannelle",qty:1,unit:"pincée"}
+    ],
+    steps:[
+      "Battre les œufs avec le lait, le sucre et la cannelle dans une assiette creuse.",
+      "Tremper chaque tranche de pain 30 secondes de chaque côté dans le mélange.",
+      "Faire fondre le beurre dans une poêle à feu moyen.",
+      "Dorer les tranches 2 à 3 min par face jusqu'à coloration. Servir chaud."
+    ]
+  },
+  {id:"creme-brulee",name:"Crème brûlée",category:"Dessert",taste:"sucré",baseServings:4,
+    ingredients:[
+      {name:"Crème liquide entière",qty:500,unit:"ml"},
+      {name:"Jaunes d'œufs",qty:5,unit:""},
+      {name:"Sucre",qty:80,unit:"g"},
+      {name:"Gousse de vanille",qty:1,unit:""},
+      {name:"Cassonade (pour brûler)",qty:4,unit:"c. à s."}
+    ],
+    steps:[
+      "Préchauffer le four à 150°C. Fendre la gousse de vanille et gratter les graines dans la crème.",
+      "Chauffer la crème à feu doux jusqu'à frémissement. Retirer la gousse.",
+      "Fouetter les jaunes avec le sucre jusqu'à blanchiment. Verser la crème chaude en filet tout en fouettant.",
+      "Répartir dans des ramequins. Cuire au bain-marie 45 min. Les crèmes doivent trembler légèrement au centre.",
+      "Laisser refroidir puis réfrigérer au moins 2h. Saupoudrer de cassonade et brûler au chalumeau."
+    ]
+  },
+  {id:"penne-poulet",name:"Penne au poulet",category:"Pâtes",taste:"salé",baseServings:2,
+    ingredients:[
+      {name:"Penne",qty:200,unit:"g"},
+      {name:"Blanc de poulet",qty:2,unit:""},
+      {name:"Crème fraîche",qty:200,unit:"ml"},
+      {name:"Parmesan râpé",qty:40,unit:"g"},
+      {name:"Ail",qty:2,unit:"gousses"},
+      {name:"Huile d'olive",qty:1,unit:"c. à s."},
+      {name:"Sel, poivre",qty:null,unit:""}
+    ],
+    steps:[
+      "Cuire les penne al dente. Réserver une louche d'eau de cuisson.",
+      "Couper le poulet en dés, assaisonner. Faire dorer dans l'huile d'olive avec l'ail 6-7 min.",
+      "Verser la crème, laisser réduire 3 min à feu moyen.",
+      "Ajouter les pâtes égouttées, le parmesan et un peu d'eau de cuisson. Mélanger et servir."
+    ]
+  },
+  {id:"fusilli-pesto",name:"Fusilli Pesto",category:"Pâtes",taste:"salé",baseServings:2,
+    ingredients:[
+      {name:"Fusilli",qty:200,unit:"g"},
+      {name:"Pesto basilic",qty:4,unit:"c. à s."},
+      {name:"Parmesan râpé",qty:30,unit:"g"},
+      {name:"Pignons de pin",qty:20,unit:"g"},
+      {name:"Sel",qty:null,unit:""}
+    ],
+    steps:[
+      "Cuire les fusilli al dente. Réserver 2 c. à s. d'eau de cuisson avant d'égoutter.",
+      "Mélanger les pâtes chaudes avec le pesto et l'eau de cuisson pour lier la sauce.",
+      "Servir avec le parmesan et les pignons dorés à sec à la poêle."
+    ]
+  },
+  {id:"pipe-rigate",name:"Pipe Rigate Crème & Jambon",category:"Pâtes",taste:"salé",baseServings:2,
+    ingredients:[
+      {name:"Pipe Rigate",qty:200,unit:"g"},
+      {name:"Jambon blanc",qty:150,unit:"g"},
+      {name:"Crème fraîche épaisse",qty:150,unit:"ml"},
+      {name:"Emmental râpé",qty:50,unit:"g"},
+      {name:"Échalote",qty:1,unit:""},
+      {name:"Beurre",qty:10,unit:"g"},
+      {name:"Sel, poivre",qty:null,unit:""}
+    ],
+    steps:[
+      "Cuire les pipe rigate al dente. Égoutter.",
+      "Faire suer l'échalote émincée dans le beurre. Ajouter le jambon coupé en dés, dorer légèrement.",
+      "Verser la crème, laisser épaissir 2 min. Ajouter l'emmental, mélanger.",
+      "Incorporer les pâtes, assaisonner et servir aussitôt."
+    ]
+  },
+  {id:"quiche-poireaux",name:"Quiche aux poireaux",category:"Plat",taste:"salé",baseServings:6,
+    ingredients:[
+      {name:"Pâte brisée",qty:1,unit:"rouleau"},
+      {name:"Poireaux",qty:3,unit:""},
+      {name:"Lardons",qty:150,unit:"g"},
+      {name:"Œufs",qty:3,unit:""},
+      {name:"Crème fraîche",qty:200,unit:"ml"},
+      {name:"Gruyère râpé",qty:80,unit:"g"},
+      {name:"Beurre",qty:20,unit:"g"},
+      {name:"Sel, poivre, muscade",qty:null,unit:""}
+    ],
+    steps:[
+      "Préchauffer le four à 180°C. Foncer un moule à tarte avec la pâte brisée et piquer le fond.",
+      "Cuire les poireaux émincés dans le beurre 10 min à feu doux. Ajouter les lardons et dorer 3 min.",
+      "Fouetter les œufs avec la crème, saler, poivrer, ajouter une pincée de muscade.",
+      "Répartir les poireaux et lardons sur le fond de tarte. Verser l'appareil, parsemer de gruyère.",
+      "Cuire 35-40 min jusqu'à dorure. Laisser tiédir avant de servir."
+    ]
+  },
+  {id:"ratatouille",name:"Ratatouille façon le film",category:"Plat",taste:"salé",baseServings:4,
+    ingredients:[
+      {name:"Courgettes",qty:2,unit:""},
+      {name:"Aubergines",qty:2,unit:""},
+      {name:"Tomates",qty:4,unit:""},
+      {name:"Poivrons rouges",qty:2,unit:""},
+      {name:"Oignon",qty:1,unit:""},
+      {name:"Ail",qty:3,unit:"gousses"},
+      {name:"Huile d'olive",qty:4,unit:"c. à s."},
+      {name:"Thym, laurier",qty:null,unit:""},
+      {name:"Sel, poivre",qty:null,unit:""}
+    ],
+    steps:[
+      "Préchauffer le four à 160°C. Faire revenir l'oignon et l'ail dans l'huile. Ajouter les poivrons en dés, cuire 10 min.",
+      "Ajouter 2 tomates concassées, thym et laurier. Faire compoter 15 min. Étaler dans un plat à four.",
+      "Couper courgettes, aubergines et tomates restantes en fines rondelles.",
+      "Disposer les rondelles en alternance sur la sauce, en les faisant se chevaucher légèrement.",
+      "Arroser d'huile d'olive, assaisonner. Couvrir de papier sulfurisé et enfourner 1h30.",
+      "Retirer le papier et cuire encore 30 min. Servir chaud ou tiède."
+    ]
+  },
+];
+
+const PREMIUM_IDS = [
+  "magret","ramen-maison","charlotte-fraises","sushi","tortiglioni",
+  "gnocchis-core","gnocchis-chedd","flanc-mangue","wrap-tenders","cordon-bleu",
+  "gnocchis-chevre","pates-cara","faux-filet","gratin-crozets","smash-burger",
+  "saumon-patates","crevettes-ail","riz-saute","oeufs-saumon","ramen"
+];
+
+const id = new URLSearchParams(location.search).get('id');
+const recipe = RECIPES.find(r => r.id === id);
+const container = document.getElementById('recipe-content');
+
+if (!recipe) {
+  container.innerHTML = `
+    <div class="container">
+      <div class="not-found">
+        <i class="ti ti-chef-hat"></i>
+        <p>Recette introuvable. <a href="recettes.html">Voir toutes les recettes</a></p>
+      </div>
+    </div>`;
+} else {
+  document.title = `${recipe.name} — Cooked`;
+  const isPremium = PREMIUM_IDS.includes(recipe.id);
+  const img = IMGS[recipe.id];
+  const time = TIMES[recipe.id] || '';
+  const emoji = EMOJIS[recipe.category] || '🍽️';
+
+  let baseServings = recipe.baseServings;
+  let currentServings = baseServings;
+
+  function qtyDisplay(qty) {
+    if (!qty) return '';
+    const ratio = currentServings / baseServings;
+    const val = qty * ratio;
+    return val % 1 === 0 ? val : val.toFixed(1);
+  }
+
+  function renderIngredients() {
+    if (!recipe.ingredients) return '<p style="color:var(--wg-50);font-size:14px">Ingrédients à venir.</p>';
+    return `<ul class="ingredient-list">
+      ${recipe.ingredients.map(i => `
+        <li>
+          <span>${i.name}</span>
+          <span class="qty">${i.qty ? qtyDisplay(i.qty) + ' ' + i.unit : i.unit || '—'}</span>
+        </li>`).join('')}
+    </ul>`;
+  }
+
+  function renderSteps() {
+    if (!recipe.steps || recipe.steps.length === 0)
+      return '<p style="color:var(--wg-50);font-size:14px">Étapes à venir.</p>';
+    return recipe.steps.map((s, i) => `
+      <div class="step">
+        <div class="step__num">${i + 1}</div>
+        <div class="step__text">${s}</div>
+      </div>`).join('');
+  }
+
+  function render() {
+    container.innerHTML = `
+      <div class="recipe-hero">
+        ${img
+          ? `<img src="assets/img/${img}.avif" alt="${recipe.name}">`
+          : `<div class="recipe-hero__placeholder">${emoji}</div>`}
+      </div>
+      <div class="container">
+        <div class="recipe-layout">
+          <div class="recipe-main">
+            <a href="recettes.html" class="back-link"><i class="ti ti-arrow-left"></i> Toutes les recettes</a>
+            <div class="recipe-header">
+              <div class="recipe-header__tags">
+                <span class="badge badge--cat">${recipe.category}</span>
+                <span class="badge badge--${recipe.taste === 'sucré' ? 'new' : 'free'}">${recipe.taste}</span>
+                ${isPremium ? '<span class="badge badge--premium"><i class="ti ti-lock"></i> Premium</span>' : '<span class="badge badge--free">Gratuit</span>'}
+              </div>
+              <h1>${recipe.name}</h1>
+              <div class="recipe-meta">
+                ${time ? `<span><i class="ti ti-clock"></i> ${time}</span>` : ''}
+                <span><i class="ti ti-users"></i> ${currentServings} pers.</span>
+              </div>
+            </div>
+            <div class="recipe-steps">
+              <h2>Préparation</h2>
+              ${renderSteps()}
+            </div>
+          </div>
+          <aside class="recipe-sidebar">
+            <div class="sidebar-card">
+              <h3>Ingrédients</h3>
+              <div class="servings-ctrl">
+                <button id="btn-minus" aria-label="Moins">−</button>
+                <span id="servings-label">${currentServings} pers.</span>
+                <button id="btn-plus" aria-label="Plus">+</button>
+              </div>
+              <div id="ingredients-list">${renderIngredients()}</div>
+            </div>
+          </aside>
+        </div>
+      </div>`;
+
+    document.getElementById('btn-minus').addEventListener('click', () => {
+      if (currentServings > 1) { currentServings--; updateServings(); }
+    });
+    document.getElementById('btn-plus').addEventListener('click', () => {
+      currentServings++;
+      updateServings();
+    });
+  }
+
+  function updateServings() {
+    document.getElementById('servings-label').textContent = currentServings + ' pers.';
+    document.getElementById('ingredients-list').innerHTML = renderIngredients();
+    container.querySelector('.recipe-meta span:last-child').innerHTML = `<i class="ti ti-users"></i> ${currentServings} pers.`;
+  }
+
+  render();
+}
+</script>
+</body>
+</html>
