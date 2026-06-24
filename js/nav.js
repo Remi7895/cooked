@@ -18,7 +18,7 @@
           ${links.map(l => `<a href="${l.href}" class="nav__link${page === l.href ? ' active' : ''}">${l.label}</a>`).join('')}
         </div>
         <div class="nav__actions">
-          <a href="compte.html" class="btn btn--ghost btn--md">
+          <a href="compte.html" class="btn btn--ghost btn--md" id="nav-account-btn">
             <i class="ti ti-user" aria-hidden="true"></i>Mon compte
           </a>
         </div>
@@ -106,6 +106,16 @@
       document.body.style.overflow = '';
     });
   });
+})();
+
+/* Auth nav update */
+(async function () {
+  if (!window._sb) return;
+  const { data: { session } } = await window._sb.auth.getSession();
+  if (!session) return;
+  const pseudo = session.user.email.split('@')[0];
+  const btn = document.getElementById('nav-account-btn');
+  if (btn) btn.innerHTML = `<i class="ti ti-user-check" aria-hidden="true"></i>${pseudo}`;
 })();
 
 /* Toast utility */

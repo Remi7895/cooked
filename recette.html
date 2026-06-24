@@ -155,6 +155,8 @@
 </main>
 
 <div id="footer-placeholder"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/auth.js"></script>
 <script src="js/nav.js"></script>
 <script>
 const EMOJIS = {
@@ -366,9 +368,16 @@ const PREMIUM_IDS = [
   "saumon-patates","crevettes-ail","riz-saute","oeufs-saumon","ramen"
 ];
 
+(async () => {
 const id = new URLSearchParams(location.search).get('id');
 const recipe = RECIPES.find(r => r.id === id);
 const container = document.getElementById('recipe-content');
+
+let userLoggedIn = false;
+if (window._sb) {
+  const { data: { session } } = await window._sb.auth.getSession();
+  userLoggedIn = !!session;
+}
 
 if (!recipe) {
   container.innerHTML = `
@@ -380,7 +389,7 @@ if (!recipe) {
     </div>`;
 } else {
   document.title = `${recipe.name} — Cooked`;
-  const isPremium = PREMIUM_IDS.includes(recipe.id);
+  const isPremium = !userLoggedIn && PREMIUM_IDS.includes(recipe.id);
   const img = IMGS[recipe.id];
   const time = TIMES[recipe.id] || '';
   const emoji = EMOJIS[recipe.category] || '🍽️';
@@ -475,6 +484,7 @@ if (!recipe) {
 
   render();
 }
+})();
 </script>
 </body>
 </html>

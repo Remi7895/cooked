@@ -126,6 +126,8 @@
 </main>
 
 <div id="footer-placeholder"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/auth.js"></script>
 <script src="js/nav.js"></script>
 <script>
 const EMOJIS = {
@@ -195,8 +197,9 @@ let activeCat = 'Tout';
 let searchVal  = '';
 let accessVal  = 'Tout';
 let sortVal    = 'default';
+let userLoggedIn = false;
 
-function isPremium(id) { return PREMIUM_IDS.includes(id); }
+function isPremium(id) { return !userLoggedIn && PREMIUM_IDS.includes(id); }
 
 function cardHtml(r) {
   const premium = isPremium(r.id);
@@ -261,7 +264,13 @@ document.getElementById('searchInput').addEventListener('input', e => { searchVa
 document.getElementById('accessFilter').addEventListener('change', e => { accessVal = e.target.value; render(); });
 document.getElementById('sortFilter').addEventListener('change', e => { sortVal = e.target.value; render(); });
 
-render();
+(async () => {
+  if (window._sb) {
+    const { data: { session } } = await window._sb.auth.getSession();
+    userLoggedIn = !!session;
+  }
+  render();
+})();
 </script>
 </body>
 </html>

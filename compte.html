@@ -7,6 +7,53 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
   <style>
+    /* ── Auth form ── */
+    .auth-wrap {
+      min-height: calc(100vh - var(--nav-h));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--gap-xl) var(--gap-md);
+      background: var(--wg-10);
+    }
+    .auth-card {
+      background: #fff;
+      border: 1px solid var(--wg-20);
+      border-radius: var(--r-xl);
+      padding: var(--gap-2xl);
+      width: 100%;
+      max-width: 420px;
+    }
+    .auth-card__logo { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700; color: var(--brown-90); margin-bottom: var(--gap-sm); }
+    .auth-card__logo span { color: var(--brown-30); }
+    .auth-card__sub { color: var(--wg-60); font-size: 15px; margin-bottom: var(--gap-xl); }
+    .auth-tabs { display: flex; border-bottom: 1px solid var(--wg-20); margin-bottom: var(--gap-xl); }
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: var(--gap-sm) 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--wg-50);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color .15s, border-color .15s;
+    }
+    .auth-tab.active { color: var(--brown-90); border-color: var(--brown-90); }
+    .auth-form { display: flex; flex-direction: column; gap: var(--gap-md); }
+    .auth-error {
+      background: #fff0f0;
+      border: 1px solid #fcd0d0;
+      border-radius: var(--r-md);
+      padding: var(--gap-sm) var(--gap-md);
+      font-size: 13px;
+      color: var(--error);
+      display: none;
+    }
+    .auth-error.show { display: block; }
+
+    /* ── Dashboard ── */
     .account-layout {
       display: grid;
       grid-template-columns: 240px 1fr;
@@ -30,110 +77,53 @@
       gap: var(--gap-md);
     }
     .account-avatar {
-      width: 44px;
-      height: 44px;
+      width: 44px; height: 44px;
       border-radius: 50%;
-      background: var(--wg-20);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      color: var(--wg-60);
-      flex-shrink: 0;
+      background: var(--brown-90);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: var(--cream);
+      flex-shrink: 0; font-weight: 700;
     }
     .account-sidebar__name { font-weight: 600; font-size: 15px; color: var(--brown-90); }
     .account-sidebar__email { font-size: 12px; color: var(--wg-60); }
     .account-nav { padding: var(--gap-sm); }
     .account-nav-link {
-      display: flex;
-      align-items: center;
-      gap: var(--gap-sm);
-      padding: 10px 12px;
-      border-radius: var(--r-md);
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--wg-70);
-      cursor: pointer;
-      transition: background .1s, color .1s;
-      text-decoration: none;
-      border: none;
-      background: none;
-      width: 100%;
-      text-align: left;
+      display: flex; align-items: center; gap: var(--gap-sm);
+      padding: 10px 12px; border-radius: var(--r-md);
+      font-size: 14px; font-weight: 500; color: var(--wg-70);
+      cursor: pointer; transition: background .1s, color .1s;
+      text-decoration: none; border: none; background: none;
+      width: 100%; text-align: left;
     }
     .account-nav-link:hover { background: var(--wg-10); color: var(--brown-90); }
     .account-nav-link.active { background: var(--wg-10); color: var(--brown-90); font-weight: 600; }
     .account-nav-link i { font-size: 16px; }
     .account-nav-sep { height: 1px; background: var(--wg-20); margin: var(--gap-sm) 0; }
-
     .account-panel { display: none; }
     .account-panel.active { display: block; }
     .panel-title { font-family: var(--font-serif); font-size: 26px; font-weight: 700; margin-bottom: var(--gap-xl); }
 
-    /* Favoris */
     .fav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--gap-md); }
-    .fav-card {
-      background: #fff;
-      border: 1px solid var(--wg-20);
-      border-radius: var(--r-lg);
-      overflow: hidden;
-    }
+    .fav-card { background: #fff; border: 1px solid var(--wg-20); border-radius: var(--r-lg); overflow: hidden; }
     .fav-card__thumb { height: 100px; background: var(--wg-10); display: flex; align-items: center; justify-content: center; font-size: 40px; }
+    .fav-card__thumb img { width: 100%; height: 100%; object-fit: cover; }
     .fav-card__body { padding: var(--gap-md); }
     .fav-card__name { font-size: 14px; font-weight: 600; margin-bottom: var(--gap-sm); }
     .fav-card__actions { display: flex; gap: var(--gap-sm); }
 
-    /* Achats */
-    .purchase-list { display: flex; flex-direction: column; gap: var(--gap-md); }
-    .purchase-item {
-      background: #fff;
-      border: 1px solid var(--wg-20);
-      border-radius: var(--r-lg);
-      padding: var(--gap-lg);
-      display: flex;
-      align-items: center;
-      gap: var(--gap-lg);
-    }
-    .purchase-item__icon { font-size: 32px; flex-shrink: 0; }
-    .purchase-item__info { flex: 1; }
-    .purchase-item__name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
-    .purchase-item__date { font-size: 13px; color: var(--wg-60); }
-    .purchase-item__price { font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--brown-90); flex-shrink: 0; }
-
-    /* Paramètres */
     .settings-section { background: #fff; border: 1px solid var(--wg-20); border-radius: var(--r-lg); overflow: hidden; margin-bottom: var(--gap-lg); }
     .settings-section__header { padding: var(--gap-md) var(--gap-lg); border-bottom: 1px solid var(--wg-20); font-weight: 600; font-size: 15px; }
     .settings-section__body { padding: var(--gap-lg); display: flex; flex-direction: column; gap: var(--gap-md); }
     .settings-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-md); }
-    .settings-toggle { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--wg-20); }
-    .settings-toggle:last-child { border-bottom: none; padding-bottom: 0; }
-    .toggle-label { font-size: 14px; font-weight: 500; }
-    .toggle-desc { font-size: 12px; color: var(--wg-60); margin-top: 2px; }
-    .toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
-    .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider {
-      position: absolute;
-      inset: 0;
-      background: var(--wg-30);
-      border-radius: 24px;
-      cursor: pointer;
-      transition: background .2s;
-    }
-    .toggle-slider::before {
-      content: '';
-      position: absolute;
-      width: 18px; height: 18px;
-      left: 3px; top: 3px;
-      background: #fff;
-      border-radius: 50%;
-      transition: transform .2s;
-    }
-    .toggle-switch input:checked + .toggle-slider { background: var(--brown-90); }
-    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
 
     .empty-panel { text-align: center; padding: var(--gap-3xl) 0; color: var(--wg-50); }
     .empty-panel i { font-size: 48px; display: block; margin-bottom: var(--gap-md); }
-    .empty-panel p { font-size: 16px; margin-bottom: var(--gap-lg); }
+
+    .badge--premium-full {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--brown-90); color: var(--cream);
+      padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 600;
+    }
 
     @media (max-width: 768px) {
       .account-layout { grid-template-columns: 1fr; }
@@ -142,6 +132,7 @@
       .account-nav-sep { display: none; }
       .account-nav-link { white-space: nowrap; flex-shrink: 0; }
       .settings-row { grid-template-columns: 1fr; }
+      .auth-card { padding: var(--gap-xl) var(--gap-lg); }
     }
   </style>
 </head>
@@ -149,205 +140,292 @@
 
 <div id="nav-placeholder"></div>
 
-<main class="section--sm">
-  <div class="container">
-    <div class="account-layout">
-
-      <!-- Sidebar -->
-      <aside class="account-sidebar">
-        <div class="account-sidebar__header">
-          <div class="account-avatar"><i class="ti ti-user" aria-hidden="true"></i></div>
-          <div>
-            <div class="account-sidebar__name">Mon compte</div>
-            <div class="account-sidebar__email">Connectez-vous</div>
-          </div>
-        </div>
-        <nav class="account-nav" aria-label="Navigation compte">
-          <button class="account-nav-link active" data-panel="favoris">
-            <i class="ti ti-heart" aria-hidden="true"></i>Mes favoris
-          </button>
-          <button class="account-nav-link" data-panel="achats">
-            <i class="ti ti-shopping-bag" aria-hidden="true"></i>Mes achats
-          </button>
-          <div class="account-nav-sep"></div>
-          <button class="account-nav-link" data-panel="parametres">
-            <i class="ti ti-settings" aria-hidden="true"></i>Paramètres
-          </button>
-        </nav>
-      </aside>
-
-      <!-- Panels -->
-      <div>
-
-        <!-- Favoris -->
-        <div class="account-panel active" id="panel-favoris">
-          <h1 class="panel-title">Mes favoris</h1>
-          <div class="fav-grid">
-            <div class="fav-card">
-              <div class="fav-card__thumb">🍝</div>
-              <div class="fav-card__body">
-                <div class="fav-card__name">Tagliatelle bolognaise</div>
-                <div class="fav-card__actions">
-                  <a href="recette.html?id=bolognaise" class="btn btn--ghost btn--sm">Voir</a>
-                  <button class="btn btn--ghost btn--sm" onclick="showToast('Retiré des favoris')">
-                    <i class="ti ti-heart-off" aria-hidden="true"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="fav-card">
-              <div class="fav-card__thumb">🥧</div>
-              <div class="fav-card__body">
-                <div class="fav-card__name">Crème brûlée</div>
-                <div class="fav-card__actions">
-                  <a href="recette.html?id=creme-brulee" class="btn btn--ghost btn--sm">Voir</a>
-                  <button class="btn btn--ghost btn--sm" onclick="showToast('Retiré des favoris')">
-                    <i class="ti ti-heart-off" aria-hidden="true"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="fav-card">
-              <div class="fav-card__thumb">🥞</div>
-              <div class="fav-card__body">
-                <div class="fav-card__name">Pancakes</div>
-                <div class="fav-card__actions">
-                  <a href="recette.html?id=pancakes" class="btn btn--ghost btn--sm">Voir</a>
-                  <button class="btn btn--ghost btn--sm" onclick="showToast('Retiré des favoris')">
-                    <i class="ti ti-heart-off" aria-hidden="true"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Achats -->
-        <div class="account-panel" id="panel-achats">
-          <h1 class="panel-title">Mes achats</h1>
-          <div class="purchase-list">
-            <div class="purchase-item">
-              <div class="purchase-item__icon">⭐</div>
-              <div class="purchase-item__info">
-                <div class="purchase-item__name">Pack Complet</div>
-                <div class="purchase-item__date">Acheté le 15 juin 2026 · Accès à vie</div>
-              </div>
-              <div class="purchase-item__price">24,90 €</div>
-              <a href="recettes.html" class="btn btn--ghost btn--sm">Accéder</a>
-            </div>
-          </div>
-          <div style="margin-top:var(--gap-xl);padding:var(--gap-lg);background:var(--wg-10);border-radius:var(--r-md)">
-            <p style="font-size:14px;color:var(--wg-60)">Besoin d'une facture ? <a href="contact.html" style="color:var(--brown-60);text-decoration:underline">Contactez-nous</a></p>
-          </div>
-        </div>
-
-        <!-- Paramètres -->
-        <div class="account-panel" id="panel-parametres">
-          <h1 class="panel-title">Paramètres</h1>
-
-          <div class="settings-section">
-            <div class="settings-section__header">Informations personnelles</div>
-            <div class="settings-section__body">
-              <div class="settings-row">
-                <div class="form-group">
-                  <label class="form-label" for="prenom">Prénom</label>
-                  <input type="text" id="prenom" class="form-input" placeholder="Votre prénom">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="nom">Nom</label>
-                  <input type="text" id="nom" class="form-input" placeholder="Votre nom">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="email">Adresse e-mail</label>
-                <input type="email" id="email" class="form-input" placeholder="votre@email.com">
-              </div>
-              <button class="btn btn--primary btn--sm" onclick="showToast('Informations enregistrées')">Enregistrer</button>
-            </div>
-          </div>
-
-          <div class="settings-section">
-            <div class="settings-section__header">Notifications</div>
-            <div class="settings-section__body">
-              <div class="settings-toggle">
-                <div>
-                  <div class="toggle-label">Newsletter hebdomadaire</div>
-                  <div class="toggle-desc">Une recette exclusive chaque jeudi</div>
-                </div>
-                <label class="toggle-switch">
-                  <input type="checkbox" checked>
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
-              <div class="settings-toggle">
-                <div>
-                  <div class="toggle-label">Nouvelles recettes</div>
-                  <div class="toggle-desc">Soyez averti à chaque ajout</div>
-                </div>
-                <label class="toggle-switch">
-                  <input type="checkbox">
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
-              <div class="settings-toggle">
-                <div>
-                  <div class="toggle-label">Offres et promotions</div>
-                  <div class="toggle-desc">Réductions sur les packs</div>
-                </div>
-                <label class="toggle-switch">
-                  <input type="checkbox" checked>
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="settings-section">
-            <div class="settings-section__header">Sécurité</div>
-            <div class="settings-section__body">
-              <div class="form-group">
-                <label class="form-label" for="pwd">Nouveau mot de passe</label>
-                <input type="password" id="pwd" class="form-input" placeholder="••••••••">
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="pwd2">Confirmer</label>
-                <input type="password" id="pwd2" class="form-input" placeholder="••••••••">
-              </div>
-              <button class="btn btn--primary btn--sm" onclick="showToast('Mot de passe modifié')">Modifier le mot de passe</button>
-            </div>
-          </div>
-
-          <div style="padding:var(--gap-lg);border:1px solid #fde8e8;border-radius:var(--r-md);background:#fff9f9">
-            <div style="font-weight:600;color:var(--error);margin-bottom:var(--gap-sm)">Zone de danger</div>
-            <p style="font-size:14px;color:var(--wg-60);margin-bottom:var(--gap-md)">La suppression de votre compte est irréversible et entraîne la perte de tous vos achats.</p>
-            <button class="btn btn--sm" style="border:1px solid var(--error);color:var(--error)" onclick="showToast('Contactez-nous pour supprimer votre compte.')">Supprimer mon compte</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
+<main id="main-content">
+  <!-- Contenu injecté par JS selon l'état de connexion -->
+  <div style="display:flex;align-items:center;justify-content:center;min-height:50vh">
+    <i class="ti ti-loader-2" style="font-size:32px;color:var(--wg-40);animation:spin 1s linear infinite"></i>
   </div>
 </main>
 
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
 <div id="footer-placeholder"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/auth.js"></script>
 <script src="js/nav.js"></script>
 <script>
-// Tab navigation
-document.querySelectorAll('.account-nav-link[data-panel]').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('.account-nav-link').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.account-panel').forEach(p => p.classList.remove('active'));
-    this.classList.add('active');
-    document.getElementById('panel-' + this.dataset.panel).classList.add('active');
-    history.replaceState(null, '', '#' + this.dataset.panel);
-  });
-});
+const main = document.getElementById('main-content');
 
-// Handle hash on load
-const hash = location.hash.replace('#', '');
-if (hash && document.getElementById('panel-' + hash)) {
-  document.querySelector(`[data-panel="${hash}"]`)?.click();
+const IMGS = {
+  "bolognaise":"tagliatelle-bolognaise","crepes":"crepes","pancakes":"pancakes",
+  "pain-perdu":"pain-perdu","creme-brulee":"creme-brulee"
+};
+
+async function init() {
+  const { data: { session } } = await window._sb.auth.getSession();
+  if (!session) {
+    showAuthForm();
+  } else {
+    showDashboard(session.user);
+  }
 }
+
+/* ── Formulaire connexion / inscription ── */
+function showAuthForm() {
+  document.title = 'Connexion — Cooked';
+  main.innerHTML = `
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-card__logo">Cooked<span>.</span></div>
+        <div class="auth-card__sub">Accédez à toutes vos recettes</div>
+        <div class="auth-tabs">
+          <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Connexion</div>
+          <div class="auth-tab" id="tab-register" onclick="switchTab('register')">Créer un compte</div>
+        </div>
+        <div id="auth-error" class="auth-error"></div>
+
+        <!-- Connexion -->
+        <form class="auth-form" id="form-login" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label class="form-label" for="login-email">Adresse e-mail</label>
+            <input type="email" id="login-email" class="form-input" placeholder="votre@email.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-pwd">Mot de passe</label>
+            <input type="password" id="login-pwd" class="form-input" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn--primary btn--md" id="btn-login">Se connecter</button>
+        </form>
+
+        <!-- Inscription -->
+        <form class="auth-form" id="form-register" style="display:none" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Adresse e-mail</label>
+            <input type="email" id="reg-email" class="form-input" placeholder="votre@email.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-pwd">Mot de passe</label>
+            <input type="password" id="reg-pwd" class="form-input" placeholder="8 caractères minimum" required minlength="8">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-pwd2">Confirmer le mot de passe</label>
+            <input type="password" id="reg-pwd2" class="form-input" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn--primary btn--md" id="btn-register">Créer mon compte</button>
+        </form>
+      </div>
+    </div>`;
+}
+
+function switchTab(tab) {
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+  document.getElementById('form-login').style.display = tab === 'login' ? 'flex' : 'none';
+  document.getElementById('form-register').style.display = tab === 'register' ? 'flex' : 'none';
+  document.getElementById('auth-error').classList.remove('show');
+}
+
+function showError(msg) {
+  const el = document.getElementById('auth-error');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-login');
+  btn.disabled = true; btn.textContent = 'Connexion…';
+  const { error } = await window._sb.auth.signInWithPassword({
+    email: document.getElementById('login-email').value,
+    password: document.getElementById('login-pwd').value,
+  });
+  if (error) {
+    showError('Email ou mot de passe incorrect.');
+    btn.disabled = false; btn.textContent = 'Se connecter';
+  } else {
+    location.reload();
+  }
+}
+
+async function handleRegister(e) {
+  e.preventDefault();
+  const pwd = document.getElementById('reg-pwd').value;
+  const pwd2 = document.getElementById('reg-pwd2').value;
+  if (pwd !== pwd2) { showError('Les mots de passe ne correspondent pas.'); return; }
+  const btn = document.getElementById('btn-register');
+  btn.disabled = true; btn.textContent = 'Création…';
+  const { error } = await window._sb.auth.signUp({
+    email: document.getElementById('reg-email').value,
+    password: pwd,
+  });
+  if (error) {
+    showError(error.message);
+    btn.disabled = false; btn.textContent = 'Créer mon compte';
+  } else {
+    location.reload();
+  }
+}
+
+/* ── Dashboard ── */
+function showDashboard(user) {
+  const email = user.email;
+  const pseudo = email.split('@')[0];
+  const initiale = pseudo[0].toUpperCase();
+
+  main.innerHTML = `
+    <section class="section--sm">
+      <div class="container">
+        <div class="account-layout">
+          <aside class="account-sidebar">
+            <div class="account-sidebar__header">
+              <div class="account-avatar">${initiale}</div>
+              <div>
+                <div class="account-sidebar__name">${pseudo}</div>
+                <div class="account-sidebar__email">${email}</div>
+              </div>
+            </div>
+            <nav class="account-nav">
+              <button class="account-nav-link active" data-panel="recettes">
+                <i class="ti ti-chef-hat"></i>Mes recettes
+              </button>
+              <button class="account-nav-link" data-panel="favoris">
+                <i class="ti ti-heart"></i>Mes favoris
+              </button>
+              <div class="account-nav-sep"></div>
+              <button class="account-nav-link" data-panel="parametres">
+                <i class="ti ti-settings"></i>Paramètres
+              </button>
+              <div class="account-nav-sep"></div>
+              <button class="account-nav-link" id="btn-logout" onclick="handleLogout()">
+                <i class="ti ti-logout"></i>Se déconnecter
+              </button>
+            </nav>
+          </aside>
+
+          <div>
+            <!-- Recettes -->
+            <div class="account-panel active" id="panel-recettes">
+              <h1 class="panel-title">Toutes les recettes</h1>
+              <p style="color:var(--wg-60);margin-bottom:var(--gap-lg)">
+                <span class="badge--premium-full"><i class="ti ti-check"></i> Accès complet</span>
+                &nbsp;Toutes les recettes sont débloquées pour votre compte.
+              </p>
+              <a href="recettes.html" class="btn btn--primary btn--md">Voir les recettes</a>
+            </div>
+
+            <!-- Favoris -->
+            <div class="account-panel" id="panel-favoris">
+              <h1 class="panel-title">Mes favoris</h1>
+              <div class="fav-grid">
+                <div class="fav-card">
+                  <div class="fav-card__thumb"><img src="assets/img/tagliatelle-bolognaise.avif" alt="Bolognaise"></div>
+                  <div class="fav-card__body">
+                    <div class="fav-card__name">Tagliatelle bolognaise</div>
+                    <div class="fav-card__actions">
+                      <a href="recette.html?id=bolognaise" class="btn btn--ghost btn--sm">Voir</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="fav-card">
+                  <div class="fav-card__thumb"><img src="assets/img/creme-brulee.avif" alt="Crème brûlée"></div>
+                  <div class="fav-card__body">
+                    <div class="fav-card__name">Crème brûlée</div>
+                    <div class="fav-card__actions">
+                      <a href="recette.html?id=creme-brulee" class="btn btn--ghost btn--sm">Voir</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="fav-card">
+                  <div class="fav-card__thumb"><img src="assets/img/pancakes.avif" alt="Pancakes"></div>
+                  <div class="fav-card__body">
+                    <div class="fav-card__name">Pancakes</div>
+                    <div class="fav-card__actions">
+                      <a href="recette.html?id=pancakes" class="btn btn--ghost btn--sm">Voir</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Paramètres -->
+            <div class="account-panel" id="panel-parametres">
+              <h1 class="panel-title">Paramètres</h1>
+
+              <div class="settings-section">
+                <div class="settings-section__header">Adresse e-mail</div>
+                <div class="settings-section__body">
+                  <div class="form-group">
+                    <label class="form-label">E-mail actuel</label>
+                    <input type="email" class="form-input" value="${email}" disabled>
+                  </div>
+                  <p style="font-size:13px;color:var(--wg-60)">Pour changer d'adresse e-mail, contactez le support.</p>
+                </div>
+              </div>
+
+              <div class="settings-section">
+                <div class="settings-section__header">Changer le mot de passe</div>
+                <div class="settings-section__body">
+                  <div class="form-group">
+                    <label class="form-label" for="pwd-new">Nouveau mot de passe</label>
+                    <input type="password" id="pwd-new" class="form-input" placeholder="8 caractères minimum" minlength="8">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="pwd-new2">Confirmer</label>
+                    <input type="password" id="pwd-new2" class="form-input" placeholder="••••••••">
+                  </div>
+                  <button class="btn btn--primary btn--sm" onclick="handleChangePassword()">Modifier le mot de passe</button>
+                </div>
+              </div>
+
+              <div style="padding:var(--gap-lg);border:1px solid #fde8e8;border-radius:var(--r-md);background:#fff9f9">
+                <div style="font-weight:600;color:var(--error);margin-bottom:var(--gap-sm)">Zone de danger</div>
+                <p style="font-size:14px;color:var(--wg-60);margin-bottom:var(--gap-md)">La suppression de votre compte est irréversible.</p>
+                <button class="btn btn--sm" style="border:1px solid var(--error);color:var(--error)" onclick="showToast('Contactez-nous pour supprimer votre compte.')">Supprimer mon compte</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>`;
+
+  // Tab navigation
+  document.querySelectorAll('.account-nav-link[data-panel]').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.account-nav-link').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.account-panel').forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('panel-' + this.dataset.panel).classList.add('active');
+      history.replaceState(null, '', '#' + this.dataset.panel);
+    });
+  });
+
+  const hash = location.hash.replace('#', '');
+  if (hash && document.getElementById('panel-' + hash)) {
+    document.querySelector(`[data-panel="${hash}"]`)?.click();
+  }
+}
+
+async function handleLogout() {
+  await window._sb.auth.signOut();
+  location.reload();
+}
+
+async function handleChangePassword() {
+  const pwd = document.getElementById('pwd-new').value;
+  const pwd2 = document.getElementById('pwd-new2').value;
+  if (!pwd) return;
+  if (pwd !== pwd2) { showToast('Les mots de passe ne correspondent pas.'); return; }
+  const { error } = await window._sb.auth.updateUser({ password: pwd });
+  if (error) {
+    showToast('Erreur : ' + error.message);
+  } else {
+    showToast('Mot de passe modifié avec succès.');
+    document.getElementById('pwd-new').value = '';
+    document.getElementById('pwd-new2').value = '';
+  }
+}
+
+init();
 </script>
 </body>
 </html>
