@@ -40,11 +40,7 @@
           <div>
             <div class="footer__logo">Cooked<span>.</span></div>
             <p class="footer__desc">Des recettes pensées pour être cuisinées, pas seulement lues. Pour les amateurs exigeants et ceux qui veulent le devenir.</p>
-            <form class="footer__newsletter" onsubmit="return handleNewsletter(event)">
-              <input type="email" placeholder="Votre e-mail" required aria-label="E-mail newsletter">
-              <button type="submit" class="btn btn--accent btn--sm">S'inscrire</button>
-            </form>
-          </div>
+            </div>
           <div>
             <div class="footer__col-title">Explorer</div>
             <nav class="footer__links" aria-label="Liens explorer">
