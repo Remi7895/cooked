@@ -165,7 +165,7 @@ const EMOJIS = {
   "Asiatique":"🥢","Japonais":"🍱","Fast-food":"🍔","Fusion":"✨"
 };
 const TIMES = {
-  "bolognaise":"55 min","crepes":"30 min","pancakes":"20 min","pain-perdu":"15 min",
+  "bolognaise":"2 h","crepes":"30 min","pancakes":"20 min","pain-perdu":"15 min",
   "creme-brulee":"1h","penne-poulet":"25 min","fusilli-pesto":"15 min","pipe-rigate":"20 min",
   "quiche-poireaux":"55 min","ratatouille":"2h30","conchiglies-crevettes":"35 min","onion-rings":"35 min"
 };
@@ -193,19 +193,20 @@ const RECIPES = [
       {name:"Tagliatelles",qty:360,unit:"g"},
       {name:"Bœuf haché (15% MG)",qty:500,unit:"g"},
       {name:"Tomates concassées",qty:400,unit:"g"},
-      {name:"Oignon",qty:2,unit:""},
-      {name:"Ail",qty:4,unit:"gousses"},
+      {name:"Oignon origine France",qty:2,unit:""},
+      {name:"Ail origine France",qty:4,unit:"gousses"},
       {name:"Concentré de tomate",qty:2,unit:"c. à s."},
       {name:"Vin rouge",qty:10,unit:"cl"},
-      {name:"Huile d'olive",qty:2,unit:"c. à s."},
+      {name:"Huile d'olive vierge extra",qty:2,unit:"c. à s."},
       {name:"Parmesan à la coupe rapé ",qty:60,unit:"g"},
       {name:"Sel, poivre",qty:null,unit:""}
     ],
     steps:[
-      "Faire revenir l'oignon émincé et l'ail écrasé dans l'huile d'olive à feu moyen pendant 5 min à feu moyen.",
+      "Faire revenir l'oignon émincé pendant 7 min à feu moyen doux dans l'huile d'olive.",
+      "Ajouter l'ail écrasé pendant 1 min.",
       "Ajouter le bœuf haché et faire dorer en émiettant bien la viande. Feu vif pendant 5 minutes.",
       "Déglacer avec le vin rouge et laisser réduire 2 min à feu moyen.",
-      "Ajouter les tomates concassées et le concentré. Mélanger, couvrir et laisser mijoter 35 min à feu doux.",
+      "Ajouter les tomates concassées, le concentré et une cueillère à café de thyme séché. Mélanger, couvrir et laisser mijoter entre 1h30 et 2h min à feu très doux.",
       "10 minutes avant la fin, cuire les tagliatelles al dente selon le paquet. Égoutter en réservant un peu d'eau de cuisson.",
       "Mélanger les pâtes à la sauce, ajouter un peu d'eau de cuisson si nécessaire. Servir aussitôt avec 60 g de parmesan râpé."
     ]
@@ -323,18 +324,19 @@ const RECIPES = [
   },
   {id:"pipe-rigate",name:"Pipe Rigate Crème & Jambon",category:"Pâtes",taste:"salé",baseServings:2,
     ingredients:[
-      {name:"Pipe Rigate",qty:200,unit:"g"},
-      {name:"Jambon blanc supérieur",qty:150,unit:"g"},
+      {name:"Pipe Rigate",qty:180,unit:"g"},
+      {name:"Jambon blanc supérieur origine France",qty:150,unit:"g"},
       {name:"Crème fraîche épaisse",qty:150,unit:"ml"},
       {name:"Emmental à la coupe  râpé",qty:50,unit:"g"},
-      {name:"Échalote",qty:1,unit:""},
-      {name:"Beurre",qty:10,unit:"g"},
+      {name:"Échalote origine France",qty:1,unit:""},
+      {name:"Beurre doux AOP",qty:10,unit:"g"},
       {name:"Sel, poivre",qty:null,unit:""}
     ],
     steps:[
       "Cuire les pipe rigate al dente. Égoutter.",
-      "Faire suer l'échalote émincée dans le beurre. Ajouter le jambon coupé en dés, dorer légèrement.",
-      "Verser la crème, laisser épaissir 2 min. Ajouter l'emmental, mélanger.",
+      "Faire suer l'échalote émincée dans le beurre à feu moyen doux.",
+      "Ajouter le jambon coupé en dés, dorer légèrement pendant 3 min à feu moyen.",
+      "Verser la crème, laisser épaissir 2 min à feu moyen. Ajouter l'emmental, mélanger.",
       "Incorporer les pâtes, assaisonner et servir aussitôt."
     ]
   },
