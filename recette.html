@@ -167,7 +167,8 @@ const EMOJIS = {
 const TIMES = {
   "bolognaise":"2 h","crepes":"30 min","pancakes":"20 min","pain-perdu":"15 min",
   "creme-brulee":"1h","penne-poulet":"25 min","fusilli-pesto":"15 min","pipe-rigate":"20 min",
-  "quiche-poireaux":"55 min","ratatouille":"2h30","conchiglies-crevettes":"35 min","onion-rings":"35 min"
+  "quiche-poireaux":"55 min","ratatouille":"2h30","conchiglies-crevettes":"35 min","onion-rings":"35 min",
+  "salade-tomates-mozza":"10 min"
 };
 const IMGS = {
   "bolognaise":"tagliatelle-bolognaise.avif","crepes":"crepes.avif","pancakes":"pancakes.avif",
@@ -236,20 +237,21 @@ const RECIPES = [
   },
   {id:"pancakes",name:"Pancakes",category:"Petit-déj",taste:"sucré",baseServings:2,
     ingredients:[
-      {name:"Farine",qty:150,unit:"g"},
-      {name:"Lait",qty:200,unit:"ml"},
-      {name:"Œuf",qty:1,unit:""},
-      {name:"Levure chimique",qty:1,unit:"c. à c."},
-      {name:"Sucre",qty:2,unit:"c. à s."},
-      {name:"Beurre",qty:20,unit:"g"},
-      {name:"Sel",qty:1,unit:"pincée"}
+      {name:"Farine T55 BIO origine France",qty:150,unit:"g"},
+      {name:"Lait entier origine France (marque qui rémunère les producteurs)",qty:200,unit:"ml"},
+      {name:"Œufs BIO Label rouge origine France",qty:2,unit:""},
+      {name:"Levure chimique",qty:5,unit:"g"},
+      {name:"Sucre de canne BIO",qty:2,unit:"c. à s."},
+      {name:"Beurre doux AOP (Min 80% MG)",qty:20,unit:"g"},
+      {name:"Sel AOP Label Rouge",qty:1,unit:"pincée"}
     ],
     steps:[
       "Mélanger farine, levure, sucre et sel. Dans un autre bol, fouetter l'œuf avec le lait.",
       "Incorporer le mélange liquide aux ingrédients secs sans trop travailler la pâte (quelques grumeaux c'est normal).",
       "Faire fondre le beurre dans une poêle à feu moyen. Verser des petits cercles de pâte.",
       "Cuire jusqu'à l'apparition de bulles en surface, puis retourner et cuire 1 min de plus.",
-      "Servir avec sirop d'érable, fruits frais ou beurre."
+      "Servir avec sirop d'érable, fruits frais.",
+      "Conservation : 3 jours au frigo à partir de la cuisson, 2 mois au congélateur (si vous ne les mangez pas dans la journée, pensez à mettre du papier sulfurisé entre les pancakes pour éviter qu'ils ne collent)."
     ]
   },
   {id:"pain-perdu",name:"Pain perdu",category:"Petit-déj",taste:"sucré",baseServings:2,
@@ -836,6 +838,24 @@ const RECIPES = [
       "Trempez chaque anneau dans la pâte à frire, laissez l'excédent s'égoutter, passez dans l'œuf battu, puis enrobez généreusement de panko en pressant légèrement. Posez sur une grille.",
       "Plongez 4 à 5 rings à la fois pour ne pas faire chuter la température. Cuisez 2 à 3 minutes en retournant à mi-cuisson, jusqu'à coloration dorée uniforme. Égouttez sur papier absorbant, salez immédiatement à la sortie.",
       "Servez sans attendre — posez les rings debout, empilés en tour ou disposés en éventail. Saupoudrez d'une touche de paprika fumé supplémentaire. Accompagnez d'une sauce ranch maison ou d'un aïoli au citron."
+    ]
+  },
+  {id:"salade-tomates-mozza",name:"Salade fraîcheur tomates, courgette & mozzarella",category:"Plat",taste:"salé",baseServings:2,
+    description:"Légère, croquante, parfaite pour l'été.",
+    ingredients:[
+      {name:"Tomates",qty:200,unit:"g"},
+      {name:"Courgette (peau gardée)",qty:0.5,unit:""},
+      {name:"Mozzarella",qty:125,unit:"g"},
+      {name:"Basilic séché",qty:1,unit:"c. à c."},
+      {name:"Huile d'olive",qty:2,unit:"c. à s."},
+      {name:"Jus de citron",qty:1,unit:"c. à s."},
+      {name:"Sel",qty:0.3,unit:"c. à c."},
+      {name:"Poivre noir",qty:0.3,unit:"c. à c."}
+    ],
+    steps:[
+      "Couper les tomates en quartiers ou en dés. Trancher la courgette en deux dans la longueur, puis en demi-lunes fines (3–4 mm) sans l'éplucher.",
+      "Mélanger les tomates et la courgette dans un saladier. Ajouter la mozzarella en morceaux (jeter le jus de la mozza).",
+      "Arroser d'huile d'olive et de jus de citron. Ajouter le basilic séché, saler et poivrer. Mélanger délicatement, puis passer 5 min au frigo avant de servir frais."
     ]
   },
   {id:"conchiglies-crevettes",name:"Conchiglies aux crevettes à la méditerranéenne",category:"Fruits de mer",taste:"salé",baseServings:4,
