@@ -168,7 +168,7 @@ const TIMES = {
   "bolognaise":"2 h","crepes":"30 min","pancakes":"20 min","pain-perdu":"15 min",
   "creme-brulee":"1h","penne-poulet":"25 min","fusilli-pesto":"15 min","pipe-rigate":"20 min",
   "quiche-poireaux":"55 min","ratatouille":"2h30","conchiglies-crevettes":"35 min","onion-rings":"35 min",
-  "salade-tomates-mozza":"10 min"
+  "salade-tomates-mozza":"10 min","lieu-noir-ecrase":"30 min"
 };
 const IMGS = {
   "bolognaise":"tagliatelle-bolognaise.avif","crepes":"crepes.avif","pancakes":"pancakes.avif",
@@ -858,6 +858,28 @@ const RECIPES = [
       "Arroser d'huile d'olive et de jus de citron. Ajouter le basilic séché, saler et poivrer. Mélanger délicatement, puis passer 5 min au frigo avant de servir frais."
     ]
   },
+  {id:"lieu-noir-ecrase",name:"Lieu noir saisi, écrasé de pommes de terre à l'ail confit",category:"Poisson",taste:"salé",baseServings:2,
+    description:"Poisson blanc saisi au beurre sur un lit d'écrasé à l'ail confit.",
+    notes:"Lance les patates en premier — elles prennent ~20 min, le poisson seulement 5. L'écrasé se garde au chaud à feu très doux avec un couvercle le temps de cuire le poisson. L'écrasé ≠ purée : écraser à la fourchette, pas au mixer, on veut du relief.",
+    ingredients:[
+      {name:"Lieu noir (filet)",qty:320,unit:"g"},
+      {name:"Pommes de terre Charlotte",qty:600,unit:"g"},
+      {name:"Ail en chemise",qty:5,unit:"gousses"},
+      {name:"Beurre",qty:50,unit:"g"},
+      {name:"Huile d'olive",qty:3,unit:"c. à s."},
+      {name:"Citron (jus)",qty:0.5,unit:""},
+      {name:"Sel et poivre",qty:null,unit:""},
+      {name:"Persil ou ciboulette haché",qty:1,unit:"c. à s."}
+    ],
+    steps:[
+      "Mettre les pommes de terre entières avec la peau et les gousses d'ail en chemise dans une casserole d'eau froide salée. Porter à ébullition puis cuire jusqu'à ce qu'un couteau entre sans résistance (~20 min).",
+      "Égoutter. Peler les pommes de terre chaudes. Presser 3 gousses d'ail confit hors de leur peau. Écraser grossièrement à la fourchette avec 30 g de beurre et 2 c. à s. d'huile d'olive. Saler, poivrer. Réserver au chaud à feu très doux.",
+      "Sécher les filets de lieu noir avec du papier absorbant. Saler et poivrer les deux faces.",
+      "Chauffer 1 c. à s. d'huile d'olive à feu vif. Saisir le lieu côté peau 3 min sans toucher.",
+      "Retourner le poisson. Ajouter 20 g de beurre et les 2 gousses d'ail restantes écrasées. Arroser en continu avec le beurre fondu pendant 2 min.",
+      "Déposer l'écrasé dans l'assiette, poser le lieu dessus. Presser le jus de citron sur le poisson, parsemer de persil ou ciboulette. Servir immédiatement."
+    ]
+  },
   {id:"conchiglies-crevettes",name:"Conchiglies aux crevettes à la méditerranéenne",category:"Fruits de mer",taste:"salé",baseServings:4,
     description:"Une pasta généreuse, parfumée au safran et aux tomates confites, où les crevettes sauvages se glissent naturellement dans les coquillages.",
     ingredients:[
@@ -981,6 +1003,7 @@ if (!recipe) {
               <h2>Préparation</h2>
               ${renderSteps()}
             </div>
+            ${recipe.notes ? `<div style="margin-top:var(--gap-xl);background:var(--wg-10);border:1px solid var(--wg-20);border-left:3px solid var(--accent,#e85d04);border-radius:var(--r-md);padding:var(--gap-md) var(--gap-lg)"><p style="font-size:14px;color:var(--wg-70);line-height:1.6"><strong style="color:var(--brown-90)">Notes</strong><br>${recipe.notes}</p></div>` : ''}
           </div>
           <aside class="recipe-sidebar">
             <div class="sidebar-card">

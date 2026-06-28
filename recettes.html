@@ -38,6 +38,22 @@
     .toolbar__select { min-width: 160px; }
     .toolbar__count { font-size: 14px; color: var(--wg-60); margin-left: auto; white-space: nowrap; }
 
+    .batch-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; white-space: nowrap; }
+    .batch-toggle input { display: none; }
+    .batch-toggle__track {
+      width: 36px; height: 20px; background: var(--wg-20); border-radius: 999px;
+      position: relative; transition: background .2s;
+    }
+    .batch-toggle__track::after {
+      content: ''; position: absolute; left: 2px; top: 2px;
+      width: 16px; height: 16px; background: #fff; border-radius: 50%;
+      transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+    .batch-toggle input:checked + .batch-toggle__track { background: var(--accent, #e85d04); }
+    .batch-toggle input:checked + .batch-toggle__track::after { transform: translateX(16px); }
+    .batch-toggle__label { font-size: 14px; color: var(--wg-70); }
+    .batch-toggle input:checked ~ .batch-toggle__label { color: var(--accent, #e85d04); font-weight: 600; }
+
     .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--gap-lg); }
     .recipe-card { display: flex; flex-direction: column; height: 100%; }
     .recipe-card a { text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%; }
@@ -113,6 +129,11 @@
         <option value="default">Par défaut</option>
         <option value="alpha">A → Z</option>
       </select>
+      <label class="batch-toggle">
+        <input type="checkbox" id="batchToggle" aria-label="Batch cooking uniquement">
+        <span class="batch-toggle__track"></span>
+        <span class="batch-toggle__label">Batch cooking</span>
+      </label>
       <span class="toolbar__count" id="countLabel"></span>
     </div>
 
@@ -159,7 +180,7 @@ const TIMES = {
   "quiche-poireaux":"55 min","ratatouille":"2h30","conchiglies-crevettes":"35 min","onion-rings":"35 min",
   "wrap-oeuf-bacon":"15 min","wrap-avocat-thon":"10 min","wrap-jambon-ffrais":"5 min",
   "wrap-oeuf-chorizo":"20 min","wrap-saumon-fume":"10 min","wrap-poulet-moutarde":"15 min",
-  "wrap-oeuf-champignons":"20 min","salade-tomates-mozza":"10 min"
+  "wrap-oeuf-champignons":"20 min","salade-tomates-mozza":"10 min","lieu-noir-ecrase":"30 min"
 };
 const PREMIUM_IDS = [
   "magret","ramen-maison","charlotte-fraises","sushi","tortiglioni",
@@ -169,34 +190,34 @@ const PREMIUM_IDS = [
 ];
 
 const RECIPES = [
-  {id:"bolognaise",name:"Tagliatelle bolognaise",category:"Pâtes",taste:"salé",baseServings:4},
-  {id:"crepes",name:"Crêpes",category:"Petit-déj",taste:"sucré",baseServings:4},
+  {id:"bolognaise",name:"Tagliatelle bolognaise",category:"Pâtes",taste:"salé",baseServings:4,batch:true},
+  {id:"crepes",name:"Crêpes",category:"Petit-déj",taste:"sucré",baseServings:4,batch:true},
   {id:"pancakes",name:"Pancakes",category:"Petit-déj",taste:"sucré",baseServings:2},
   {id:"pain-perdu",name:"Pain perdu",category:"Petit-déj",taste:"sucré",baseServings:2},
-  {id:"creme-brulee",name:"Crème brûlée",category:"Dessert",taste:"sucré",baseServings:4},
+  {id:"creme-brulee",name:"Crème brûlée",category:"Dessert",taste:"sucré",baseServings:4,batch:true},
   {id:"penne-poulet",name:"Penne au poulet",category:"Pâtes",taste:"salé",baseServings:2},
   {id:"fusilli-pesto",name:"Fusilli Pesto",category:"Pâtes",taste:"salé",baseServings:2},
   {id:"pipe-rigate",name:"Pipe Rigate Crème & Jambon",category:"Pâtes",taste:"salé",baseServings:2},
-  {id:"quiche-poireaux",name:"Quiche aux poireaux",category:"Plat",taste:"salé",baseServings:6},
-  {id:"ratatouille",name:"Ratatouille façon le film",category:"Plat",taste:"salé",baseServings:4},
+  {id:"quiche-poireaux",name:"Quiche aux poireaux",category:"Plat",taste:"salé",baseServings:6,batch:true},
+  {id:"ratatouille",name:"Ratatouille façon le film",category:"Plat",taste:"salé",baseServings:4,batch:true},
   {id:"magret",name:"Magret de canard au miel & vinaigre balsamique",category:"Viande",taste:"salé",baseServings:2},
   {id:"ramen-maison",name:"Nouilles ramen maison",category:"Soupe",taste:"salé",baseServings:2},
-  {id:"charlotte-fraises",name:"Charlotte aux fraises",category:"Dessert",taste:"sucré",baseServings:6},
+  {id:"charlotte-fraises",name:"Charlotte aux fraises",category:"Dessert",taste:"sucré",baseServings:6,batch:true},
   {id:"sushi",name:"Sushi maison",category:"Japonais",taste:"salé",baseServings:4},
   {id:"tortiglioni",name:"Tortiglioni Bacon cheddar Crispy oignons",category:"Pâtes",taste:"salé",baseServings:2},
   {id:"gnocchis-core",name:"Gnocchis à la coréenne",category:"Fusion",taste:"salé",baseServings:2},
   {id:"gnocchis-chedd",name:"Gnocchis cheddar chorizo",category:"Pâtes",taste:"salé",baseServings:2},
-  {id:"flanc-mangue",name:"Flanc mangue vanille",category:"Dessert",taste:"sucré",baseServings:4},
+  {id:"flanc-mangue",name:"Flanc mangue vanille",category:"Dessert",taste:"sucré",baseServings:4,batch:true},
   {id:"wrap-tenders",name:"Wrap tenders frites",category:"Fast-food",taste:"salé",baseServings:2},
   {id:"cordon-bleu",name:"Cordon bleu maison",category:"Viande",taste:"salé",baseServings:2},
   {id:"gnocchis-chevre",name:"Gnocchis chèvre miel lardons",category:"Pâtes",taste:"salé",baseServings:2},
   {id:"pates-cara",name:"Pâtes caramélisées",category:"Pâtes",taste:"salé",baseServings:2},
   {id:"faux-filet",name:"Faux filet",category:"Viande",taste:"salé",baseServings:2},
-  {id:"gratin-crozets",name:"Gratin Crozets poireaux",category:"Plat",taste:"salé",baseServings:4},
+  {id:"gratin-crozets",name:"Gratin Crozets poireaux",category:"Plat",taste:"salé",baseServings:4,batch:true},
   {id:"smash-burger",name:"Double smash burger",category:"Fast-food",taste:"salé",baseServings:2},
   {id:"saumon-patates",name:"Saumon au four & patates douces rôties",category:"Poisson",taste:"salé",baseServings:2},
   {id:"crevettes-ail",name:"Crevettes grillées à l'ail",category:"Fruits de mer",taste:"salé",baseServings:2},
-  {id:"riz-saute",name:"Riz sauté poulet & crevettes",category:"Asiatique",taste:"salé",baseServings:2},
+  {id:"riz-saute",name:"Riz sauté poulet & crevettes",category:"Asiatique",taste:"salé",baseServings:2,batch:true},
   {id:"oeufs-saumon",name:"Œufs brouillés au saumon et toast",category:"Petit-déj",taste:"salé",baseServings:2},
   {id:"wrap-oeuf-bacon",name:"Wrap œuf brouillé bacon cheddar",category:"Petit-déj",taste:"salé",baseServings:1},
   {id:"wrap-avocat-thon",name:"Wrap avocat thon tomate",category:"Petit-déj",taste:"salé",baseServings:1},
@@ -206,14 +227,16 @@ const RECIPES = [
   {id:"wrap-poulet-moutarde",name:"Wrap poulet moutarde épinards",category:"Petit-déj",taste:"salé",baseServings:1},
   {id:"wrap-oeuf-champignons",name:"Wrap œuf champignons gruyère",category:"Petit-déj",taste:"salé",baseServings:1},
   {id:"salade-tomates-mozza",name:"Salade fraîcheur tomates, courgette & mozzarella",category:"Plat",taste:"salé",baseServings:2},
-  {id:"conchiglies-crevettes",name:"Conchiglies aux crevettes à la méditerranéenne",category:"Fruits de mer",taste:"salé",baseServings:4},
+  {id:"lieu-noir-ecrase",name:"Lieu noir saisi, écrasé de pommes de terre à l'ail confit",category:"Poisson",taste:"salé",baseServings:2},
+  {id:"conchiglies-crevettes",name:"Conchiglies aux crevettes à la méditerranéenne",category:"Fruits de mer",taste:"salé",baseServings:4,batch:true},
   {id:"onion-rings",name:"Onion Rings Croustillants",category:"Fast-food",taste:"salé",baseServings:4},
 ];
 
-let activeCat = 'Tout';
+let activeCat  = 'Tout';
 let searchVal  = '';
 let accessVal  = 'Tout';
 let sortVal    = 'default';
+let batchOnly  = false;
 let userHasPremium = false;
 
 function isPremium(id) { return !userHasPremium && PREMIUM_IDS.includes(id); }
@@ -261,7 +284,8 @@ function render() {
     const accessOk = accessVal === 'Tout'
       || (accessVal === 'Premium' && isPremium(r.id))
       || (accessVal === 'Gratuit' && !isPremium(r.id));
-    return catOk && searchOk && accessOk;
+    const batchOk = !batchOnly || r.batch;
+    return catOk && searchOk && accessOk && batchOk;
   });
   if (sortVal === 'alpha') list.sort((a,b) => a.name.localeCompare(b.name));
   document.getElementById('recipeGrid').innerHTML = list.map(cardHtml).join('');
@@ -280,6 +304,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 document.getElementById('searchInput').addEventListener('input', e => { searchVal = e.target.value.toLowerCase().trim(); render(); });
 document.getElementById('accessFilter').addEventListener('change', e => { accessVal = e.target.value; render(); });
 document.getElementById('sortFilter').addEventListener('change', e => { sortVal = e.target.value; render(); });
+document.getElementById('batchToggle').addEventListener('change', e => { batchOnly = e.target.checked; render(); });
 
 (async () => {
   if (window._sb) {
