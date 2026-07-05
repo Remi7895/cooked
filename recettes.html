@@ -129,6 +129,13 @@
         <option value="default">Par défaut</option>
         <option value="alpha">A → Z</option>
       </select>
+      <select class="form-input toolbar__select" id="seasonFilter" aria-label="Saison">
+        <option value="Toutes">Toutes saisons</option>
+        <option value="printemps">🌱 Printemps</option>
+        <option value="été">☀️ Été</option>
+        <option value="automne">🍂 Automne</option>
+        <option value="hiver">❄️ Hiver</option>
+      </select>
       <label class="batch-toggle">
         <input type="checkbox" id="batchToggle" aria-label="Batch cooking uniquement">
         <span class="batch-toggle__track"></span>
@@ -189,53 +196,64 @@ const PREMIUM_IDS = [
   "saumon-patates","crevettes-ail","riz-saute","oeufs-saumon","conchiglies-crevettes","onion-rings"
 ];
 
+const ALL_SEASONS = ["printemps","été","automne","hiver"];
 const RECIPES = [
-  {id:"bolognaise",name:"Tagliatelle bolognaise",category:"Pâtes",taste:"salé",baseServings:4,batch:true},
-  {id:"crepes",name:"Crêpes",category:"Petit-déj",taste:"sucré",baseServings:4,batch:true},
-  {id:"pancakes",name:"Pancakes",category:"Petit-déj",taste:"sucré",baseServings:2,batch:true},
-  {id:"pain-perdu",name:"Pain perdu",category:"Petit-déj",taste:"sucré",baseServings:2},
-  {id:"creme-brulee",name:"Crème brûlée",category:"Dessert",taste:"sucré",baseServings:4},
-  {id:"penne-poulet",name:"Penne au poulet",category:"Pâtes",taste:"salé",baseServings:2,batch:true},
-  {id:"fusilli-pesto",name:"Fusilli Pesto",category:"Pâtes",taste:"salé",baseServings:2,batch:true},
-  {id:"pipe-rigate",name:"Pipe Rigate Crème & Jambon",category:"Pâtes",taste:"salé",baseServings:2,batch:true},
-  {id:"quiche-poireaux",name:"Quiche aux poireaux",category:"Plat",taste:"salé",baseServings:6,batch:true},
-  {id:"ratatouille",name:"Ratatouille façon le film",category:"Plat",taste:"salé",baseServings:4,batch:true},
-  {id:"magret",name:"Magret de canard au miel & vinaigre balsamique",category:"Viande",taste:"salé",baseServings:2},
-  {id:"ramen-maison",name:"Nouilles ramen maison",category:"Soupe",taste:"salé",baseServings:2,batch:true},
-  {id:"charlotte-fraises",name:"Charlotte aux fraises",category:"Dessert",taste:"sucré",baseServings:6},
-  {id:"sushi",name:"Sushi maison",category:"Japonais",taste:"salé",baseServings:4},
-  {id:"tortiglioni",name:"Tortiglioni Bacon cheddar Crispy oignons",category:"Pâtes",taste:"salé",baseServings:2,batch:true},
-  {id:"gnocchis-core",name:"Gnocchis à la coréenne",category:"Fusion",taste:"salé",baseServings:2,batch:true},
-  {id:"gnocchis-chedd",name:"Gnocchis cheddar chorizo",category:"Pâtes",taste:"salé",baseServings:2,batch:true},
-  {id:"flanc-mangue",name:"Flanc mangue vanille",category:"Dessert",taste:"sucré",baseServings:4,batch:true},
-  {id:"wrap-tenders",name:"Wrap tenders frites",category:"Fast-food",taste:"salé",baseServings:2},
-  {id:"cordon-bleu",name:"Cordon bleu maison",category:"Viande",taste:"salé",baseServings:2,batch:true},
-  {id:"gnocchis-chevre",name:"Gnocchis chèvre miel lardons",category:"Pâtes",taste:"salé",baseServings:2,batch:true},
-  {id:"pates-cara",name:"Pâtes caramélisées",category:"Pâtes",taste:"salé",baseServings:2,batch:true},
-  {id:"faux-filet",name:"Faux filet",category:"Viande",taste:"salé",baseServings:2},
-  {id:"gratin-crozets",name:"Gratin Crozets poireaux",category:"Plat",taste:"salé",baseServings:4,batch:true},
-  {id:"smash-burger",name:"Double smash burger",category:"Fast-food",taste:"salé",baseServings:2},
-  {id:"saumon-patates",name:"Saumon au four & patates douces rôties",category:"Poisson",taste:"salé",baseServings:2,batch:true},
-  {id:"crevettes-ail",name:"Crevettes grillées à l'ail",category:"Fruits de mer",taste:"salé",baseServings:2},
-  {id:"riz-saute",name:"Riz sauté poulet & crevettes",category:"Asiatique",taste:"salé",baseServings:2},
-  {id:"oeufs-saumon",name:"Œufs brouillés au saumon et toast",category:"Petit-déj",taste:"salé",baseServings:2},
-  {id:"wrap-oeuf-bacon",name:"Wrap œuf brouillé bacon cheddar",category:"Petit-déj",taste:"salé",baseServings:1},
-  {id:"wrap-avocat-thon",name:"Wrap avocat thon tomate",category:"Petit-déj",taste:"salé",baseServings:1},
-  {id:"wrap-jambon-ffrais",name:"Wrap jambon fromage frais roquette",category:"Petit-déj",taste:"salé",baseServings:1},
-  {id:"wrap-oeuf-chorizo",name:"Wrap œuf chorizo poivron rôti",category:"Petit-déj",taste:"salé",baseServings:1},
-  {id:"wrap-saumon-fume",name:"Wrap saumon fumé cream cheese concombre",category:"Petit-déj",taste:"salé",baseServings:1},
-  {id:"wrap-poulet-moutarde",name:"Wrap poulet moutarde épinards",category:"Petit-déj",taste:"salé",baseServings:1},
-  {id:"wrap-oeuf-champignons",name:"Wrap œuf champignons gruyère",category:"Petit-déj",taste:"salé",baseServings:1},
-  {id:"salade-tomates-mozza",name:"Salade fraîcheur tomates, courgette & mozzarella",category:"Plat",taste:"salé",baseServings:2},
-  {id:"lieu-noir-ecrase",name:"Lieu noir saisi, écrasé de pommes de terre à l'ail confit",category:"Poisson",taste:"salé",baseServings:2},
-  {id:"conchiglies-crevettes",name:"Conchiglies aux crevettes à la méditerranéenne",category:"Fruits de mer",taste:"salé",baseServings:4,batch:true},
-  {id:"onion-rings",name:"Onion Rings Croustillants",category:"Fast-food",taste:"salé",baseServings:4},
+  {id:"bolognaise",name:"Tagliatelle bolognaise",category:"Pâtes",taste:"salé",baseServings:4,batch:true,seasons:ALL_SEASONS},
+  {id:"crepes",name:"Crêpes",category:"Petit-déj",taste:"sucré",baseServings:4,batch:true,seasons:ALL_SEASONS},
+  {id:"pancakes",name:"Pancakes",category:"Petit-déj",taste:"sucré",baseServings:2,batch:true,seasons:ALL_SEASONS},
+  {id:"pain-perdu",name:"Pain perdu",category:"Petit-déj",taste:"sucré",baseServings:2,seasons:ALL_SEASONS},
+  {id:"creme-brulee",name:"Crème brûlée",category:"Dessert",taste:"sucré",baseServings:4,seasons:ALL_SEASONS},
+  {id:"penne-poulet",name:"Penne au poulet",category:"Pâtes",taste:"salé",baseServings:2,batch:true,seasons:ALL_SEASONS},
+  {id:"fusilli-pesto",name:"Fusilli Pesto",category:"Pâtes",taste:"salé",baseServings:2,batch:true,seasons:["printemps","été"]},
+  {id:"pipe-rigate",name:"Pipe Rigate Crème & Jambon",category:"Pâtes",taste:"salé",baseServings:2,batch:true,seasons:ALL_SEASONS},
+  {id:"quiche-poireaux",name:"Quiche aux poireaux",category:"Plat",taste:"salé",baseServings:6,batch:true,seasons:["automne","hiver"]},
+  {id:"ratatouille",name:"Ratatouille façon le film",category:"Plat",taste:"salé",baseServings:4,batch:true,seasons:["été"]},
+  {id:"magret",name:"Magret de canard au miel & vinaigre balsamique",category:"Viande",taste:"salé",baseServings:2,seasons:["automne","hiver"]},
+  {id:"ramen-maison",name:"Nouilles ramen maison",category:"Soupe",taste:"salé",baseServings:2,batch:true,seasons:["automne","hiver"]},
+  {id:"charlotte-fraises",name:"Charlotte aux fraises",category:"Dessert",taste:"sucré",baseServings:6,seasons:["printemps","été"]},
+  {id:"sushi",name:"Sushi maison",category:"Japonais",taste:"salé",baseServings:4,seasons:ALL_SEASONS},
+  {id:"tortiglioni",name:"Tortiglioni Bacon cheddar Crispy oignons",category:"Pâtes",taste:"salé",baseServings:2,batch:true,seasons:ALL_SEASONS},
+  {id:"gnocchis-core",name:"Gnocchis à la coréenne",category:"Fusion",taste:"salé",baseServings:2,batch:true,seasons:ALL_SEASONS},
+  {id:"gnocchis-chedd",name:"Gnocchis cheddar chorizo",category:"Pâtes",taste:"salé",baseServings:2,batch:true,seasons:ALL_SEASONS},
+  {id:"flanc-mangue",name:"Flanc mangue vanille",category:"Dessert",taste:"sucré",baseServings:4,batch:true,seasons:ALL_SEASONS},
+  {id:"wrap-tenders",name:"Wrap tenders frites",category:"Fast-food",taste:"salé",baseServings:2,seasons:ALL_SEASONS},
+  {id:"cordon-bleu",name:"Cordon bleu maison",category:"Viande",taste:"salé",baseServings:2,batch:true,seasons:ALL_SEASONS},
+  {id:"gnocchis-chevre",name:"Gnocchis chèvre miel lardons",category:"Pâtes",taste:"salé",baseServings:2,batch:true,seasons:["automne","hiver"]},
+  {id:"pates-cara",name:"Pâtes caramélisées",category:"Pâtes",taste:"salé",baseServings:2,batch:true,seasons:ALL_SEASONS},
+  {id:"faux-filet",name:"Faux filet",category:"Viande",taste:"salé",baseServings:2,seasons:ALL_SEASONS},
+  {id:"gratin-crozets",name:"Gratin Crozets poireaux",category:"Plat",taste:"salé",baseServings:4,batch:true,seasons:["automne","hiver"]},
+  {id:"smash-burger",name:"Double smash burger",category:"Fast-food",taste:"salé",baseServings:2,seasons:ALL_SEASONS},
+  {id:"saumon-patates",name:"Saumon au four & patates douces rôties",category:"Poisson",taste:"salé",baseServings:2,batch:true,seasons:["automne","hiver"]},
+  {id:"crevettes-ail",name:"Crevettes grillées à l'ail",category:"Fruits de mer",taste:"salé",baseServings:2,seasons:ALL_SEASONS},
+  {id:"riz-saute",name:"Riz sauté poulet & crevettes",category:"Asiatique",taste:"salé",baseServings:2,seasons:ALL_SEASONS},
+  {id:"oeufs-saumon",name:"Œufs brouillés au saumon et toast",category:"Petit-déj",taste:"salé",baseServings:2,seasons:ALL_SEASONS},
+  {id:"wrap-oeuf-bacon",name:"Wrap œuf brouillé bacon cheddar",category:"Petit-déj",taste:"salé",baseServings:1,seasons:ALL_SEASONS},
+  {id:"wrap-avocat-thon",name:"Wrap avocat thon tomate",category:"Petit-déj",taste:"salé",baseServings:1,seasons:ALL_SEASONS},
+  {id:"wrap-jambon-ffrais",name:"Wrap jambon fromage frais roquette",category:"Petit-déj",taste:"salé",baseServings:1,seasons:ALL_SEASONS},
+  {id:"wrap-oeuf-chorizo",name:"Wrap œuf chorizo poivron rôti",category:"Petit-déj",taste:"salé",baseServings:1,seasons:["été","automne"]},
+  {id:"wrap-saumon-fume",name:"Wrap saumon fumé cream cheese concombre",category:"Petit-déj",taste:"salé",baseServings:1,seasons:["printemps","été"]},
+  {id:"wrap-poulet-moutarde",name:"Wrap poulet moutarde épinards",category:"Petit-déj",taste:"salé",baseServings:1,seasons:["printemps","automne","hiver"]},
+  {id:"wrap-oeuf-champignons",name:"Wrap œuf champignons gruyère",category:"Petit-déj",taste:"salé",baseServings:1,seasons:ALL_SEASONS},
+  {id:"salade-tomates-mozza",name:"Salade fraîcheur tomates, courgette & mozzarella",category:"Plat",taste:"salé",baseServings:2,seasons:["été"]},
+  {id:"lieu-noir-ecrase",name:"Lieu noir saisi, écrasé de pommes de terre à l'ail confit",category:"Poisson",taste:"salé",baseServings:2,seasons:["automne","hiver"]},
+  {id:"conchiglies-crevettes",name:"Conchiglies aux crevettes à la méditerranéenne",category:"Fruits de mer",taste:"salé",baseServings:4,batch:true,seasons:["printemps","été"]},
+  {id:"onion-rings",name:"Onion Rings Croustillants",category:"Fast-food",taste:"salé",baseServings:4,seasons:ALL_SEASONS},
 ];
+
+function currentSeason() {
+  const m = new Date().getMonth() + 1;
+  if (m >= 3 && m <= 5) return "printemps";
+  if (m >= 6 && m <= 8) return "été";
+  if (m >= 9 && m <= 11) return "automne";
+  return "hiver";
+}
+const CURRENT_SEASON = currentSeason();
 
 let activeCat  = 'Tout';
 let searchVal  = '';
 let accessVal  = 'Tout';
 let sortVal    = 'default';
+let seasonVal  = 'Toutes';
 let batchOnly  = false;
 let userHasPremium = false;
 
@@ -259,6 +277,7 @@ function cardHtml(r) {
         <div class="card__tags">
           <span class="badge badge--cat">${r.category}</span>
           <span class="badge badge--${r.taste==='sucré'?'new':'free'}">${r.taste}</span>
+          ${r.seasons.includes(CURRENT_SEASON) && r.seasons.length < ALL_SEASONS.length ? '<span class="badge badge--free" title="Ingrédients de saison actuellement">🌿 De saison</span>' : ''}
           ${premium ? '' : '<span class="badge badge--free">Gratuit</span>'}
         </div>
         <div class="card__title">${r.name}</div>
@@ -285,7 +304,8 @@ function render() {
       || (accessVal === 'Premium' && isPremium(r.id))
       || (accessVal === 'Gratuit' && !isPremium(r.id));
     const batchOk = !batchOnly || r.batch;
-    return catOk && searchOk && accessOk && batchOk;
+    const seasonOk = seasonVal === 'Toutes' || r.seasons.includes(seasonVal);
+    return catOk && searchOk && accessOk && batchOk && seasonOk;
   });
   if (sortVal === 'alpha') list.sort((a,b) => a.name.localeCompare(b.name));
   document.getElementById('recipeGrid').innerHTML = list.map(cardHtml).join('');
@@ -304,6 +324,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 document.getElementById('searchInput').addEventListener('input', e => { searchVal = e.target.value.toLowerCase().trim(); render(); });
 document.getElementById('accessFilter').addEventListener('change', e => { accessVal = e.target.value; render(); });
 document.getElementById('sortFilter').addEventListener('change', e => { sortVal = e.target.value; render(); });
+document.getElementById('seasonFilter').addEventListener('change', e => { seasonVal = e.target.value; render(); });
 document.getElementById('batchToggle').addEventListener('change', e => { batchOnly = e.target.checked; render(); });
 
 (async () => {

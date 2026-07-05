@@ -313,15 +313,15 @@ const RECIPES = [
   {id:"fusilli-pesto",name:"Fusilli Pesto",category:"Pâtes",taste:"salé",baseServings:2,
     ingredients:[
       {name:"Fusilli",qty:200,unit:"g"},
-      {name:"Pesto basilic",qty:4,unit:"c. à s."},
+      {name:"Pesto basilic BIO",qty:60,unit:"g"},
       {name:"Parmesan à la coupe râpé",qty:30,unit:"g"},
-      {name:"Pignons de pin",qty:20,unit:"g"},
-      {name:"Sel Label Roug AOP",qty:null,unit:""}
+      {name:"Sel Label Rouge AOP",qty:null,unit:""}
     ],
     steps:[
       "Cuire les fusilli al dente. Réserver 2 c. à s. d'eau de cuisson avant d'égoutter.",
       "Mélanger les pâtes chaudes avec le pesto et l'eau de cuisson pour lier la sauce.",
-      "Servir avec le parmesan et les pignons dorés à sec à la poêle."
+      "Servir avec le parmesan.",
+      "Conservation : 3 jours au frigo à partir de la cuisson, 1 mois au congelateur."
     ]
   },
   {id:"pipe-rigate",name:"Pipe Rigate Crème & Jambon",category:"Pâtes",taste:"salé",baseServings:2,
@@ -345,20 +345,21 @@ const RECIPES = [
   {id:"quiche-poireaux",name:"Quiche aux poireaux",category:"Plat",taste:"salé",baseServings:6,
     ingredients:[
       {name:"Pâte brisée",qty:1,unit:"rouleau"},
-      {name:"Poireaux",qty:3,unit:""},
-      {name:"Lardons",qty:150,unit:"g"},
-      {name:"Œufs",qty:3,unit:""},
-      {name:"Crème fraîche",qty:200,unit:"ml"},
-      {name:"Gruyère râpé",qty:80,unit:"g"},
-      {name:"Beurre",qty:20,unit:"g"},
+      {name:"Poireaux BIO origine France",qty:2,unit:""},
+      {name:"Lardons BIO origine France",qty:200,unit:"g"},
+      {name:"Œufs BIO origine France",qty:3,unit:""},
+      {name:"Crème fraîche entière 30% MG",qty:200,unit:"ml"},
+      {name:"Gruyère à la coupe râpé",qty:80,unit:"g"},
+      {name:"Beurre doux AOP",qty:20,unit:"g"},
       {name:"Sel, poivre, muscade",qty:null,unit:""}
     ],
     steps:[
       "Préchauffer le four à 180°C. Foncer un moule à tarte avec la pâte brisée et piquer le fond.",
-      "Cuire les poireaux émincés dans le beurre 10 min à feu doux. Ajouter les lardons et dorer 3 min.",
+      "Cuire les poireaux émincés dans le beurre 10 min à feu doux. Ajouter les lardons et dorer 3 min à feu moyen.",
       "Fouetter les œufs avec la crème, saler, poivrer, ajouter une pincée de muscade.",
       "Répartir les poireaux et lardons sur le fond de tarte. Verser l'appareil, parsemer de gruyère.",
-      "Cuire 35-40 min jusqu'à dorure. Laisser tiédir avant de servir."
+      "Cuire 35-40 min jusqu'à dorure. Laisser tiédir avant de servir.",
+      "Conservation : 4 jours au frigo à partir de la cuisson, 2 mois au congelateur."
     ]
   },
   {id:"ratatouille",name:"Ratatouille façon le film",category:"Plat",taste:"salé",baseServings:4,
@@ -505,21 +506,38 @@ const RECIPES = [
       "Verser la crème, ajouter le cheddar et mélanger jusqu'à fonte. Servir aussitôt."
     ]
   },
-  {id:"flanc-mangue",name:"Flanc mangue vanille",category:"Dessert",taste:"sucré",baseServings:4,
+  {id:"flanc-mangue",name:"Flanc mangue vanille",category:"Dessert",taste:"sucré",baseServings:8,
     ingredients:[
-      {name:"Lait entier",qty:500,unit:"ml"},
-      {name:"Œufs",qty:3,unit:""},
-      {name:"Sucre",qty:80,unit:"g"},
-      {name:"Mangue",qty:1,unit:""},
-      {name:"Extrait de vanille",qty:1,unit:"c. à c."},
-      {name:"Sucre pour caramel",qty:60,unit:"g"}
+      {name:"Lait entier",qty:700,unit:"ml"},
+      {name:"Jaunes d'Œufs",qty:8,unit:""},
+      {name:"Oeufs entiers",qty:1,unit:""},
+      {name:"Sucre glace",qty:130,unit:"g"},
+      {name:"Mangue",qty:2,unit:""},
+      {name:"Extrait de vanille",qty:12.5,unit:"ml"},
+      {name:"Sucre de canne BIO",qty:170,unit:"g"},
+      {name:"Maïzena",qty:60,unit:"g"},
+      {name:"Beurre doux AOP (80% MG)",qty:250,unit:"g"},
+      {name:"Farine T55 BIO origine France",qty:250,unit:"g"},
+      {name:"Crème liquide entière",qty:200,unit:"ml"},
+      {name:"Poudre d'amandes",qty:35,unit:"g"}
     ],
     steps:[
-      "Faire un caramel blond avec le sucre à sec dans une casserole. Verser dans le fond des ramequins.",
-      "Mixer la chair de mangue jusqu'à obtenir une purée lisse.",
-      "Fouetter les œufs avec le sucre, ajouter le lait chaud en filet, la vanille et la purée de mangue.",
-      "Verser dans les ramequins. Cuire au bain-marie à 160°C pendant 40 min.",
-      "Laisser refroidir puis réfrigérer 2h minimum. Démouler et servir frais."
+      "Fouetter les jaunes d'œufs avec 140g de sucre de canne, ajouter la Maïzena.",
+      "Faire chauffer le lait entier à feu moyen jusqu'à frémissement (juste avant ébullition).",
+      "Verser le lait chaud en filet, puis 10ml de vanille",
+      "Faire épaissir le mélange à feu doux en remuant",
+      "Ajouter 100g de beurre et la crème liquide entière hors du feu.",
+      "Réserver au frigo avec un film alimentaire au contact.",
+      "Mélanger 30g de sucre de canne avec 5g de pectine. Chauffer les 300g de mangue mixée, ajouter le mélange sucre-pectine",
+      "Porter à ébullition 1-2 min en remuant. Ajouter les 150g de mangue en cube hors du feu.",
+      "Couler l'insert dans un moule adapté et placer au congélateur au moins 3h.",
+      "Préparer la pâte sucrée : sabler la farine, 150g de beurre et 90g de sucre glace. Ajouter la poudre d'amandes et l'œuf entier, mélanger sans trop travailler. Filmer et réserver 1h au frigo.",
+      "Foncer un moule à tarte avec la pâte sucrée, piquer le fond. Cuire à blanc 15 min à 180°C.",
+      "Verser l'appareil sur le fond de tarte précuit. Cuire 25-30 min à 160°C.",
+      "Laisser refroidir puis réfrigérer 2h.",
+      "Monter la crème liquide entière en chantilly avec 2.5ml de vanille.",
+      "Détailler la seconde mangue en tranches, décorer la tarte avec la chantilly et les tranches de mangue avant de servir.",
+      "Conservation : 4 jours au frigo et éviter de congeler le flanc pour ne pas altérer la texture."
     ]
   },
   {id:"wrap-tenders",name:"Wrap tenders frites",category:"Fast-food",taste:"salé",baseServings:2,
@@ -559,48 +577,68 @@ const RECIPES = [
     ingredients:[
       {name:"Gnocchis",qty:400,unit:"g"},
       {name:"Bûche de chèvre",qty:100,unit:"g"},
-      {name:"Lardons",qty:80,unit:"g"},
+      {name:"Lardons BIO origine France",qty:80,unit:"g"},
       {name:"Miel",qty:1,unit:"c. à s."},
       {name:"Noix concassées",qty:20,unit:"g"},
-      {name:"Beurre",qty:10,unit:"g"}
+      {name:"Beurre doux AOP (80% MG)",qty:10,unit:"g"},
+      {name:"Oignon jaune origine France", qty:1, unit:""},
+      {name:"Crème fraîche entière 30% MG", qty:60, unit:"ml"},
     ],
     steps:[
-      "Faire dorer les lardons à sec. Réserver.",
-      "Dans la même poêle avec le beurre, dorer les gnocchis 3-4 min à feu vif.",
-      "Baisser le feu, ajouter le chèvre en morceaux et le miel. Mélanger doucement.",
-      "Ajouter les lardons et les noix. Servir aussitôt."
+      "Dans le beurre, faire caraméliser l'oignon émincé dans le beurre 7 min à feu moyen.",
+      "Ajouter les lardons et les faire dorer à sec à feu moyen-vif. Réserver.",
+      "Dans la même poêle, dorer les gnocchis 3-4 min à feu vif.",
+      "Passer à feu doux, ajouter le chèvre en morceaux, la crème fraîche et le miel. Mélanger doucement.",
+      "Ajouter les lardons et les noix. Servir aussitôt.",
+      "Conservation : 2 jours au frigo à partir de la cuisson et on évite au congélateur pour ne pas altérer la texture des gnocchis."
     ]
   },
-  {id:"pates-cara",name:"Pâtes caramélisées",category:"Pâtes",taste:"salé",baseServings:2,
+  {id:"pates-cara",name:"Pipe rigate caramélisées",category:"Pâtes",taste:"salé",baseServings:2,
     ingredients:[
-      {name:"Pâtes courtes (rigatoni ou penne)",qty:200,unit:"g"},
-      {name:"Oignons",qty:3,unit:""},
-      {name:"Beurre",qty:30,unit:"g"},
-      {name:"Sucre brun",qty:1,unit:"c. à s."},
+      {name:"Pipe rigate",qty:200,unit:"g"},
+      {name:"Oignons jaunes origine France",qty:3,unit:""},
+      {name:"Beurre doux AOP (80% MG)",qty:30,unit:"g"},
+      {name:"Vin blanc sec",qty:5,unit:"cl"},
+      {name:"Ail en poudre",qty:1,unit:"c. à c."},
       {name:"Vinaigre balsamique",qty:1,unit:"c. à s."},
       {name:"Parmesan râpé",qty:40,unit:"g"},
+      {name:"Pancetta",qty:100,unit:"g"},
       {name:"Sel, poivre",qty:null,unit:""}
     ],
     steps:[
-      "Émincer finement les oignons. Les faire fondre dans le beurre à feu très doux 25-30 min en remuant souvent jusqu'à caramélisation dorée.",
-      "Ajouter le sucre et le vinaigre balsamique, cuire 2 min de plus.",
+      "Faire dorer la pancetta dans une poêle à feu moyen-vif. Réserver.",
+      "Émincer finement les oignons. Les faire fondre dans le beurre à feu moyen en remuant souvent jusqu'à caramélisation dorée.",
+      "Ajouter l'ail en poudre, mélanger 30 secondes.",
+      "Déglacer au vin blanc, laisser réduire 1-2 min, puis ajouter le vinaigre balsamique, cuire 2 min de plus.",
       "Cuire les pâtes al dente. Réserver une louche d'eau de cuisson.",
-      "Mélanger les pâtes aux oignons caramélisés avec un peu d'eau de cuisson et le parmesan. Servir."
+      "Mélanger les pâtes aux oignons caramélisés et à la pancetta avec un peu d'eau de cuisson et le parmesan. Servir."
     ]
   },
-  {id:"faux-filet",name:"Faux filet",category:"Viande",taste:"salé",baseServings:2,
+  {id:"faux-filet",name:"Faux filet et grenailles rôties",category:"Viande",taste:"salé",baseServings:2,
     ingredients:[
       {name:"Faux-filet",qty:2,unit:"(250g chacun)"},
-      {name:"Beurre",qty:30,unit:"g"},
-      {name:"Ail",qty:2,unit:"gousses"},
+      {name:"Beurre doux AOP (80% MG)",qty:50,unit:"g"},
+      {name:"Ail",qty:3,unit:"gousses"},
       {name:"Thym, romarin",qty:null,unit:""},
-      {name:"Sel, poivre",qty:null,unit:""}
+      {name:"Sel, poivre",qty:null,unit:""},
+      {name:"Pommes de terre grenaille",qty:500,unit:"g"},
+      {name:"Huile d'olive vierge extra",qty:2,unit:"c. à soupe"},
+      {name:"Échalote",qty:1,unit:""},
+      {name:"Poivre concassé",qty:2,unit:"c. à soupe"},
+      {name:"Cognac ou brandy",qty:5,unit:"cl"},
+      {name:"Crème fraîche entière (30% MG)",qty:20,unit:"cl"},
+      {name:"Fond de veau",qty:10,unit:"cl"}
     ],
     steps:[
+      "Préchauffer le four à 200°C.",
       "Sortir la viande du frigo 30 min avant cuisson. Saler et poivrer généreusement.",
+      "Laver les grenailles, les sécher.",
+      "Couper les grenailles en deux, les mélanger à l'huile d'olive, sel et poivre. Enfourner 30-35 min en retournant à mi-cuisson.",
       "Chauffer une poêle en fonte à feu très vif jusqu'à légère fumée. Saisir les steaks 2 min par face.",
-      "Baisser à feu moyen, ajouter le beurre, l'ail et les herbes. Arroser la viande avec le beurre fondu pendant 2 min.",
-      "Laisser reposer sous alu 5 min avant de servir."
+      "Baisser à feu moyen, ajouter le beurre, l'ail et les herbes. Arroser la viande avec le beurre fondu pendant 2 min. Réserver sous alu.",
+      "Dans la même poêle, faire suer l'échalote ciselée. Ajouter le poivre concassé, déglacer au cognac hors du feu puis flamber si besoin.",
+      "Ajouter le fond de veau, laisser réduire 2 min, puis incorporer la crème. Laisser épaissir 3-4 min à feu doux.",
+      "Conservation : 2 jours au frigo à partir de la cuisson et on évite au congélateur pour ne pas altérer la texture de la viande."
     ]
   },
   {id:"gratin-crozets",name:"Gratin Crozets poireaux",category:"Plat",taste:"salé",baseServings:4,
@@ -608,9 +646,9 @@ const RECIPES = [
       {name:"Crozets nature ou sarrasin",qty:250,unit:"g"},
       {name:"Poireaux",qty:2,unit:""},
       {name:"Lardons",qty:100,unit:"g"},
-      {name:"Crème fraîche épaisse",qty:200,unit:"ml"},
+      {name:"Crème fraîche entière (30% MG)",qty:200,unit:"ml"},
       {name:"Beaufort ou gruyère râpé",qty:120,unit:"g"},
-      {name:"Beurre",qty:20,unit:"g"},
+      {name:"Beurre doux AOP (80% MG)",qty:20,unit:"g"},
       {name:"Sel, poivre",qty:null,unit:""}
     ],
     steps:[
@@ -660,7 +698,7 @@ const RECIPES = [
     ingredients:[
       {name:"Crevettes crues décortiquées",qty:300,unit:"g"},
       {name:"Ail",qty:4,unit:"gousses"},
-      {name:"Beurre",qty:30,unit:"g"},
+      {name:"Beurre doux AOP (80% MG)",qty:30,unit:"g"},
       {name:"Huile d'olive",qty:1,unit:"c. à s."},
       {name:"Persil frais",qty:null,unit:""},
       {name:"Piment d'Espelette",qty:1,unit:"pincée"},
