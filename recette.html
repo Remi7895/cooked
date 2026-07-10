@@ -310,7 +310,7 @@ const RECIPES = [
       "Ajouter les pâtes égouttées, mélanger. Hors du feu, incorporer le parmesan. Servir avec le persil."
     ]
   },
-{id:"fusilli-pesto",name:"Fusilli Pesto",category:"Pâtes",taste:"salé",baseServings:2,
+{id:"fusilli-pesto",name:"Fusilli Pesto au Poulet grillé",category:"Pâtes",taste:"salé",baseServings:2,
     ingredients:[
       {name:"Fusilli",qty:200,unit:"g"},
       {name:"Pesto basilic BIO",qty:60,unit:"g"},
@@ -368,7 +368,7 @@ const RECIPES = [
       "Conservation : 4 jours au frigo à partir de la cuisson, 2 mois au congelateur."
     ]
   },
-  {id:"ratatouille",name:"Ratatouille façon le film",category:"Plat",taste:"salé",baseServings:4,
+  {id:"ratatouille",name:"Ratatouille au poisson blanc grillé",category:"Plat",taste:"salé",baseServings:4,
     ingredients:[
       {name:"Courgettes",qty:2,unit:""},
       {name:"Aubergines",qty:2,unit:""},
@@ -378,7 +378,10 @@ const RECIPES = [
       {name:"Ail",qty:3,unit:"gousses"},
       {name:"Huile d'olive",qty:4,unit:"c. à s."},
       {name:"Thym, laurier",qty:null,unit:""},
-      {name:"Sel, poivre",qty:null,unit:""}
+      {name:"Sel, poivre",qty:null,unit:""},
+      {name:"Filets de poisson blanc (cabillaud, dorade ou bar)",qty:4,unit:""},
+      {name:"Huile d'olive (poisson)",qty:1,unit:"c. à s."},
+      {name:"Citron",qty:1,unit:""}
     ],
     steps:[
       "Préchauffer le four à 160°C. Faire revenir l'oignon et l'ail dans l'huile. Ajouter les poivrons en dés, cuire 10 min.",
@@ -386,7 +389,9 @@ const RECIPES = [
       "Couper courgettes, aubergines et tomates restantes en fines rondelles.",
       "Disposer les rondelles en alternance sur la sauce, en les faisant se chevaucher légèrement.",
       "Arroser d'huile d'olive, assaisonner. Couvrir de papier sulfurisé et enfourner 1h30.",
-      "Retirer le papier et cuire encore 30 min. Servir chaud ou tiède."
+      "Retirer le papier et cuire encore 30 min.",
+      "10 min avant la fin, assaisonner les filets de poisson, arroser d'huile d'olive et griller à la poêle ou au four (grill) 3-4 min de chaque côté selon l'épaisseur.",
+      "Servir la ratatouille chaude ou tiède avec le poisson grillé, un filet de citron pressé dessus."
     ]
   },
   {id:"magret",name:"Magret de canard au miel & vinaigre balsamique",category:"Viande",taste:"salé",baseServings:2,
@@ -951,6 +956,40 @@ const RECIPES = [
       "Ajoutez les crevettes dans la sauce chaude. Cuisez 2 à 3 minutes à feu vif en remuant : elles doivent être roses et nacrées, pas caoutchouteuses. Assaisonnez avec le jus de citron, la fleur de sel et le poivre.",
       "Versez les conchiglies égouttées directement dans la poêle. Ajoutez l'eau de cuisson réservée pour créer une émulsion crémeuse. Mélangez 1 à 2 minutes à feu moyen jusqu'à ce que la sauce enrobe parfaitement les pâtes.",
       "Hors du feu, incorporez le persil et le basilic. Dressez dans des assiettes creuses chaudes, disposez quelques crevettes en surface et terminez par un filet d'huile d'olive."
+    ]
+  },
+  {id:"lasagne",name:"Lasagne bolognaise gratinée",category:"Pâtes",taste:"salé",baseServings:6,
+    description:"Une lasagne généreuse et bien gourmande, sauce bolognaise mijotée longuement, béchamel maison et double couche de fromage gratiné.",
+    ingredients:[
+      {name:"Plaques de lasagne fraîches",qty:12,unit:""},
+      {name:"Bœuf haché (15% MG)",qty:600,unit:"g"},
+      {name:"Chair à saucisse",qty:200,unit:"g"},
+      {name:"Tomates concassées",qty:800,unit:"g"},
+      {name:"Concentré de tomate",qty:3,unit:"c. à s."},
+      {name:"Oignon",qty:2,unit:""},
+      {name:"Carotte",qty:1,unit:""},
+      {name:"Ail",qty:4,unit:"gousses"},
+      {name:"Vin rouge",qty:15,unit:"cl"},
+      {name:"Huile d'olive",qty:2,unit:"c. à s."},
+      {name:"Beurre",qty:70,unit:"g"},
+      {name:"Farine",qty:70,unit:"g"},
+      {name:"Lait entier",qty:1,unit:"litre"},
+      {name:"Muscade",qty:1,unit:"pincée"},
+      {name:"Mozzarella râpée",qty:200,unit:"g"},
+      {name:"Parmesan râpé",qty:150,unit:"g"},
+      {name:"Sel, poivre",qty:null,unit:""}
+    ],
+    steps:[
+      "Faire revenir l'oignon, la carotte et l'ail finement émincés dans l'huile d'olive pendant 8 min à feu moyen doux.",
+      "Ajouter le bœuf haché et la chair à saucisse, faire dorer en émiettant bien à feu vif 5 min.",
+      "Déglacer au vin rouge, laisser réduire 2 min. Ajouter les tomates concassées et le concentré de tomate.",
+      "Couvrir et laisser mijoter 1h30 à feu très doux en remuant de temps en temps. Saler, poivrer.",
+      "Pendant ce temps, préparer la béchamel : faire fondre le beurre, ajouter la farine en une fois et fouetter 1 min à feu doux.",
+      "Verser le lait progressivement en fouettant sans arrêt pour éviter les grumeaux. Laisser épaissir 5 min à feu moyen. Ajouter la muscade, saler.",
+      "Préchauffer le four à 180°C. Dans un plat à gratin, alterner : sauce bolognaise, plaques de lasagne, béchamel, un peu de mozzarella. Répéter 3 fois.",
+      "Terminer par une couche généreuse de béchamel, puis parsemer de mozzarella et de parmesan sur toute la surface.",
+      "Enfourner 40 à 45 min jusqu'à ce que le dessus soit bien doré et gratiné. Laisser reposer 10 min avant de découper et servir.",
+      "Conservation : 3 jours au frigo, 2 mois au congélateur (portions individuelles, décongélation puis four 20 min à 180°C)."
     ]
   },
 ];
