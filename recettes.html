@@ -278,6 +278,7 @@ function cardHtml(r) {
           <span class="badge badge--cat">${r.category}</span>
           <span class="badge badge--${r.taste==='sucré'?'new':'free'}">${r.taste}</span>
           ${r.seasons.includes(CURRENT_SEASON) && r.seasons.length < ALL_SEASONS.length ? '<span class="badge badge--free" title="Ingrédients de saison actuellement">🌿 De saison</span>' : ''}
+          ${r.batch ? '<span class="badge badge--free" title="Cette recette se congèle bien">❄️ Se congèle</span>' : ''}
           ${premium ? '' : '<span class="badge badge--free">Gratuit</span>'}
         </div>
         <div class="card__title">${r.name}</div>
