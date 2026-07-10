@@ -257,12 +257,22 @@ function currentSeason() {
 }
 const CURRENT_SEASON = currentSeason();
 
-let activeCat  = 'Tout';
-let searchVal  = '';
-let accessVal  = 'Tout';
-let sortVal    = 'default';
-let seasonVal  = 'Toutes';
-let batchOnly  = false;
+const FILTERS_KEY = 'recettesFilters';
+function loadFilters() {
+  try { return JSON.parse(sessionStorage.getItem(FILTERS_KEY)) || {}; }
+  catch { return {}; }
+}
+function saveFilters() {
+  sessionStorage.setItem(FILTERS_KEY, JSON.stringify({ activeCat, searchVal, accessVal, sortVal, seasonVal, batchOnly }));
+}
+const savedFilters = loadFilters();
+
+let activeCat  = savedFilters.activeCat  ?? 'Tout';
+let searchVal  = savedFilters.searchVal  ?? '';
+let accessVal  = savedFilters.accessVal  ?? 'Tout';
+let sortVal    = savedFilters.sortVal    ?? 'default';
+let seasonVal  = savedFilters.seasonVal  ?? 'Toutes';
+let batchOnly  = savedFilters.batchOnly  ?? false;
 let userHasPremium = false;
 
 function isPremium(id) { return !userHasPremium && PREMIUM_IDS.includes(id); }
@@ -327,14 +337,25 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     activeCat = btn.dataset.cat;
+    saveFilters();
     render();
   });
 });
-document.getElementById('searchInput').addEventListener('input', e => { searchVal = e.target.value.toLowerCase().trim(); render(); });
-document.getElementById('accessFilter').addEventListener('change', e => { accessVal = e.target.value; render(); });
-document.getElementById('sortFilter').addEventListener('change', e => { sortVal = e.target.value; render(); });
-document.getElementById('seasonFilter').addEventListener('change', e => { seasonVal = e.target.value; render(); });
-document.getElementById('batchToggle').addEventListener('change', e => { batchOnly = e.target.checked; render(); });
+document.getElementById('searchInput').addEventListener('input', e => { searchVal = e.target.value.toLowerCase().trim(); saveFilters(); render(); });
+document.getElementById('accessFilter').addEventListener('change', e => { accessVal = e.target.value; saveFilters(); render(); });
+document.getElementById('sortFilter').addEventListener('change', e => { sortVal = e.target.value; saveFilters(); render(); });
+document.getElementById('seasonFilter').addEventListener('change', e => { seasonVal = e.target.value; saveFilters(); render(); });
+document.getElementById('batchToggle').addEventListener('change', e => { batchOnly = e.target.checked; saveFilters(); render(); });
+
+function restoreFilterUI() {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === activeCat));
+  document.getElementById('searchInput').value = searchVal;
+  document.getElementById('accessFilter').value = accessVal;
+  document.getElementById('sortFilter').value = sortVal;
+  document.getElementById('seasonFilter').value = seasonVal;
+  document.getElementById('batchToggle').checked = batchOnly;
+}
+restoreFilterUI();
 
 (async () => {
   if (window._sb) {
