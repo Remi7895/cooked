@@ -189,27 +189,33 @@ const IMGS = {
   "onion-rings":"oignons-rings.jpeg"
 };
 const RECIPES = [
-  {id:"bolognaise",name:"Tagliatelle bolognaise",category:"Pâtes",taste:"salé",baseServings:4,
+{id:"bolognaise",name:"Tagliatelle bolognaise",category:"Pâtes",taste:"salé",baseServings:4,
     ingredients:[
       {name:"Tagliatelles",qty:360,unit:"g"},
       {name:"Bœuf haché (15% MG)",qty:500,unit:"g"},
       {name:"Tomates concassées",qty:400,unit:"g"},
+      {name:"Carotte",qty:1,unit:""},
+      {name:"Céleri branche",qty:1,unit:"branche"},
       {name:"Oignon origine France",qty:2,unit:""},
       {name:"Ail origine France",qty:4,unit:"gousses"},
       {name:"Concentré de tomate",qty:2,unit:"c. à s."},
       {name:"Vin rouge",qty:10,unit:"cl"},
+      {name:"Lait entier",qty:100,unit:"ml"},
+      {name:"Thym séché",qty:1,unit:"c. à c."},
       {name:"Huile d'olive vierge extra",qty:2,unit:"c. à s."},
-      {name:"Parmesan à la coupe rapé ",qty:60,unit:"g"},
-      {name:"Sel, poivre",qty:null,unit:""}
+      {name:"Parmesan à la coupe rapé",qty:60,unit:"g"},
+      {name:"Sel",qty:1,unit:"c. à c."},
+      {name:"Poivre",qty:0.5,unit:"c. à c."}
     ],
     steps:[
-      "Faire revenir l'oignon émincé pendant 7 min à feu moyen doux dans l'huile d'olive.",
-      "Ajouter l'ail écrasé pendant 1 min.",
-      "Ajouter le bœuf haché et faire dorer en émiettant bien la viande. Feu vif pendant 5 minutes.",
-      "Déglacer avec le vin rouge et laisser réduire 2 min à feu moyen.",
-      "Ajouter les tomates concassées, le concentré et une cueillère à café de thyme séché. Mélanger, couvrir et laisser mijoter entre 1h30 et 2h min à feu très doux.",
-      "10 minutes avant la fin, cuire les tagliatelles al dente selon le paquet. Égoutter en réservant un peu d'eau de cuisson.",
-      "Mélanger les pâtes à la sauce, ajouter un peu d'eau de cuisson si nécessaire. Servir aussitôt avec 60 g de parmesan râpé."
+      "Émincer l'oignon, la carotte et le céleri en petits dés (mirepoix). Faire revenir dans l'huile d'olive pendant 8-10 min à feu moyen doux, jusqu'à ce que les légumes soient tendres.",
+      "Ajouter l'ail écrasé, cuire 1 min.",
+      "Pousser les légumes sur le côté de la poêle. Ajouter le bœuf haché en 2-3 fois pour ne pas surcharger la poêle, saler, poivrer, et faire dorer à feu vif 5-6 min en émiettant grossièrement (garder un peu de texture, ne pas réduire en poudre).",
+      "Déglacer avec le vin rouge, gratter les sucs, laisser réduire presque à sec 2-3 min à feu moyen.",
+      "Ajouter les tomates concassées, le concentré de tomate et le thym. Mélanger, couvrir et laisser mijoter 1h30 à 2h à feu très doux, en remuant de temps en temps et en rajoutant un peu d'eau si ça accroche.",
+      "10 min avant la fin, verser le lait, mélanger et laisser mijoter à découvert pour que la sauce nappe. Goûter et rectifier sel/poivre.",
+      "Pendant ce temps, cuire les tagliatelles al dente selon le paquet. Égoutter en réservant un peu d'eau de cuisson.",
+      "Mélanger les pâtes à la sauce hors du feu, ajouter un peu d'eau de cuisson si nécessaire. Servir aussitôt avec le parmesan râpé."
     ]
   },
   {id:"crepes",name:"Crêpes",category:"Petit-déj",taste:"sucré",baseServings:4,
@@ -286,28 +292,32 @@ const RECIPES = [
       "Laisser refroidir puis réfrigérer au moins 2h. Saupoudrer de cassonade et brûler au chalumeau."
     ]
   },
-  {id:"penne-poulet",name:"Penne au poulet, champignons & crème",category:"Pâtes",taste:"salé",baseServings:2,
+ {id:"penne-poulet",name:"Penne au poulet, champignons & crème",category:"Pâtes",taste:"salé",baseServings:2,
     ingredients:[
       {name:"Penne",qty:180,unit:"g"},
-      {name:"Filet de poulet",qty:300,unit:"g"},
+      {name:"Filet de poulet Label Rouge",qty:300,unit:"g"},
       {name:"Champignons de Paris",qty:200,unit:"g"},
       {name:"Crème fraîche épaisse",qty:150,unit:"ml"},
       {name:"Ail",qty:2,unit:"gousses"},
       {name:"Oignon",qty:1,unit:""},
-      {name:"Huile d'olive",qty:1,unit:"c. à s."},
-      {name:"Beurre",qty:10,unit:"g"},
+      {name:"Vin blanc sec",qty:50,unit:"ml"},
+      {name:"Huile neutre",qty:1,unit:"c. à s."},
+      {name:"Beurre",qty:20,unit:"g"},
       {name:"Parmesan râpé",qty:30,unit:"g"},
-      {name:"Sel",qty:1,unit:"c. à c."},
+      {name:"Sel",qty:0.5,unit:"c. à c."},
       {name:"Poivre noir",qty:0.5,unit:"c. à c."},
       {name:"Persil frais (facultatif)",qty:1,unit:"c. à s."}
     ],
     steps:[
-      "Cuire les penne dans une grande casserole d'eau salée selon le paquet (10-11 min). Réserver une louche d'eau de cuisson avant d'égoutter.",
+      "Cuire les penne dans une grande casserole d'eau salée selon le paquet, 1 min de moins que l'indication (elles finiront de cuire dans la sauce). Réserver 200 ml d'eau de cuisson avant d'égoutter.",
       "Couper le poulet en dés ou lamelles épaisses. Trancher les champignons. Émincer l'oignon et l'ail.",
-      "Chauffer l'huile à feu vif dans une grande poêle. Faire dorer le poulet 4-5 min sans trop remuer. Saler, poivrer. Réserver sur une assiette.",
-      "Dans la même poêle, faire fondre le beurre. Faire suer l'oignon 6 min, ajouter l'ail et les champignons. Cuire 5-6 min jusqu'à évaporation de l'eau.",
-      "Remettre le poulet. Verser la crème et un peu d'eau de cuisson si trop épais. Mijoter 2-3 min à feu doux. Rectifier l'assaisonnement.",
-      "Ajouter les pâtes égouttées, mélanger. Hors du feu, incorporer le parmesan. Servir avec le persil."
+      "Bien sécher les cubes de poulet avec du papier absorbant.",
+      "Chauffer l'huile à feu vif dans une grande poêle. Faire dorer le poulet 4-5 min sans trop remuer. Poivrer légèrement (pas de sel, on ajustera à la fin). Réserver sur une assiette.",
+      "Dans la même poêle toujours à feu vif, ajouter les champignons seuls et les saisir 4-5 min sans remuer pour qu'ils colorent au lieu de rendre leur eau. Réserver avec le poulet.",
+      "Baisser à feu moyen, ajouter le beurre et faire suer l'oignon 5-6 min jusqu'à translucide, puis ajouter l'ail 1 min.",
+      "Déglacer avec le vin blanc, gratter les sucs au fond de la poêle, laisser réduire presque à sec (1-2 min).",
+      "Remettre le poulet et les champignons. Verser la crème et un peu d'eau de cuisson réservée. Mijoter 2-3 min à feu doux sans bouillir. Goûter et rectifier sel/poivre.",
+      "Ajouter les pâtes égouttées, mélanger et laisser 1 min à feu doux pour qu'elles finissent de cuire dans la sauce. Hors du feu, incorporer le parmesan. Goûter une dernière fois avant de saler si besoin. Servir avec le persil."
     ]
   },
 {id:"fusilli-pesto",name:"Fusilli Pesto au Poulet grillé",category:"Pâtes",taste:"salé",baseServings:2,
@@ -315,7 +325,7 @@ const RECIPES = [
       {name:"Fusilli",qty:200,unit:"g"},
       {name:"Pesto basilic BIO",qty:60,unit:"g"},
       {name:"Parmesan à la coupe râpé",qty:30,unit:"g"},
-      {name:"Blanc de poulet",qty:150-180,unit:"g"},
+      {name:"Blanc de poulet Label Rouge",qty:150-180,unit:"g"},
       {name:"Huile d'olive vierge extra",qty:1,unit:"c. à s."},
       {name:"Sel Label Rouge AOP",qty:null,unit:""},
       {name:"Poivre",qty:null,unit:""}
@@ -323,6 +333,7 @@ const RECIPES = [
     steps:[
       "Assaisonner les blancs de poulet avec sel et poivre.",
       "Découper les blancs de poulet en cubes.",
+      "Bien sécher les cubes de poulet avec du papier absorbant.",
       "Les cuire à la poêle avec l'huile d'olive à feu moyen-fort, 5-6 min par face, jusqu'à dorure. Laisser reposer 2 min puis trancher.",
       "Cuire les fusilli al dente. Réserver 2 c. à s. d'eau de cuisson avant d'égoutter.",
       "Mélanger les pâtes chaudes avec le pesto et l'eau de cuisson pour lier la sauce.",
@@ -335,17 +346,17 @@ const RECIPES = [
       {name:"Pipe Rigate",qty:180,unit:"g"},
       {name:"Jambon blanc supérieur origine France",qty:150,unit:"g"},
       {name:"Crème fraîche épaisse",qty:150,unit:"ml"},
-      {name:"Emmental à la coupe  râpé",qty:50,unit:"g"},
+      {name:"Emmental à la coupe râpé",qty:50,unit:"g"},
       {name:"Échalote origine France",qty:1,unit:""},
       {name:"Beurre doux AOP",qty:10,unit:"g"},
-      {name:"Sel, poivre",qty:null,unit:""}
+      {name:"Poivre",qty:0.5,unit:"c. à c."}
     ],
     steps:[
-      "Cuire les pipe rigate al dente. Égoutter.",
-      "Faire suer l'échalote émincée dans le beurre à feu moyen doux.",
-      "Ajouter le jambon coupé en dés, dorer légèrement pendant 3 min à feu moyen.",
-      "Verser la crème, laisser épaissir 2 min à feu moyen. Ajouter l'emmental, mélanger.",
-      "Incorporer les pâtes, assaisonner et servir aussitôt."
+      "Cuire les pipe rigate al dente selon le paquet. Réserver une louche d'eau de cuisson avant d'égoutter.",
+      "Faire suer l'échalote émincée dans le beurre à feu moyen doux pendant 4-5 min, jusqu'à translucide.",
+      "Ajouter le jambon coupé en dés, dorer légèrement 2-3 min à feu moyen.",
+      "Baisser à feu doux, verser la crème et laisser épaissir 2 min sans bouillir. Retirer du feu, incorporer l'emmental petit à petit en remuant pour qu'il fonde sans grainer.",
+      "Incorporer les pâtes, ajouter un peu d'eau de cuisson si la sauce est trop épaisse. Poivrer, goûter et rectifier (le jambon et l'emmental étant déjà salés, ajouter du sel seulement si nécessaire). Servir aussitôt."
     ]
   },
   {id:"quiche-poireaux",name:"Quiche aux poireaux",category:"Plat",taste:"salé",baseServings:6,
@@ -472,49 +483,44 @@ const RECIPES = [
       {name:"Lardons fumés",qty:100,unit:"g"},
       {name:"Cheddar râpé",qty:80,unit:"g"},
       {name:"Crème fraîche",qty:150,unit:"ml"},
-      {name:"Oignons frits (crispy)",qty:30,unit:"g"},
+      {name:"Oignon jaune",qty:1,unit:""},
+      {name:"Farine",qty:1,unit:"c. à s."},
+      {name:"Huile neutre (friture)",qty:200,unit:"ml"},
       {name:"Ail",qty:1,unit:"gousse"},
-      {name:"Sel, poivre",qty:null,unit:""}
+      {name:"Sel",qty:0.5,unit:"c. à c."},
+      {name:"Poivre",qty:0.5,unit:"c. à c."}
     ],
     steps:[
+      "Émincer très finement l'oignon (mandoline si possible). Le fariner légèrement et secouer l'excédent.",
+      "Chauffer l'huile à 160-170°C dans une petite casserole. Frire l'oignon en 2-3 fois jusqu'à doré ambré. Égoutter sur papier absorbant, saler aussitôt et laisser sécher complètement.",
       "Cuire les tortiglioni al dente. Réserver une louche d'eau de cuisson.",
       "Faire revenir les lardons à sec jusqu'à ce qu'ils soient dorés. Ajouter l'ail émincé 1 min.",
-      "Verser la crème, laisser réduire 2 min, ajouter les trois quarts du cheddar et mélanger.",
-      "Incorporer les pâtes égouttées avec un peu d'eau de cuisson. Rectifier l'assaisonnement.",
-      "Servir parsemé du reste de cheddar et des oignons frits croustillants."
+      "Baisser le feu, verser la crème, laisser réduire 2 min à feu doux. Retirer du feu, ajouter les trois quarts du cheddar et mélanger jusqu'à fonte.",
+      "Incorporer les pâtes égouttées avec un peu d'eau de cuisson. Goûter et rectifier sel/poivre (les lardons et le cheddar étant déjà salés, ajuster prudemment).",
+      "Servir parsemé du reste de cheddar et des oignons frits maison, ajoutés juste avant de manger pour qu'ils gardent leur croquant."
     ]
   },
-  {id:"gnocchis-core",name:"Gnocchis à la coréenne",category:"Fusion",taste:"salé",baseServings:2,
+  {id:"gnocchis-core",name:"Gnocchis Poulet à la coréenne",category:"Fusion",taste:"salé",baseServings:2,
     ingredients:[
       {name:"Gnocchis",qty:400,unit:"g"},
+      {name:"Filet de poulet",qty:300,unit:"g"},
       {name:"Sauce gochujang",qty:2,unit:"c. à s."},
       {name:"Sauce soja",qty:1,unit:"c. à s."},
       {name:"Miel",qty:1,unit:"c. à s."},
       {name:"Ail",qty:2,unit:"gousses"},
       {name:"Beurre",qty:20,unit:"g"},
-      {name:"Ciboule",qty:2,unit:"tiges"},
-      {name:"Graines de sésame",qty:1,unit:"c. à c."}
+      {name:"Huile neutre",qty:1,unit:"c. à s."},
+      {name:"Ciboulette",qty:2,unit:"tiges"},
+      {name:"Graines de sésame",qty:1,unit:"c. à c."},
+      {name:"Sel",qty:0.5,unit:"c. à c."},
+      {name:"Poivre",qty:0.5,unit:"c. à c."}
     ],
     steps:[
       "Mélanger gochujang, sauce soja et miel dans un bol.",
-      "Faire dorer les gnocchis dans le beurre à feu vif 3-4 min sans remuer pour qu'ils soient croustillants.",
-      "Ajouter l'ail émincé 1 min, puis verser la sauce. Enrober bien les gnocchis.",
-      "Servir garni de ciboule ciselée et de graines de sésame."
-    ]
-  },
-  {id:"gnocchis-chedd",name:"Gnocchis cheddar chorizo",category:"Pâtes",taste:"salé",baseServings:2,
-    ingredients:[
-      {name:"Gnocchis",qty:400,unit:"g"},
-      {name:"Chorizo doux en tranches",qty:80,unit:"g"},
-      {name:"Cheddar râpé",qty:80,unit:"g"},
-      {name:"Crème fraîche",qty:100,unit:"ml"},
-      {name:"Oignon",qty:0.5,unit:""},
-      {name:"Beurre",qty:10,unit:"g"}
-    ],
-    steps:[
-      "Faire revenir l'oignon émincé dans le beurre. Ajouter le chorizo et dorer 3 min.",
-      "Ajouter les gnocchis et faire sauter 4 min à feu vif.",
-      "Verser la crème, ajouter le cheddar et mélanger jusqu'à fonte. Servir aussitôt."
+      "Couper le poulet en dés. Chauffer l'huile à feu vif dans une grande poêle, saler, poivrer, et faire dorer le poulet 5-6 min sans trop remuer. Réserver sur une assiette.",
+      "Dans la même poêle, faire dorer les gnocchis dans le beurre à feu vif 3-4 min sans remuer pour qu'ils soient croustillants.",
+      "Ajouter l'ail émincé 1 min, remettre le poulet, puis verser la sauce. Mélanger pour bien enrober et laisser caraméliser 1-2 min.",
+      "Servir garni de ciboulette ciselée et de graines de sésame."
     ]
   },
   {id:"flanc-mangue",name:"Flanc mangue vanille",category:"Dessert",taste:"sucré",baseServings:8,
@@ -565,23 +571,6 @@ const RECIPES = [
       "Cuire les frites selon le paquet.",
       "Étaler la sauce sur les tortillas. Ajouter les feuilles de salade, les tomates en rondelles.",
       "Disposer les tenders et quelques frites. Rouler et servir aussitôt."
-    ]
-  },
-  {id:"cordon-bleu",name:"Cordon bleu maison",category:"Viande",taste:"salé",baseServings:2,
-    ingredients:[
-      {name:"Escalopes de poulet",qty:2,unit:""},
-      {name:"Tranches de jambon",qty:2,unit:""},
-      {name:"Emmental en tranches",qty:4,unit:""},
-      {name:"Farine",qty:50,unit:"g"},
-      {name:"Œufs",qty:2,unit:""},
-      {name:"Chapelure",qty:80,unit:"g"},
-      {name:"Beurre + huile",qty:null,unit:""}
-    ],
-    steps:[
-      "Aplatir les escalopes entre deux feuilles de film alimentaire. Saler, poivrer.",
-      "Poser une tranche de jambon et deux tranches de fromage sur chaque escalope. Plier en deux et bien fermer les bords.",
-      "Passer chaque cordon bleu dans la farine, puis l'œuf battu, puis la chapelure. Appuyer pour bien faire adhérer.",
-      "Cuire dans un mélange beurre-huile à feu moyen, 4-5 min par face jusqu'à dorure. Servir avec une salade ou des frites."
     ]
   },
   {id:"gnocchis-chevre",name:"Gnocchis chèvre miel lardons",category:"Pâtes",taste:"salé",baseServings:2,
